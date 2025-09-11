@@ -2,22 +2,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const toggleButton = document.getElementById('theme-toggle');
 
-    // Проверка сохраненной темы
-    if (localStorage.getItem('theme') === 'dark') {
-        body.classList.add('dark');
-        toggleButton.textContent = 'Светлая тема';
-    } else {
+    if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light');
         toggleButton.textContent = 'Темная тема';
+    } else {
+        toggleButton.textContent = 'Светлая тема';
     }
 
     toggleButton.addEventListener('click', () => {
-        body.classList.toggle('dark');
-        if (body.classList.contains('dark')) {
-            localStorage.setItem('theme', 'dark');
-            toggleButton.textContent = 'Светлая тема';
-        } else {
+        body.classList.toggle('light');
+        if (body.classList.contains('light')) {
             localStorage.setItem('theme', 'light');
             toggleButton.textContent = 'Темная тема';
+        } else {
+            localStorage.setItem('theme', 'dark');
+            toggleButton.textContent = 'Светлая тема';
         }
     });
 });
