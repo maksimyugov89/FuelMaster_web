@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuelMaster - Калькулятор расхода топлива</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>FuelMaster</h1>
+            <p>Умное приложение для управления расходом топлива и автомобилями</p>
+            <button id="theme-toggle">Переключить тему</button>
+        </div>
+    </header>
+
+    <section id="description">
+        <div class="container">
+            <h2>Что такое FuelMaster?</h2>
+            <p>FuelMaster - это мобильное приложение, разработанное на Flutter, которое помогает водителям отслеживать расход топлива, управлять данными об автомобилях и получать полезные советы по экономии. Поддерживает русский и английский языки, светлую/темную темы, и премиум-функции с синхронизацией данных.</p>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <h2>Основные функции</h2>
+            <ul>
+                <li>Управление автомобилями: добавление, редактирование, удаление (с базой моделей из CSV).</li>
+                <li>Расчет расхода топлива: учитывает город/трассу, уровень топлива, зиму, кондиционер, горы и погоду (интеграция с WeatherAPI).</li>
+                <li>История расчетов: хранение, фильтры, графики (с fl_chart).</li>
+                <li>Регистрация и вход через Firebase (email/пароль).</li>
+                <li>Премиум: синхронизация с Firestore, ИИ-советы от DeepSeek.</li>
+                <li>Монетизация: реклама Yandex Ads, подписки in-app.</li>
+                <li>Интеграции: Geoapify для поиска городов, SQLite для локальной БД.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="screenshots">
+        <div class="container">
+            <h2>Скриншоты</h2>
+            <div class="gallery">
+                <img src="https://via.placeholder.com/300x600?text=Экран+управления+авто" alt="Управление автомобилями">
+                <img src="https://via.placeholder.com/300x600?text=Расчет+расхода" alt="Расчет расхода">
+                <img src="https://via.placeholder.com/300x600?text=История+и+графики" alt="История и графики">
+                <img src="https://via.placeholder.com/300x600?text=Премиум+функции" alt="Премиум функции">
+            </div>
+            <p>Замените плейсхолдеры на реальные скриншоты из репозитория.</p>
+        </div>
+    </section>
+
+    <section id="download">
+        <div class="container">
+            <h2>Скачать приложение</h2>
+            <p>Доступно для Android и iOS. Скачайте APK или из магазинов (ссылки добавьте после публикации).</p>
+            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn">Исходный код на GitHub</a>
+            <a href="#" class="btn">Скачать APK (пока плейсхолдер)</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 FuelMaster. Разработано maksimyugov89. Контакты: GitHub @maksimyugov89</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
