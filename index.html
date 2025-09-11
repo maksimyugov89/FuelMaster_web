@@ -5,35 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FuelMaster - Калькулятор расхода топлива</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>FuelMaster</h1>
-            <p>Умное приложение для управления расходом топлива и автомобилями</p>
-            <button id="theme-toggle">Переключить тему</button>
+            <div class="header-content">
+                <img src="https://via.placeholder.com/150x50?text=FuelMaster" alt="FuelMaster Logo" class="logo">
+                <div class="weather-info">
+                    <i class="fas fa-cloud"></i> 11°C, Курск <i class="fas fa-arrow-down"></i> 760 мм
+                </div>
+                <button id="theme-toggle"><i class="fas fa-adjust"></i> Переключить тему</button>
+            </div>
         </div>
     </header>
 
-    <section id="description">
+    <section id="hero">
         <div class="container">
-            <h2>Что такое FuelMaster?</h2>
-            <p>FuelMaster - это мобильное приложение, разработанное на Flutter, которое помогает водителям отслеживать расход топлива, управлять данными об автомобилях и получать полезные советы по экономии. Поддерживает русский и английский языки, светлую/темную темы, и премиум-функции с синхронизацией данных.</p>
+            <h1>Управляй расходом топлива с умом</h1>
+            <p>Отслеживай автомобили, рассчитывай нормы и получай советы с FuelMaster</p>
+            <a href="#download" class="btn primary"><i class="fas fa-download"></i> Скачать</a>
         </div>
     </section>
 
     <section id="features">
         <div class="container">
             <h2>Основные функции</h2>
-            <ul>
-                <li>Управление автомобилями: добавление, редактирование, удаление (с базой моделей из CSV).</li>
-                <li>Расчет расхода топлива: учитывает город/трассу, уровень топлива, зиму, кондиционер, горы и погоду (интеграция с WeatherAPI).</li>
-                <li>История расчетов: хранение, фильтры, графики (с fl_chart).</li>
-                <li>Регистрация и вход через Firebase (email/пароль).</li>
-                <li>Премиум: синхронизация с Firestore, ИИ-советы от DeepSeek.</li>
-                <li>Монетизация: реклама Yandex Ads, подписки in-app.</li>
-                <li>Интеграции: Geoapify для поиска городов, SQLite для локальной БД.</li>
-            </ul>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-car"></i>
+                    <h3>Управление авто</h3>
+                    <p>Добавляй и редактируй данные об автомобилях (Peugeot, BMW и др.)</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-gas-pump"></i>
+                    <h3>Расчет расхода</h3>
+                    <p>Учитывает город, трассу, погоду и другие факторы</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>История и графики</h3>
+                    <p>Сохраняй и анализируй данные о топливе</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>Безопасность</h3>
+                    <p>Вход через Firebase с синхронизацией</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -41,27 +60,27 @@
         <div class="container">
             <h2>Скриншоты</h2>
             <div class="gallery">
-                <img src="https://via.placeholder.com/300x600?text=Экран+управления+авто" alt="Управление автомобилями">
+                <img src="https://via.placeholder.com/300x600?text=Управление+авто" alt="Управление автомобилями">
                 <img src="https://via.placeholder.com/300x600?text=Расчет+расхода" alt="Расчет расхода">
                 <img src="https://via.placeholder.com/300x600?text=История+и+графики" alt="История и графики">
-                <img src="https://via.placeholder.com/300x600?text=Премиум+функции" alt="Премиум функции">
+                <img src="https://via.placeholder.com/300x600?text=Вход" alt="Экран входа">
             </div>
-            <p>Замените плейсхолдеры на реальные скриншоты из репозитория.</p>
+            <p>Замените плейсхолдеры на реальные скриншоты.</p>
         </div>
     </section>
 
     <section id="download">
         <div class="container">
-            <h2>Скачать приложение</h2>
-            <p>Доступно для Android и iOS. Скачайте APK или из магазинов (ссылки добавьте после публикации).</p>
-            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn">Исходный код на GitHub</a>
-            <a href="#" class="btn">Скачать APK (пока плейсхолдер)</a>
+            <h2>Скачай FuelMaster</h2>
+            <p>Доступно для Android и iOS. Установи прямо сейчас!</p>
+            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary"><i class="fab fa-github"></i> Исходный код</a>
+            <a href="#" class="btn primary"><i class="fas fa-download"></i> Скачать APK</a>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 FuelMaster. Разработано maksimyugov89. Контакты: GitHub @maksimyugov89</p>
+            <p>&copy; 2025 FuelMaster | <a href="https://github.com/maksimyugov89">maksimyugov89</a></p>
         </div>
     </footer>
 
