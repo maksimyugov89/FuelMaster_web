@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FuelMaster — приложение для управления расходом топлива, отслеживания автомобилей и получения советов. Скачайте для Android и iOS!">
+    <meta name="keywords" content="FuelMaster, расход топлива, калькулятор, автомобили, Flutter, Android, iOS">
+    <meta name="author" content="maksimyugov89">
+    <link rel="manifest" href="manifest.json">
     <title>FuelMaster - Калькулятор расхода топлива</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -16,6 +20,10 @@
                     <div class="weather-info">
                         <i class="fas fa-cloud"></i> 11°C, Курск <i class="fas fa-arrow-down"></i> 760 мм
                     </div>
+                    <select id="language-toggle" onchange="changeLanguage()">
+                        <option value="ru">RU</option>
+                        <option value="en">EN</option>
+                    </select>
                     <button id="theme-toggle" aria-label="Переключить тему"><i class="fas fa-adjust"></i></button>
                 </div>
             </div>
@@ -24,37 +32,54 @@
 
     <section id="hero">
         <div class="parallax-bg"></div>
+        <div class="particles"></div>
         <div class="container">
-            <div class="particles"></div>
-            <h1>Управляй расходом топлива с умом</h1>
-            <p>FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.</p>
-            <a href="#download" class="btn primary"><i class="fas fa-download animated-icon"></i> Скачать</a>
+            <h1 id="hero-title">Управляй расходом топлива с умом</h1>
+            <p id="hero-subtitle">FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.</p>
+            <a href="#download" class="btn primary"><i class="fas fa-download animated-icon"></i> <span id="download-text">Скачать</span></a>
+            <div class="seasonal-banner">Осенние обновления 2025! Улучшен расчет и новые советы до 30 сентября.</div>
+        </div>
+    </section>
+
+    <section id="calculator">
+        <div class="container">
+            <h2 id="calculator-title">Рассчитайте расход топлива</h2>
+            <div class="calculator-form">
+                <input type="number" id="mileage" placeholder="Пробег (км)" min="0">
+                <input type="number" id="fuel" placeholder="Объем топлива (л)" min="0">
+                <select id="condition">
+                    <option value="city">Город</option>
+                    <option value="highway">Трасса</option>
+                </select>
+                <button onclick="calculateFuel()">Рассчитать</button>
+                <p id="result"></p>
+            </div>
         </div>
     </section>
 
     <section id="features">
         <div class="container">
-            <h2>Основные возможности</h2>
+            <h2 id="features-title">Основные возможности</h2>
             <div class="feature-grid">
                 <div class="feature-card">
                     <i class="fas fa-car animated-icon"></i>
-                    <h3>Управление авто</h3>
-                    <p>Добавление, редактирование, удаление автомобилей с базой моделей из CSV.</p>
+                    <h3 id="feature1-title">Управление авто</h3>
+                    <p id="feature1-desc">Добавление, редактирование, удаление автомобилей с базой моделей из CSV.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-gas-pump animated-icon"></i>
-                    <h3>Расчет расхода</h3>
-                    <p>Учет города/трассы, погоды, кондиционера и других факторов.</p>
+                    <h3 id="feature2-title">Расчет расхода</h3>
+                    <p id="feature2-desc">Учет города/трассы, погоды, кондиционера и других факторов.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-chart-line animated-icon"></i>
-                    <h3>История и графики</h3>
-                    <p>Хранение, фильтры и визуализация с fl_chart.</p>
+                    <h3 id="feature3-title">История и графики</h3>
+                    <p id="feature3-desc">Хранение, фильтры и визуализация с fl_chart.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-lock animated-icon"></i>
-                    <h3>Безопасность и премиум</h3>
-                    <p>Firebase вход, синхронизация с Firestore для премиум.</p>
+                    <h3 id="feature4-title">Безопасность и премиум</h3>
+                    <p id="feature4-desc">Firebase вход, синхронизация с Firestore для премиум.</p>
                 </div>
             </div>
         </div>
@@ -62,40 +87,60 @@
 
     <section id="screenshots">
         <div class="container">
-            <h2>Скриншоты</h2>
+            <h2 id="screenshots-title">Скриншоты</h2>
             <div class="gallery" id="screenshot-gallery">
-                <img src="https://github.com/user-attachments/assets/2b646849-1ba2-4b50-b5be-7a50ef011d7e" alt="Скриншот 1" loading="lazy" data-light="Screenshot-1-light.jpg">
-                <img src="https://github.com/user-attachments/assets/acdcca64-7f8d-426c-b49b-0a5c2fae65ea" alt="Скриншот 2" loading="lazy" data-light="Screenshot-2-light.jpg">
-                <img src="https://github.com/user-attachments/assets/4f50cbec-52e2-4df9-82fc-4b6483858d1b" alt="Скриншот 3" loading="lazy" data-light="Screenshot-3-light.jpg">
-                <img src="https://github.com/user-attachments/assets/d5bf34be-5b4f-4886-953a-0c023fa4f412" alt="Скриншот 4" loading="lazy" data-light="Screenshot-4-light.jpg">
-                <img src="https://github.com/user-attachments/assets/48bc266a-abbf-4476-8a8f-f94f5cec8223" alt="Скриншот 5" loading="lazy" data-light="Screenshot-5-light.jpg">
-                <img src="https://github.com/user-attachments/assets/0d7a5bda-ab21-4b1e-afab-ca9409adc2b0" alt="Скриншот 6" loading="lazy" data-light="Screenshot-6-light.jpg">
-                <img src="https://github.com/user-attachments/assets/50f9f920-f008-4040-a438-7350abb975cd" alt="Скриншот 7" loading="lazy" data-light="Screenshot-7-light.jpg">
-                <img src="https://github.com/user-attachments/assets/fb3441f8-c200-4e57-8d5e-1b1290607b8c" alt="Скриншот 8" loading="lazy" data-light="Screenshot-8-light.jpg">
-                <img src="https://github.com/user-attachments/assets/e1217bd5-e956-4e92-93f8-ed67b7abe597" alt="Скриншот 9" loading="lazy" data-light="Screenshot-9-light.jpg">
-                <img src="https://github.com/user-attachments/assets/6eaa8d6a-a97d-4687-b02c-24205a2d2a16" alt="Скриншот 10" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/57b521ed-aad3-43c5-a9be-70e47f4d650b" alt="Скриншот 11" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/68be8383-eca2-42be-8acd-0a5a377cf327" alt="Скриншот 12" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/7eb67611-d216-4dbc-b771-d36136d45459" alt="Скриншот 13" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/a20b3d66-440d-47ed-8d47-237ef5cca0b0" alt="Скриншот 14" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/a2d3395e-bb26-4f0b-891f-03ea30049173" alt="Скриншот 15" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/5a0e5e24-472c-4d37-b00d-3ce4c5085586" alt="Скриншот 16" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/3f5187ea-14bc-4867-9f98-c2153c23b69f" alt="Скриншот 17" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/4d717264-f4ff-4bc7-b497-3edf83afad20" alt="Скриншот 18" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/4ab7338c-2884-4102-818f-d1daf017ee17" alt="Скриншот 19" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/89e8f46c-68dd-45b5-a87d-40d6f4e49613" alt="Скриншот 20" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/0a4a5d3a-001b-4901-bcfb-e314d2aba4ba" alt="Скриншот 21" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/f7ceb6ad-1122-4751-8482-ffb179ddcdea" alt="Скриншот 22" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/1c8946ba-96c7-4697-9055-b6208d507c34" alt="Скриншот 23" loading="lazy">
-                <img src="https://github.com/user-attachments/assets/a71f705e-ef81-4b02-9781-f65c64ac19d6" alt="Скриншот 24" loading="lazy">
+                <img src="https://github.com/user-attachments/assets/2b646849-1ba2-4b50-b5be-7a50ef011d7e" alt="Скриншот 1" loading="lazy" data-light="Screenshot-1-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/acdcca64-7f8d-426c-b49b-0a5c2fae65ea" alt="Скриншот 2" loading="lazy" data-light="Screenshot-2-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/4f50cbec-52e2-4df9-82fc-4b6483858d1b" alt="Скриншот 3" loading="lazy" data-light="Screenshot-3-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/d5bf34be-5b4f-4886-953a-0c023fa4f412" alt="Скриншот 4" loading="lazy" data-light="Screenshot-4-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/48bc266a-abbf-4476-8a8f-f94f5cec8223" alt="Скриншот 5" loading="lazy" data-light="Screenshot-5-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/0d7a5bda-ab21-4b1e-afab-ca9409adc2b0" alt="Скриншот 6" loading="lazy" data-light="Screenshot-6-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/50f9f920-f008-4040-a438-7350abb975cd" alt="Скриншот 7" loading="lazy" data-light="Screenshot-7-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/fb3441f8-c200-4e57-8d5e-1b1290607b8c" alt="Скриншот 8" loading="lazy" data-light="Screenshot-8-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/e1217bd5-e956-4e92-93f8-ed67b7abe597" alt="Скриншот 9" loading="lazy" data-light="Screenshot-9-light.jpg" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/6eaa8d6a-a97d-4687-b02c-24205a2d2a16" alt="Скриншот 10" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/57b521ed-aad3-43c5-a9be-70e47f4d650b" alt="Скриншот 11" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/68be8383-eca2-42be-8acd-0a5a377cf327" alt="Скриншот 12" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/7eb67611-d216-4dbc-b771-d36136d45459" alt="Скриншот 13" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/a20b3d66-440d-47ed-8d47-237ef5cca0b0" alt="Скриншот 14" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/a2d3395e-bb26-4f0b-891f-03ea30049173" alt="Скриншот 15" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/5a0e5e24-472c-4d37-b00d-3ce4c5085586" alt="Скриншот 16" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/3f5187ea-14bc-4867-9f98-c2153c23b69f" alt="Скриншот 17" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/4d717264-f4ff-4bc7-b497-3edf83afad20" alt="Скриншот 18" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/4ab7338c-2884-4102-818f-d1daf017ee17" alt="Скриншот 19" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/89e8f46c-68dd-45b5-a87d-40d6f4e49613" alt="Скриншот 20" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/0a4a5d3a-001b-4901-bcfb-e314d2aba4ba" alt="Скриншот 21" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/f7ceb6ad-1122-4751-8482-ffb179ddcdea" alt="Скриншот 22" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/1c8946ba-96c7-4697-9055-b6208d507c34" alt="Скриншот 23" loading="lazy" onclick="openModal(this)">
+                <img src="https://github.com/user-attachments/assets/a71f705e-ef81-4b02-9781-f65c64ac19d6" alt="Скриншот 24" loading="lazy" onclick="openModal(this)">
+            </div>
+            <button class="slider-prev" onclick="scrollGallery('prev')"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-next" onclick="scrollGallery('next')"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <section id="testimonials">
+        <div class="container">
+            <h2 id="testimonials-title">Отзывы пользователей</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p id="testimonial1-text">"Отлично помогает экономить топливо!"</p>
+                    <span id="testimonial1-author">— Иван, Москва</span>
+                    <div class="stars">★★★★★</div>
+                </div>
+                <div class="testimonial-card">
+                    <p id="testimonial2-text">"Простое и удобное приложение!"</p>
+                    <span id="testimonial2-author">— Ольга, Санкт-Петербург</span>
+                    <div class="stars">★★★★☆</div>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="download">
         <div class="container">
-            <h2>Скачай FuelMaster</h2>
-            <p>Доступно для Android и iOS. Установи прямо сейчас!</p>
+            <h2 id="download-title">Скачай FuelMaster</h2>
+            <p id="download-desc">Доступно для Android и iOS. Установи прямо сейчас!</p>
             <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary"><img src="https://github.com/user-attachments/assets/1bceca05-16a6-421e-b3ea-2349624b89a9" alt="Logo" class="download-logo"> Исходный код</a>
             <a href="#" class="btn primary"><img src="https://github.com/user-attachments/assets/1bceca05-16a6-421e-b3ea-2349624b89a9" alt="Logo" class="download-logo"> Скачать APK</a>
         </div>
@@ -103,9 +148,16 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 FuelMaster | <a href="https://github.com/maksimyugov89">maksimyugov89</a></p>
+            <p>&copy; 2025 FuelMaster | <a href="https://github.com/maksimyugov89" target="_blank"><i class="fab fa-github"></i> maksimyugov89</a></p>
+            <a href="https://twitter.com/yourhandle" target="_blank"><i class="fab fa-twitter"></i></a>
         </div>
     </footer>
+
+    <div id="modal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img id="modal-img" src="" alt="Увеличенное изображение">
+        <p id="modal-caption"></p>
+    </div>
 
     <script src="script.js"></script>
 </body>
