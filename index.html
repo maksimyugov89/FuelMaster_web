@@ -11,7 +11,7 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <img src="logo.jpg" alt="FuelMaster Logo" class="logo">
+                <h1 class="brand-title">FuelMaster</h1>
                 <div class="header-utils">
                     <div class="weather-info">
                         <i class="fas fa-cloud"></i> 11°C, Курск <i class="fas fa-arrow-down"></i> 760 мм
@@ -61,25 +61,19 @@
     <section id="screenshots">
         <div class="container">
             <h2>Скриншоты</h2>
-            <div class="gallery">
-                <img src="Screenshot_2025-09-04-02-06-47-69_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Управление автомобилями" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-06-57-95_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Расчет расхода" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-07-41-11_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="История и графики" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-08-02-21_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Экран входа" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-08-09-04_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 1" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-08-23-75_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 2" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-09-36-73_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 3" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-10-41-30_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 4" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-11-01-48_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 5" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-11-36-54_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 6" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-12-12-09_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 7" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-14-06-35_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 8" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-14-18-68_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 9" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-14-42-18_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 10" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-15-02-46_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 11" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-15-10-38_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 12" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-30-09-10_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 13" loading="lazy">
-                <img src="Screenshot_2025-09-04-02-30-23-94_00ed68a25f49ddc81dfbde00b62141e1.jpg" alt="Дополнительный экран 14" loading="lazy">
+            <div class="gallery" id="screenshot-gallery">
+                <img src="Screenshot-1-dark.jpg" alt="Управление автомобилями" loading="lazy" data-light="Screenshot-1-light.jpg">
+                <img src="Screenshot-2-dark.jpg" alt="Расчет расхода" loading="lazy" data-light="Screenshot-2-light.jpg">
+                <img src="Screenshot-3-dark.jpg" alt="История и графики" loading="lazy" data-light="Screenshot-3-light.jpg">
+                <img src="Screenshot-4-dark.jpg" alt="Экран входа" loading="lazy" data-light="Screenshot-4-light.jpg">
+                <img src="Screenshot-5-dark.jpg" alt="Дополнительный экран 1" loading="lazy" data-light="Screenshot-5-light.jpg">
+                <img src="Screenshot-6-dark.jpg" alt="Дополнительный экран 2" loading="lazy" data-light="Screenshot-6-light.jpg">
+                <img src="Screenshot-7-dark.jpg" alt="Дополнительный экран 3" loading="lazy" data-light="Screenshot-7-light.jpg">
+                <img src="Screenshot-8-dark.jpg" alt="Дополнительный экран 4" loading="lazy" data-light="Screenshot-8-light.jpg">
+                <img src="Screenshot-9-dark.jpg" alt="Дополнительный экран 5" loading="lazy" data-light="Screenshot-9-light.jpg">
+                <img src="Screenshot-10-dark.jpg" alt="Дополнительный экран 6" loading="lazy">
+                <img src="Screenshot-11-dark.jpg" alt="Дополнительный экран 7" loading="lazy">
+                <img src="Screenshot-12-dark.jpg" alt="Дополнительный экран 8" loading="lazy">
             </div>
             <p>Убедитесь, что все скриншоты корректно загружены.</p>
         </div>
@@ -89,8 +83,8 @@
         <div class="container">
             <h2>Скачай FuelMaster</h2>
             <p>Доступно для Android и iOS. Установи прямо сейчас!</p>
-            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary"><i class="fab fa-github"></i> Исходный код</a>
-            <a href="#" class="btn primary"><i class="fas fa-download"></i> Скачать APK</a>
+            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary"><img src="logo.jpg" alt="Logo" class="download-logo"> Исходный код</a>
+            <a href="#" class="btn primary"><img src="logo.jpg" alt="Logo" class="download-logo"> Скачать APK</a>
         </div>
     </section>
 
