@@ -29,6 +29,14 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
+    animation: gradient-shift 5s ease infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 header .header-content {
@@ -39,17 +47,18 @@ header .header-content {
 }
 
 .brand-title {
-    font-size: 32px; /* Увеличен размер для большей заметности */
+    font-size: 32px;
     font-weight: 700;
     background: linear-gradient(90deg, #007bff, #00c4cc);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
 .brand-title:hover {
     transform: scale(1.05);
+    text-shadow: 0 0 10px #007bff, 0 0 20px #00c4cc;
 }
 
 .header-utils {
@@ -64,7 +73,6 @@ header .header-content {
     display: flex;
     align-items: center;
     gap: 5px;
-    min-width: 120px; /* Для стабильности */
 }
 
 .weather-loading {
@@ -83,11 +91,12 @@ header .header-content {
     font-size: 18px;
     cursor: pointer;
     padding: 5px;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 #theme-toggle:hover {
     color: #fff;
+    transform: rotate(180deg);
 }
 
 body.light #theme-toggle {
@@ -100,21 +109,82 @@ body.light #theme-toggle:hover {
 
 #hero {
     text-align: center;
-    padding: 60px 20px;
+    padding: 80px 20px;
     background: linear-gradient(135deg, #1e1e2f, #2c2c3e);
-    color: #fff;
+    position: relative;
+    overflow: hidden;
+    animation: gradient-shift 10s ease infinite;
+    background-size: 200% 200%;
+}
+
+#hero .parallax-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0,123,255,0.2), rgba(0,0,0,0));
+    opacity: 0.5;
+    transform: translateY(0);
+    transition: transform 0.5s ease;
+}
+
+#hero:hover .parallax-bg {
+    transform: translateY(-10px);
+}
+
+#hero .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.particles::before {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #007bff;
+    border-radius: 50%;
+    animation: particle-float 5s linear infinite;
+    opacity: 0.5;
+    top: 10%;
+    left: 20%;
+}
+
+.particles::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #00c4cc;
+    border-radius: 50%;
+    animation: particle-float 7s linear infinite;
+    opacity: 0.5;
+    top: 50%;
+    left: 70%;
+}
+
+@keyframes particle-float {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.2); }
+    100% { transform: translateY(0) scale(1); }
 }
 
 #hero h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    font-weight: 600;
+    font-size: 3em;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(0,123,255,0.5);
 }
 
 #hero p {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-    opacity: 0.9;
+    font-size: 1.4em;
+    margin-bottom: 25px;
+    opacity: 0.95;
 }
 
 .btn {
@@ -123,42 +193,52 @@ body.light #theme-toggle:hover {
     gap: 8px;
     padding: 12px 25px;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 30px;
     font-weight: bold;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
 }
 
 .btn.primary {
-    background-color: #007bff;
+    background: linear-gradient(90deg, #007bff, #00c4cc);
     color: #fff;
+    animation: gradient-shift 5s ease infinite;
+    background-size: 200% 200%;
 }
 
 .btn.primary:hover {
-    background-color: #0056b3;
+    box-shadow: 0 6px 15px rgba(0,123,255,0.5);
+    transform: translateY(-3px);
 }
 
 .btn.secondary {
-    background-color: #6c757d;
+    background: linear-gradient(90deg, #6c757d, #4a4a6a);
     color: #fff;
+    animation: gradient-shift 5s ease infinite;
+    background-size: 200% 200%;
 }
 
 .btn.secondary:hover {
-    background-color: #5a6268;
+    box-shadow: 0 6px 15px rgba(108,117,125,0.5);
+    transform: translateY(-3px);
 }
 
 .download-logo {
     height: 20px;
     width: auto;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
 }
 
 #features h2, #screenshots h2, #download h2 {
     text-align: center;
     margin-bottom: 40px;
     color: #fff;
+    text-shadow: 0 0 10px rgba(0,123,255,0.3);
 }
 
 body.light #features h2, body.light #screenshots h2, body.light #download h2 {
     color: #1e1e2f;
+    text-shadow: 0 0 10px rgba(0,123,255,0.1);
 }
 
 .feature-grid {
@@ -168,26 +248,36 @@ body.light #features h2, body.light #screenshots h2, body.light #download h2 {
 }
 
 .feature-card {
-    background: #2c2c3e;
+    background: linear-gradient(135deg, #2c2c3e, #3a3a5a);
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 15px;
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 body.light .feature-card {
-    background: #e9ecef;
+    background: linear-gradient(135deg, #e9ecef, #f8f9fa);
     color: #1e1e2f;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) rotateX(5deg);
+    box-shadow: 0 8px 20px rgba(0,123,255,0.4);
 }
 
 .feature-card i {
-    font-size: 2em;
+    font-size: 2.5em;
     color: #007bff;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 .gallery {
@@ -197,6 +287,7 @@ body.light .feature-card {
     gap: 10px;
     max-height: 80vh;
     overflow-y: auto;
+    scroll-snap-type: y mandatory;
 }
 
 .gallery img {
@@ -204,7 +295,8 @@ body.light .feature-card {
     height: auto;
     border-radius: 10px;
     border: 2px solid #444;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    scroll-snap-align: start;
 }
 
 body.light .gallery img {
@@ -213,23 +305,31 @@ body.light .gallery img {
 
 .gallery img:hover {
     transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0,123,255,0.5);
 }
 
 footer {
-    background: #2c2c3e;
+    background: linear-gradient(135deg, #2c2c3e, #4a4a6a);
     text-align: center;
     padding: 20px 0;
     margin-top: 40px;
+    animation: gradient-shift 5s ease infinite;
+    background-size: 200% 200%;
 }
 
 body.light footer {
-    background: #e9ecef;
+    background: linear-gradient(135deg, #e9ecef, #f8f9fa);
     color: #1e1e2f;
 }
 
 footer a {
     color: #007bff;
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #00c4cc;
 }
 
 @media (max-width: 768px) {
@@ -246,7 +346,7 @@ footer a {
         gap: 10px;
     }
     .brand-title {
-        font-size: 28px; /* Снижен размер для мобильных, но все еще заметен */
+        font-size: 28px;
     }
     .gallery {
         flex-direction: column;
@@ -261,5 +361,8 @@ footer a {
     }
     .download-logo {
         height: 18px;
+    }
+    #hero .particles::before, #hero .particles::after {
+        display: none; /* Отключаем particles на мобильных для производительности */
     }
 }
