@@ -38,12 +38,17 @@ header .header-content {
     gap: 20px;
 }
 
-.logo {
-    height: 40px;
+.brand-title {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #007bff, #00c4cc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     transition: transform 0.3s ease;
 }
 
-.logo:hover {
+.brand-title:hover {
     transform: scale(1.05);
 }
 
@@ -103,7 +108,9 @@ body.light #theme-toggle:hover {
 }
 
 .btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 12px 25px;
     text-decoration: none;
     border-radius: 8px;
@@ -127,6 +134,11 @@ body.light #theme-toggle:hover {
 
 .btn.secondary:hover {
     background-color: #5a6268;
+}
+
+.download-logo {
+    height: 20px;
+    width: auto;
 }
 
 #features h2, #screenshots h2, #download h2 {
@@ -223,8 +235,8 @@ footer a {
         justify-content: center;
         gap: 10px;
     }
-    .logo {
-        height: 35px;
+    .brand-title {
+        font-size: 20px;
     }
     .gallery {
         flex-direction: column;
@@ -236,5 +248,8 @@ footer a {
     }
     .container {
         padding: 10px;
+    }
+    .download-logo {
+        height: 18px;
     }
 }
