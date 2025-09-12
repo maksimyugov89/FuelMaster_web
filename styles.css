@@ -1,98 +1,265 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FuelMaster - Калькулятор расхода топлива</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <h1 class="brand-title">FuelMaster</h1>
-                <div class="header-utils">
-                    <div class="weather-info">
-                        <i class="fas fa-cloud"></i> 11°C, Курск <i class="fas fa-arrow-down"></i> 760 мм
-                    </div>
-                    <button id="theme-toggle" aria-label="Переключить тему"><i class="fas fa-adjust"></i></button>
-                </div>
-            </div>
-        </div>
-    </header>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <section id="hero">
-        <div class="container">
-            <h1>Управляй расходом топлива с умом</h1>
-            <p>Отслеживай автомобили, рассчитывай нормы и получай советы с FuelMaster</p>
-            <a href="#download" class="btn primary"><i class="fas fa-download"></i> Скачать</a>
-        </div>
-    </section>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e2f;
+    color: #e0e0e0;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+}
 
-    <section id="features">
-        <div class="container">
-            <h2>Основные функции</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <i class="fas fa-car"></i>
-                    <h3>Управление авто</h3>
-                    <p>Добавляй и редактируй данные об автомобилях (Peugeot, BMW и др.)</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-gas-pump"></i>
-                    <h3>Расчет расхода</h3>
-                    <p>Учитывает город, трассу, погоду и другие факторы</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>История и графики</h3>
-                    <p>Сохраняй и анализируй данные о топливе</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-lock"></i>
-                    <h3>Безопасность</h3>
-                    <p>Вход через Firebase с синхронизацией</p>
-                </div>
-            </div>
-        </div>
-    </section>
+body.light {
+    background-color: #f0f2f5;
+    color: #1e1e2f;
+}
 
-    <section id="screenshots">
-        <div class="container">
-            <h2>Скриншоты</h2>
-            <div class="gallery" id="screenshot-gallery">
-                <img src="Screenshot-1-dark.jpg" alt="Управление автомобилями" loading="lazy" data-light="Screenshot-1-light.jpg">
-                <img src="Screenshot-2-dark.jpg" alt="Расчет расхода" loading="lazy" data-light="Screenshot-2-light.jpg">
-                <img src="Screenshot-3-dark.jpg" alt="История и графики" loading="lazy" data-light="Screenshot-3-light.jpg">
-                <img src="Screenshot-4-dark.jpg" alt="Экран входа" loading="lazy" data-light="Screenshot-4-light.jpg">
-                <img src="Screenshot-5-dark.jpg" alt="Дополнительный экран 1" loading="lazy" data-light="Screenshot-5-light.jpg">
-                <img src="Screenshot-6-dark.jpg" alt="Дополнительный экран 2" loading="lazy" data-light="Screenshot-6-light.jpg">
-                <img src="Screenshot-7-dark.jpg" alt="Дополнительный экран 3" loading="lazy" data-light="Screenshot-7-light.jpg">
-                <img src="Screenshot-8-dark.jpg" alt="Дополнительный экран 4" loading="lazy" data-light="Screenshot-8-light.jpg">
-                <img src="Screenshot-9-dark.jpg" alt="Дополнительный экран 5" loading="lazy" data-light="Screenshot-9-light.jpg">
-                <img src="Screenshot-10-dark.jpg" alt="Дополнительный экран 6" loading="lazy">
-                <img src="Screenshot-11-dark.jpg" alt="Дополнительный экран 7" loading="lazy">
-                <img src="Screenshot-12-dark.jpg" alt="Дополнительный экран 8" loading="lazy">
-            </div>
-        </div>
-    </section>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+}
 
-    <section id="download">
-        <div class="container">
-            <h2>Скачай FuelMaster</h2>
-            <p>Доступно для Android и iOS. Установи прямо сейчас!</p>
-            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary"><img src="logo.jpg" alt="Logo" class="download-logo"> Исходный код</a>
-            <a href="#" class="btn primary"><img src="logo.jpg" alt="Logo" class="download-logo"> Скачать APK</a>
-        </div>
-    </section>
+header {
+    background: linear-gradient(135deg, #2c2c3e, #4a4a6a);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 FuelMaster | <a href="https://github.com/maksimyugov89">maksimyugov89</a></p>
-        </div>
-    </footer>
+header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+.brand-title {
+    font-size: 32px; /* Увеличен размер для большей заметности */
+    font-weight: 700;
+    background: linear-gradient(90deg, #007bff, #00c4cc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: transform 0.3s ease;
+}
+
+.brand-title:hover {
+    transform: scale(1.05);
+}
+
+.header-utils {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.weather-info {
+    font-size: 12px;
+    color: #b0b0b0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 120px; /* Для стабильности */
+}
+
+.weather-loading {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    color: #b0b0b0;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+#theme-toggle:hover {
+    color: #fff;
+}
+
+body.light #theme-toggle {
+    color: #1e1e2f;
+}
+
+body.light #theme-toggle:hover {
+    color: #007bff;
+}
+
+#hero {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #1e1e2f, #2c2c3e);
+    color: #fff;
+}
+
+#hero h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+#hero p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn.primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn.primary:hover {
+    background-color: #0056b3;
+}
+
+.btn.secondary {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.btn.secondary:hover {
+    background-color: #5a6268;
+}
+
+.download-logo {
+    height: 20px;
+    width: auto;
+}
+
+#features h2, #screenshots h2, #download h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #fff;
+}
+
+body.light #features h2, body.light #screenshots h2, body.light #download h2 {
+    color: #1e1e2f;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.feature-card {
+    background: #2c2c3e;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+body.light .feature-card {
+    background: #e9ecef;
+    color: #1e1e2f;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card i {
+    font-size: 2em;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.gallery img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid #444;
+    transition: transform 0.3s ease;
+}
+
+body.light .gallery img {
+    border-color: #ccc;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    background: #2c2c3e;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+body.light footer {
+    background: #e9ecef;
+    color: #1e1e2f;
+}
+
+footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    #hero h1 {
+        font-size: 1.8em;
+    }
+    .header-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .header-utils {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+    .brand-title {
+        font-size: 28px; /* Снижен размер для мобильных, но все еще заметен */
+    }
+    .gallery {
+        flex-direction: column;
+        align-items: center;
+    }
+    .gallery img {
+        max-width: 100%;
+        width: 180px;
+    }
+    .container {
+        padding: 10px;
+    }
+    .download-logo {
+        height: 18px;
+    }
+}
