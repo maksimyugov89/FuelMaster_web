@@ -79,6 +79,20 @@ header .header-content {
     animation: spin 1s linear infinite;
 }
 
+#language-toggle {
+    padding: 5px;
+    border-radius: 5px;
+    background: #3a3a5a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+body.light #language-toggle {
+    background: #e9ecef;
+    color: #1e1e2f;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -184,13 +198,12 @@ body.light #theme-toggle:hover {
 #hero p {
     font-size: 1.4em;
     margin-bottom: 25px;
-    opacity: 0.95;
-    color: #d3d3d3; /* Обновлен на более светлый и читаемый цвет */
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3); /* Добавлена тень для улучшения контраста */
+    color: #d3d3d3;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 body.light #hero {
-    background: linear-gradient(135deg, #e0e7ff, #f0f4ff); /* Более светлый градиент для светлой темы */
+    background: linear-gradient(135deg, #e0e7ff, #f0f4ff);
     color: #1e1e2f;
 }
 
@@ -200,8 +213,23 @@ body.light #hero h1 {
 }
 
 body.light #hero p {
-    color: #444; /* Более темный текст для читаемости */
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Легкая тень для улучшения контраста */
+    color: #444;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.seasonal-banner {
+    margin-top: 20px;
+    padding: 10px;
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
+    color: #fff;
+    border-radius: 10px;
+    font-weight: bold;
+    animation: fadeIn 2s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .btn {
@@ -246,14 +274,49 @@ body.light #hero p {
     filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
 }
 
-#features h2, #screenshots h2, #download h2 {
+#calculator {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #2c2c3e, #3a3a5a);
+    color: #fff;
+}
+
+body.light #calculator {
+    background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+    color: #1e1e2f;
+}
+
+.calculator-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.calculator-form input, .calculator-form select, .calculator-form button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.calculator-form button {
+    background: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.calculator-form button:hover {
+    background: #0056b3;
+}
+
+#features h2, #screenshots h2, #download h2, #calculator h2, #testimonials h2 {
     text-align: center;
     margin-bottom: 40px;
     color: #fff;
     text-shadow: 0 0 10px rgba(0,123,255,0.3);
 }
 
-body.light #features h2, body.light #screenshots h2, body.light #download h2 {
+body.light #features h2, body.light #screenshots h2, body.light #download h2, body.light #calculator h2, body.light #testimonials h2 {
     color: #1e1e2f;
     text-shadow: 0 0 10px rgba(0,123,255,0.1);
 }
@@ -299,12 +362,11 @@ body.light .feature-card {
 
 .gallery {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: nowrap;
     gap: 10px;
-    max-height: 80vh;
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 10px;
 }
 
 .gallery img {
@@ -313,7 +375,8 @@ body.light .feature-card {
     border-radius: 10px;
     border: 2px solid #444;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
+    cursor: pointer;
 }
 
 body.light .gallery img {
@@ -323,6 +386,67 @@ body.light .gallery img {
 .gallery img:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(0,123,255,0.5);
+}
+
+.slider-prev, .slider-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.slider-prev {
+    left: 10px;
+}
+
+.slider-next {
+    right: 10px;
+}
+
+.slider-prev:hover, .slider-next:hover {
+    background: rgba(0,123,255,0.7);
+}
+
+#testimonials {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #2c2c3e, #3a3a5a);
+}
+
+body.light #testimonials {
+    background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.testimonial-card {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+body.light .testimonial-card {
+    background: rgba(0,0,0,0.05);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.stars {
+    color: #ffd700;
+    font-size: 1.2em;
+    margin-top: 10px;
 }
 
 footer {
@@ -343,10 +467,52 @@ footer a {
     color: #007bff;
     text-decoration: none;
     transition: color 0.3s ease;
+    margin: 0 10px;
+    font-size: 1.5em;
 }
 
 footer a:hover {
     color: #00c4cc;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+#modal-img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+}
+
+#modal-caption {
+    color: #fff;
+    text-align: center;
+    margin-top: 10px;
 }
 
 @media (max-width: 768px) {
@@ -366,12 +532,10 @@ footer a:hover {
         font-size: 28px;
     }
     .gallery {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
     }
     .gallery img {
-        max-width: 100%;
-        width: 180px;
+        max-width: 150px;
     }
     .container {
         padding: 10px;
@@ -380,6 +544,9 @@ footer a:hover {
         height: 18px;
     }
     #hero .particles::before, #hero .particles::after {
-        display: none; /* Отключаем particles на мобильных для производительности */
+        display: none;
+    }
+    .slider-prev, .slider-next {
+        display: none;
     }
 }
