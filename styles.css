@@ -185,7 +185,8 @@ body.light #theme-toggle:hover {
     font-size: 1.4em;
     margin-bottom: 25px;
     opacity: 0.95;
-    color: #333; /* Темный цвет для контраста в светлой теме */
+    color: #d3d3d3; /* Обновлен на более светлый и читаемый цвет */
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3); /* Добавлена тень для улучшения контраста */
 }
 
 body.light #hero {
