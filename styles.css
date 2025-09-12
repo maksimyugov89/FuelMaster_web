@@ -185,6 +185,22 @@ body.light #theme-toggle:hover {
     font-size: 1.4em;
     margin-bottom: 25px;
     opacity: 0.95;
+    color: #333; /* Темный цвет для контраста в светлой теме */
+}
+
+body.light #hero {
+    background: linear-gradient(135deg, #e0e7ff, #f0f4ff); /* Более светлый градиент для светлой темы */
+    color: #1e1e2f;
+}
+
+body.light #hero h1 {
+    text-shadow: 0 0 10px rgba(0,123,255,0.2);
+    color: #1e1e2f;
+}
+
+body.light #hero p {
+    color: #444; /* Более темный текст для читаемости */
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Легкая тень для улучшения контраста */
 }
 
 .btn {
