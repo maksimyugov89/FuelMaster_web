@@ -37,7 +37,7 @@
             <h1 id="hero-title">Управляй расходом топлива с умом</h1>
             <p id="hero-subtitle">FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.</p>
             <a href="#download" class="btn primary"><i class="fas fa-download animated-icon"></i> <span id="download-text">Скачать</span></a>
-            <div class="seasonal-banner">Осенние обновления 2025! Улучшен расчет и новые советы до 30 сентября.</div>
+            <div class="seasonal-banner" id="seasonal-banner">Осенние обновления 2025: Улучшенный расчет и новые советы по экономии до 30 сентября! <span id="countdown"></span></div>
         </div>
     </section>
 
@@ -45,12 +45,10 @@
         <div class="container">
             <h2 id="calculator-title">Рассчитайте расход топлива</h2>
             <div class="calculator-form">
-                <input type="number" id="mileage" placeholder="Пробег (км)" min="0">
-                <input type="number" id="fuel" placeholder="Объем топлива (л)" min="0">
-                <select id="condition">
-                    <option value="city">Город</option>
-                    <option value="highway">Трасса</option>
-                </select>
+                <input type="number" id="start-mileage" placeholder="Начальный пробег (км)" min="0">
+                <input type="number" id="end-mileage" placeholder="Конечный пробег (км)" min="0">
+                <input type="number" id="start-fuel" placeholder="Топливо в баке на начало (л)" min="0">
+                <input type="number" id="highway-km" placeholder="Км по трассе" min="0">
                 <button onclick="calculateFuel()">Рассчитать</button>
                 <p id="result"></p>
             </div>
@@ -89,30 +87,18 @@
         <div class="container">
             <h2 id="screenshots-title">Скриншоты</h2>
             <div class="gallery" id="screenshot-gallery">
-                <img src="https://github.com/user-attachments/assets/2b646849-1ba2-4b50-b5be-7a50ef011d7e" alt="Скриншот 1" loading="lazy" data-light="Screenshot-1-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/acdcca64-7f8d-426c-b49b-0a5c2fae65ea" alt="Скриншот 2" loading="lazy" data-light="Screenshot-2-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/4f50cbec-52e2-4df9-82fc-4b6483858d1b" alt="Скриншот 3" loading="lazy" data-light="Screenshot-3-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/d5bf34be-5b4f-4886-953a-0c023fa4f412" alt="Скриншот 4" loading="lazy" data-light="Screenshot-4-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/48bc266a-abbf-4476-8a8f-f94f5cec8223" alt="Скриншот 5" loading="lazy" data-light="Screenshot-5-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/0d7a5bda-ab21-4b1e-afab-ca9409adc2b0" alt="Скриншот 6" loading="lazy" data-light="Screenshot-6-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/50f9f920-f008-4040-a438-7350abb975cd" alt="Скриншот 7" loading="lazy" data-light="Screenshot-7-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/fb3441f8-c200-4e57-8d5e-1b1290607b8c" alt="Скриншот 8" loading="lazy" data-light="Screenshot-8-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/e1217bd5-e956-4e92-93f8-ed67b7abe597" alt="Скриншот 9" loading="lazy" data-light="Screenshot-9-light.jpg" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/6eaa8d6a-a97d-4687-b02c-24205a2d2a16" alt="Скриншот 10" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/57b521ed-aad3-43c5-a9be-70e47f4d650b" alt="Скриншот 11" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/68be8383-eca2-42be-8acd-0a5a377cf327" alt="Скриншот 12" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/7eb67611-d216-4dbc-b771-d36136d45459" alt="Скриншот 13" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/a20b3d66-440d-47ed-8d47-237ef5cca0b0" alt="Скриншот 14" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/a2d3395e-bb26-4f0b-891f-03ea30049173" alt="Скриншот 15" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/5a0e5e24-472c-4d37-b00d-3ce4c5085586" alt="Скриншот 16" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/3f5187ea-14bc-4867-9f98-c2153c23b69f" alt="Скриншот 17" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/4d717264-f4ff-4bc7-b497-3edf83afad20" alt="Скриншот 18" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/4ab7338c-2884-4102-818f-d1daf017ee17" alt="Скриншот 19" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/89e8f46c-68dd-45b5-a87d-40d6f4e49613" alt="Скриншот 20" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/0a4a5d3a-001b-4901-bcfb-e314d2aba4ba" alt="Скриншот 21" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/f7ceb6ad-1122-4751-8482-ffb179ddcdea" alt="Скриншот 22" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/1c8946ba-96c7-4697-9055-b6208d507c34" alt="Скриншот 23" loading="lazy" onclick="openModal(this)">
-                <img src="https://github.com/user-attachments/assets/a71f705e-ef81-4b02-9781-f65c64ac19d6" alt="Скриншот 24" loading="lazy" onclick="openModal(this)">
+                <img src="Screenshot-1-dark.jpg" alt="Скриншот 1" loading="lazy" data-light="Screenshot-1-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-2-dark.jpg" alt="Скриншот 2" loading="lazy" data-light="Screenshot-2-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-3-dark.jpg" alt="Скриншот 3" loading="lazy" data-light="Screenshot-3-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-4-dark.jpg" alt="Скриншот 4" loading="lazy" data-light="Screenshot-4-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-5-dark.jpg" alt="Скриншот 5" loading="lazy" data-light="Screenshot-5-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-6-dark.jpg" alt="Скриншот 6" loading="lazy" data-light="Screenshot-6-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-7-dark.jpg" alt="Скриншот 7" loading="lazy" data-light="Screenshot-7-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-8-dark.jpg" alt="Скриншот 8" loading="lazy" data-light="Screenshot-8-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-9-dark.jpg" alt="Скриншот 9" loading="lazy" data-light="Screenshot-9-light.jpg" onclick="openModal(this)">
+                <img src="Screenshot-10-dark.jpg" alt="Скриншот 10" loading="lazy" onclick="openModal(this)">
+                <img src="Screenshot-11-dark.jpg" alt="Скриншот 11" loading="lazy" onclick="openModal(this)">
+                <img src="Screenshot-12-dark.jpg" alt="Скриншот 12" loading="lazy" onclick="openModal(this)">
             </div>
             <button class="slider-prev" onclick="scrollGallery('prev')"><i class="fas fa-chevron-left"></i></button>
             <button class="slider-next" onclick="scrollGallery('next')"><i class="fas fa-chevron-right"></i></button>
