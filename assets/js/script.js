@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const gallery = document.getElementById('screenshot-gallery');
     const weatherInfo = document.querySelector('.weather-info');
     const weatherIcon = document.querySelector('.weather-info i');
+    const totalMileageElement = document.getElementById('total-mileage');
+    const resultElement = document.getElementById('result');
 
     // Инициализация погоды
     function updateWeather() {
@@ -47,27 +49,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Проверка сохраненной темы
     if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light');
-        themeText.textContent = 'Темная';
+        themeText.textContent = ''; // будем переводить ниже
     } else {
         localStorage.setItem('theme', 'dark');
-        themeText.textContent = 'Светлая';
+        themeText.textContent = '';
     }
 
-    // Переключение темы и скриншотов
+    // Переключение темы
     toggleButton.addEventListener('click', () => {
         body.classList.toggle('light');
         if (body.classList.contains('light')) {
             localStorage.setItem('theme', 'light');
-            themeText.textContent = 'Темная';
-            updateScreenshots('light');
         } else {
             localStorage.setItem('theme', 'dark');
-            themeText.textContent = 'Светлая';
-            updateScreenshots('dark');
         }
+        updateLanguageTexts(); // обновляем текст темы
+        updateScreenshots(body.classList.contains('light') ? 'light' : 'dark');
     });
 
-    // Функция для обновления скриншотов
+    // Скриншоты
     function updateScreenshots(theme) {
         const images = gallery.getElementsByTagName('img');
         for (let i = 0; i < images.length; i++) {
@@ -81,59 +81,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Ленивая анимация секций
-    const sections = document.querySelectorAll('section');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
-            }
-        });
-    }, { threshold: 0.1 });
-    sections.forEach(section => observer.observe(section));
-
-    // Обновление общего километража
+    // Калькулятор
     function updateTotalMileage() {
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
-        const totalMileageElement = document.getElementById('total-mileage');
-
         if (endMileage > startMileage) {
-            const totalMileage = endMileage - startMileage;
-            totalMileageElement.textContent = `Общий километраж: ${totalMileage} км`;
-        } else if (endMileage >= 0 && startMileage >= 0) {
-            totalMileageElement.textContent = 'Общий километраж: 0 км (конечный пробег должен быть больше начального)';
+            const total = endMileage - startMileage;
+            totalMileageElement.dataset.mileage = total; // сохраняем число для перевода
         } else {
-            totalMileageElement.textContent = '';
+            totalMileageElement.dataset.mileage = 0;
         }
+        updateLanguageTexts();
     }
 
-    // Расчет расхода топлива
     function calculateFuel() {
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
         const startFuel = parseFloat(document.getElementById('start-fuel').value) || 0;
         const highwayKm = parseFloat(document.getElementById('highway-km').value) || 0;
-        const result = document.getElementById('result');
-        const totalMileageElement = document.getElementById('total-mileage');
 
         if (endMileage <= startMileage) {
-            result.textContent = 'Ошибка: конечный пробег должен быть больше начального!';
-            return;
+            resultElement.dataset.text = 'error';
+        } else {
+            const totalMileage = endMileage - startMileage;
+            const cityKm = totalMileage - highwayKm;
+            const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
+            resultElement.dataset.text = JSON.stringify({
+                total: totalMileage,
+                consumption: consumption.toFixed(2),
+                highway: highwayKm,
+                city: cityKm
+            });
         }
-
-        const totalMileage = endMileage - startMileage;
-        const cityKm = totalMileage - highwayKm;
-        const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
-        result.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highwayKm} км, город: ${cityKm} км).`;
-        totalMileageElement.textContent = `Общий километраж: ${totalMileage} км`;
+        updateLanguageTexts();
     }
 
     document.getElementById('start-mileage').addEventListener('input', updateTotalMileage);
     document.getElementById('end-mileage').addEventListener('input', updateTotalMileage);
-    document.querySelector('#calculator button').addEventListener('click', calculateFuel);
+    document.getElementById('calculate-btn').addEventListener('click', calculateFuel);
 
-    // Модальное окно для скриншотов
+    // Модальное окно
     function openModal(img) {
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modal-img');
@@ -142,18 +129,19 @@ document.addEventListener('DOMContentLoaded', () => {
         modalImg.src = img.src;
         modalCaption.textContent = img.alt;
     }
-
     function closeModal() {
-        const modal = document.getElementById('modal');
-        modal.style.display = 'none';
+        document.getElementById('modal').style.display = 'none';
     }
-
     window.openModal = openModal;
     window.closeModal = closeModal;
 
-    // Многоязычность
+    // Переводы
     const translations = {
         ru: {
+            "theme-light": "Светлая",
+            "theme-dark": "Тёмная",
+            "total-mileage": "Общий километраж: {total} км",
+            "fuel-result": "Полный расчет: расход {consumption} л/100 км (трасса: {highway} км, город: {city} км).",
             "hero-title": "Управляй расходом топлива с умом",
             "hero-subtitle": "FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.",
             "download-text": "Скачать",
@@ -168,14 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
             "feature4-title": "Безопасность и премиум",
             "feature4-desc": "Firebase вход, синхронизация с Firestore для премиум.",
             "screenshots-title": "Скриншоты",
-            "download-title": "Скачай FuelMaster",
-            "download-desc": "Доступно для Android и iOS. Установи прямо сейчас!",
-            "download-apk": "Скачать APK",
-            "download-github": "Исходный код",
+            "testimonials-title": "Отзывы пользователей",
             "testimonial1-text": "Отлично помогает экономить топливо!",
             "testimonial1-author": "— Иван, Москва",
             "testimonial2-text": "Простое и удобное приложение!",
             "testimonial2-author": "— Ольга, Санкт-Петербург",
+            "download-apk": "Скачать APK",
+            "download-github": "Исходный код",
             "start-mileage": "Начальный пробег (км)",
             "end-mileage": "Конечный пробег (км)",
             "start-fuel": "Топливо в баке на начало (л)",
@@ -183,6 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
             "calculate-btn": "Рассчитать"
         },
         en: {
+            "theme-light": "Light",
+            "theme-dark": "Dark",
+            "total-mileage": "Total Mileage: {total} km",
+            "fuel-result": "Full Calculation: consumption {consumption} L/100 km (highway: {highway} km, city: {city} km).",
             "hero-title": "Manage Fuel Consumption Smartly",
             "hero-subtitle": "FuelMaster — a comprehensive app for tracking vehicles, calculating fuel, and getting useful tips.",
             "download-text": "Download",
@@ -197,14 +188,13 @@ document.addEventListener('DOMContentLoaded', () => {
             "feature4-title": "Security & Premium",
             "feature4-desc": "Firebase login, Firestore sync for premium users.",
             "screenshots-title": "Screenshots",
-            "download-title": "Download FuelMaster",
-            "download-desc": "Available for Android and iOS. Install now!",
-            "download-apk": "Download APK",
-            "download-github": "Source Code",
+            "testimonials-title": "User Testimonials",
             "testimonial1-text": "Great for saving fuel!",
             "testimonial1-author": "— Ivan, Moscow",
             "testimonial2-text": "Simple and convenient app!",
             "testimonial2-author": "— Olga, Saint Petersburg",
+            "download-apk": "Download APK",
+            "download-github": "Source Code",
             "start-mileage": "Start Mileage (km)",
             "end-mileage": "End Mileage (km)",
             "start-fuel": "Fuel in Tank at Start (L)",
@@ -213,8 +203,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function changeLanguage() {
+    function updateLanguageTexts() {
         const lang = document.getElementById('language-toggle').value || 'ru';
+
+        // Тема
+        themeText.textContent = body.classList.contains('light') ? translations[lang]["theme-dark"] : translations[lang]["theme-light"];
+
+        // Калькулятор результат
+        if(resultElement.dataset.text) {
+            if(resultElement.dataset.text === 'error') {
+                resultElement.textContent = lang === 'ru' ? 'Ошибка: конечный пробег должен быть больше начального!' : 'Error: end mileage must be greater than start!';
+            } else {
+                const data = JSON.parse(resultElement.dataset.text);
+                resultElement.textContent = translations[lang]["fuel-result"]
+                    .replace('{consumption}', data.consumption)
+                    .replace('{highway}', data.highway)
+                    .replace('{city}', data.city);
+            }
+        }
+
+        // Общий километраж
+        if(totalMileageElement.dataset.mileage) {
+            totalMileageElement.textContent = translations[lang]["total-mileage"].replace('{total}', totalMileageElement.dataset.mileage);
+        }
+
+        // Все элементы с id
         document.querySelectorAll('[id]').forEach(el => {
             const key = el.id;
             if(translations[lang][key]) {
@@ -227,7 +240,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+        // Кнопки скачивания с <img>
+        const apkBtn = document.querySelector('#download a.btn.primary');
+        const githubBtn = document.querySelector('#download a.btn.secondary');
+        if(apkBtn) apkBtn.childNodes[1].textContent = ' ' + translations[lang]["download-apk"];
+        if(githubBtn) githubBtn.childNodes[1].textContent = ' ' + translations[lang]["download-github"];
     }
+
+    function changeLanguage() {
+        updateLanguageTexts();
+    }
+
+    document.getElementById('language-toggle').addEventListener('change', changeLanguage);
 
     // Баннер обратного отсчета
     function updateCountdown() {
@@ -241,8 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Инициализация
     updateWeather();
     updateScreenshots(body.classList.contains('light') ? 'light' : 'dark');
-    changeLanguage();
+    updateLanguageTexts();
     updateCountdown();
     setInterval(updateCountdown, 86400000);
-    document.getElementById('language-toggle').addEventListener('change', changeLanguage);
 });
