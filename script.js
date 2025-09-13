@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const toggleButton = document.getElementById('theme-toggle');
+    const themeText = document.getElementById('theme-text');
     const gallery = document.getElementById('screenshot-gallery');
     const weatherInfo = document.querySelector('.weather-info');
     const weatherIcon = document.querySelector('.weather-info i');
@@ -48,8 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Проверка сохраненной темы
     if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light');
+        themeText.textContent = 'Темная';
     } else {
         localStorage.setItem('theme', 'dark');
+        themeText.textContent = 'Светлая';
     }
 
     // Переключение темы и скриншотов
@@ -57,9 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         body.classList.toggle('light');
         if (body.classList.contains('light')) {
             localStorage.setItem('theme', 'light');
+            themeText.textContent = 'Темная';
             updateScreenshots('light');
         } else {
             localStorage.setItem('theme', 'dark');
+            themeText.textContent = 'Светлая';
             updateScreenshots('dark');
         }
     });
@@ -95,14 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Калькулятор расхода
     function calculateFuel() {
-        const startMileage = parseFloat(document.getElementById('start-mileage').value);
-        const endMileage = parseFloat(document.getElementById('end-mileage').value);
-        const startFuel = parseFloat(document.getElementById('start-fuel').value);
-        const highwayKm = parseFloat(document.getElementById('highway-km').value);
+        const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
+        const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
+        const startFuel = parseFloat(document.getElementById('start-fuel').value) || 0;
+        const highwayKm = parseFloat(document.getElementById('highway-km').value) || 0;
         const result = document.getElementById('result');
         const totalMileageElement = document.getElementById('total-mileage');
 
-        if (startMileage >= 0 && endMileage > startMileage && startFuel > 0 && highwayKm >= 0 && highwayKm <= (endMileage - startMileage)) {
+        if (endMileage > startMileage && startFuel > 0 && highwayKm >= 0 && highwayKm <= (endMileage - startMileage)) {
             const totalMileage = endMileage - startMileage;
             const cityKm = totalMileage - highwayKm;
             const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
@@ -110,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             totalMileageElement.textContent = `Общий пробег: ${totalMileage} км.`;
         } else {
             result.textContent = 'Введите корректные данные! (Конечный пробег > начального, топливо > 0, км по трассе ≤ общему пробегу)';
-            totalMileageElement.textContent = '';
+            totalMileageElement.textContent = endMileage > startMileage ? `Общий пробег: ${endMileage - startMileage} км.` : '';
         }
     }
 
@@ -207,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let key in elements) {
             if (elements[key]) {
-                elements[key].textContent = translations[lang][key];
+                elements[key].textContent = translations[lang][key] || translations['ru'][key]; // Фallback на RU
             }
         }
     }
@@ -224,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Инициализация
     updateWeather();
     updateScreenshots(body.classList.contains('light') ? 'light' : 'dark');
-    changeLanguage(); // RU по умолчанию
+    changeLanguage();
     updateCountdown();
     setInterval(updateCountdown, 86400000); // Обновление раз в день
 });
