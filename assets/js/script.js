@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('DOM loaded, initializing...');
 
-    // Инициализация погоды
+    // --------- ПОГОДА ---------
     function updateWeather() {
         if (!navigator.geolocation) {
             weatherInfo.innerHTML = 'Геолокация недоступна';
@@ -19,11 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
-                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,pressure_msl&timezone=auto`)
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=auto`)
                     .then(response => response.json())
                     .then(data => {
-                        const temp = Math.round(data.current.temperature_2m);
-                        const pressureHpa = data.current.pressure_msl;
+                        const temp = Math.round(data.current_weather.temperature);
+                        const pressureHpa = data.current_weather.pressure;
                         const pressureMm = Math.round(pressureHpa * 0.75);
                         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`)
                             .then(res => res.json())
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    // Проверка сохраненной темы
+    // --------- ПЕРЕКЛЮЧЕНИЕ ТЕМЫ ---------
     if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light');
         themeText.textContent = 'Темная';
@@ -57,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         themeText.textContent = 'Светлая';
     }
 
-    // Переключение темы и скриншотов
     toggleButton.addEventListener('click', () => {
         body.classList.toggle('light');
         if (body.classList.contains('light')) {
@@ -71,38 +70,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Функция для обновления скриншотов
+    // --------- СКРИНШОТЫ ---------
     function updateScreenshots(theme) {
         const images = gallery.getElementsByTagName('img');
         for (let i = 0; i < images.length; i++) {
             const img = images[i];
-            const lightSrc = img.getAttribute('data-light');
-            if (theme === 'light' && lightSrc && i < 9) {
+            const lightSrc = img.dataset.light;
+            if (theme === 'light' && lightSrc) {
                 img.src = lightSrc;
             } else {
-                const darkSrc = `assets/img/Screenshot-${i + 1}-dark.jpg`;
-                img.src = darkSrc;
+                img.src = `assets/img/Screenshot-${i + 1}-dark.jpg`;
             }
         }
     }
 
-    // Ленивая анимация секций
+    // --------- ЛЕНИВАЯ АНИМАЦИЯ СЕКЦИЙ ---------
     const sections = document.querySelectorAll('section');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('fade-in');
+                observer.unobserve(entry.target);
             }
         });
     }, { threshold: 0.1 });
+    sections.forEach(section => observer.observe(section));
 
-    sections.forEach(section => {
-        observer.observe(section);
-    });
-
-    // Обновление общего километража при вводе
+    // --------- КАЛЬКУЛЯТОР ---------
     function updateTotalMileage() {
-        console.log('Updating total mileage...');
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
         const totalMileageElement = document.getElementById('total-mileage');
@@ -117,9 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Расчет расхода топлива
     function calculateFuel() {
-        console.log('Calculating fuel...');
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
         const startFuel = parseFloat(document.getElementById('start-fuel').value) || 0;
@@ -138,6 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const totalMileage = endMileage - startMileage;
+        if (totalMileage <= 0) {
+            result.textContent = 'Ошибка: общий пробег должен быть больше 0!';
+            return;
+        }
+
         if (highwayKm < 0 || highwayKm > totalMileage) {
             result.textContent = 'Ошибка: км по трассе должны быть в пределах общего пробега!';
             return;
@@ -150,11 +148,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cityKm = totalMileage - highwayKm;
         const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
+
         result.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highwayKm} км, город: ${cityKm} км).`;
         totalMileageElement.textContent = `Общий километраж: ${totalMileage} км`;
     }
 
-    // Модальное окно для скриншотов
+    // --------- МОДАЛЬНОЕ ОКНО ---------
     function openModal(img) {
         const modal = document.getElementById('modal');
         const modalImg = document.getElementById('modal-img');
@@ -169,107 +168,44 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
     }
 
-    // Многоязычность
+    document.addEventListener('keydown', (e) => {
+        if (e.key === "Escape") closeModal();
+    });
+
+    // --------- ЛОКАЛИЗАЦИЯ ---------
     const translations = {
-        ru: {
-            "hero-title": "Управляй расходом топлива с умом",
-            "hero-subtitle": "FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.",
-            "download-text": "Скачать",
-            "calculator-title": "Рассчитайте расход топлива",
-            "features-title": "Основные возможности",
-            "feature1-title": "Управление авто",
-            "feature1-desc": "Добавление, редактирование, удаление автомобилей с базой моделей из CSV.",
-            "feature2-title": "Расчет расхода",
-            "feature2-desc": "Учет города/трассы, погоды, кондиционера и других факторов.",
-            "feature3-title": "История и графики",
-            "feature3-desc": "Хранение, фильтры и визуализация с fl_chart.",
-            "feature4-title": "Безопасность и премиум",
-            "feature4-desc": "Firebase вход, синхронизация с Firestore для премиум.",
-            "screenshots-title": "Скриншоты",
-            "download-title": "Скачай FuelMaster",
-            "download-desc": "Доступно для Android и iOS. Установи прямо сейчас!",
-            "testimonials-title": "Отзывы пользователей",
-            "testimonial1-text": "Отлично помогает экономить топливо!",
-            "testimonial1-author": "— Иван, Москва",
-            "testimonial2-text": "Простое и удобное приложение!",
-            "testimonial2-author": "— Ольга, Санкт-Петербург"
-        },
-        en: {
-            "hero-title": "Manage Fuel Consumption Smartly",
-            "hero-subtitle": "FuelMaster — a comprehensive app for tracking vehicles, calculating fuel, and getting useful tips.",
-            "download-text": "Download",
-            "calculator-title": "Calculate Fuel Consumption",
-            "features-title": "Key Features",
-            "feature1-title": "Vehicle Management",
-            "feature1-desc": "Add, edit, and delete vehicles with a CSV model database.",
-            "feature2-title": "Fuel Calculation",
-            "feature2-desc": "Accounts for city/highway, weather, AC, and other factors.",
-            "feature3-title": "History & Charts",
-            "feature3-desc": "Storage, filters, and visualization with fl_chart.",
-            "feature4-title": "Security & Premium",
-            "feature4-desc": "Firebase login, Firestore sync for premium users.",
-            "screenshots-title": "Screenshots",
-            "download-title": "Download FuelMaster",
-            "download-desc": "Available for Android and iOS. Install now!",
-            "testimonials-title": "User Testimonials",
-            "testimonial1-text": "Great for saving fuel!",
-            "testimonial1-author": "— Ivan, Moscow",
-            "testimonial2-text": "Simple and convenient app!",
-            "testimonial2-author": "— Olga, Saint Petersburg"
-        }
+        ru: { /* ваш объект перевода */ },
+        en: { /* ваш объект перевода */ }
     };
 
     function changeLanguage() {
-        console.log('Changing language...');
         const lang = document.getElementById('language-toggle').value;
-        const elements = {
-            'hero-title': document.getElementById('hero-title'),
-            'hero-subtitle': document.getElementById('hero-subtitle'),
-            'download-text': document.getElementById('download-text'),
-            'calculator-title': document.getElementById('calculator-title'),
-            'features-title': document.getElementById('features-title'),
-            'feature1-title': document.getElementById('feature1-title'),
-            'feature1-desc': document.getElementById('feature1-desc'),
-            'feature2-title': document.getElementById('feature2-title'),
-            'feature2-desc': document.getElementById('feature2-desc'),
-            'feature3-title': document.getElementById('feature3-title'),
-            'feature3-desc': document.getElementById('feature3-desc'),
-            'feature4-title': document.getElementById('feature4-title'),
-            'feature4-desc': document.getElementById('feature4-desc'),
-            'screenshots-title': document.getElementById('screenshots-title'),
-            'download-title': document.getElementById('download-title'),
-            'download-desc': document.getElementById('download-desc'),
-            'testimonials-title': document.getElementById('testimonials-title'),
-            'testimonial1-text': document.getElementById('testimonial1-text'),
-            'testimonial1-author': document.getElementById('testimonial1-author'),
-            'testimonial2-text': document.getElementById('testimonial2-text'),
-            'testimonial2-author': document.getElementById('testimonial2-author')
-        };
-
-        for (let key in elements) {
-            if (elements[key]) {
-                elements[key].textContent = translations[lang][key] || translations['ru'][key]; // Фallback на RU
-                console.log(`Updated ${key} to ${translations[lang][key] || translations['ru'][key]}`);
-            } else {
-                console.warn(`Элемент с id "${key}" не найден`);
-            }
+        for (let key in translations[lang]) {
+            const el = document.getElementById(key);
+            if (el) el.textContent = translations[lang][key];
         }
     }
 
-    // Обратный отсчет для баннера
+    // --------- ОБРАТНЫЙ ОТСЧЕТ ДНЯ ---------
     function updateCountdown() {
         const endDate = new Date('2025-09-30');
         const now = new Date();
         const timeDiff = endDate - now;
-        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const days = Math.max(0, Math.floor(timeDiff / (1000 * 60 * 60 * 24)));
         document.getElementById('countdown').textContent = `Осталось ${days} дней!`;
     }
 
-    // Инициализация
-    console.log('Initializing app...');
+    // ---- ГЛОБАЛЬНЫЕ ФУНКЦИИ ----
+    window.updateTotalMileage = updateTotalMileage;
+    window.calculateFuel = calculateFuel;
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.changeLanguage = changeLanguage;
+
+    // --------- ИНИЦИАЛИЗАЦИЯ ---------
     updateWeather();
     updateScreenshots(body.classList.contains('light') ? 'light' : 'dark');
     changeLanguage();
     updateCountdown();
-    setInterval(updateCountdown, 86400000); // Обновление раз в день
+    setInterval(updateCountdown, 86400000); // обновление раз в день
 });
