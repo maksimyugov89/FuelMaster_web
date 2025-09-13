@@ -47,11 +47,11 @@
         <div class="container">
             <h2 id="calculator-title">Рассчитайте расход топлива</h2>
             <div class="calculator-form">
-                <input type="number" id="start-mileage" placeholder="Начальный пробег (км)" min="0" oninput="updateTotalMileage()">
-                <input type="number" id="end-mileage" placeholder="Конечный пробег (км)" min="0" oninput="updateTotalMileage()">
+                <input type="number" id="start-mileage" placeholder="Начальный пробег (км)" min="0">
+                <input type="number" id="end-mileage" placeholder="Конечный пробег (км)" min="0">
                 <input type="number" id="start-fuel" placeholder="Топливо в баке на начало (л)" min="0">
                 <input type="number" id="highway-km" placeholder="Км по трассе" min="0">
-                <button onclick="calculateFuel()">Рассчитать</button>
+                <button id="calculate-btn">Рассчитать</button>
                 <p id="total-mileage"></p>
                 <p id="result"></p>
             </div>
@@ -128,8 +128,12 @@
         <div class="container">
             <h2 id="download-title">Скачай FuelMaster</h2>
             <p id="download-desc">Доступно для Android и iOS. Установи прямо сейчас!</p>
-            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary"><img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> Исходный код</a>
-            <a href="#" class="btn primary"><img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> Скачать APK</a>
+            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary">
+                <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> Исходный код
+            </a>
+            <a href="#" class="btn primary">
+                <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> Скачать APK
+            </a>
         </div>
     </section>
 
