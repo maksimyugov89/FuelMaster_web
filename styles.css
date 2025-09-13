@@ -351,12 +351,9 @@ body.light .feature-card {
 
 .gallery {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
     padding-bottom: 8px;
-    -webkit-overflow-scrolling: touch;
 }
 
 .gallery img {
@@ -365,7 +362,6 @@ body.light .feature-card {
     border-radius: 8px;
     border: 2px solid #444;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    scroll-snap-align: center;
     cursor: pointer;
 }
 
@@ -376,31 +372,6 @@ body.light .gallery img {
 .gallery img:hover {
     transform: scale(1.05);
     box-shadow: 0 0 12px rgba(0,123,255,0.5);
-}
-
-.slider-prev, .slider-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 1em;
-}
-
-.slider-prev {
-    left: 5px;
-}
-
-.slider-next {
-    right: 5px;
-}
-
-.slider-prev:hover, .slider-next:hover {
-    background: rgba(0,123,255,0.7);
 }
 
 #testimonials {
@@ -526,10 +497,6 @@ footer a:hover {
     .gallery img {
         max-width: 120px;
     }
-    .slider-prev, .slider-next {
-        padding: 6px;
-        font-size: 0.9em;
-    }
     .close-modal {
         top: 15px;
         right: 25px;
@@ -548,4 +515,4 @@ footer a:hover {
 @keyframes fadeInSection {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
-}
+    }
