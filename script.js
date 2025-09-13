@@ -118,32 +118,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function calculateFuel() {
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
-        const highwayKm = parseFloat(document.getElementById('highway-km').value) || 0;
         const startFuel = parseFloat(document.getElementById('start-fuel').value) || 0;
+        const highwayKm = parseFloat(document.getElementById('highway-km').value) || 0;
         const result = document.getElementById('result');
         const totalMileageElement = document.getElementById('total-mileage');
 
-        if (isNaN(startMileage) || isNaN(endMileage) || isNaN(highwayKm) || isNaN(startFuel)) {
+        if (isNaN(startMileage) || isNaN(endMileage) || isNaN(startFuel) || isNaN(highwayKm)) {
             result.textContent = 'Ошибка: введите числовые значения!';
             return;
         }
 
         if (endMileage <= startMileage) {
             result.textContent = 'Ошибка: конечный пробег должен быть больше начального!';
-            totalMileageElement.textContent = '';
-            return;
-        }
-
-        if (startFuel <= 0) {
-            result.textContent = 'Ошибка: топливо должно быть больше 0!';
-            totalMileageElement.textContent = `Общий километраж: ${endMileage - startMileage} км`;
             return;
         }
 
         const totalMileage = endMileage - startMileage;
         if (highwayKm < 0 || highwayKm > totalMileage) {
             result.textContent = 'Ошибка: км по трассе должны быть в пределах общего пробега!';
-            totalMileageElement.textContent = `Общий километраж: ${totalMileage} км`;
+            return;
+        }
+
+        if (startFuel <= 0) {
+            result.textContent = 'Ошибка: топливо должно быть больше 0!';
             return;
         }
 
@@ -179,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "feature1-title": "Управление авто",
             "feature1-desc": "Добавление, редактирование, удаление автомобилей с базой моделей из CSV.",
             "feature2-title": "Расчет расхода",
-            "feature2-desc": "Учет города/трассы, погоды, кондиционера и других факторов.",
+            "feature1-desc": "Учет города/трассы, погоды, кондиционера и других факторов.",
             "feature3-title": "История и графики",
             "feature3-desc": "Хранение, фильтры и визуализация с fl_chart.",
             "feature4-title": "Безопасность и премиум",
