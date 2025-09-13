@@ -107,6 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
         const totalMileageElement = document.getElementById('total-mileage');
 
+        if (isNaN(startMileage) || isNaN(endMileage)) {
+            totalMileageElement.textContent = 'Ошибка: введите корректные значения!';
+            return;
+        }
+
         if (endMileage > startMileage) {
             const totalMileage = endMileage - startMileage;
             totalMileageElement.textContent = `Общий километраж: ${totalMileage} км`;
@@ -127,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = document.getElementById('result');
         const totalMileageElement = document.getElementById('total-mileage');
 
+        // Валидация входных данных
         if (isNaN(startMileage) || isNaN(endMileage) || isNaN(startFuel) || isNaN(highwayKm)) {
             result.textContent = 'Ошибка: введите числовые значения!';
             return;
@@ -138,8 +144,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const totalMileage = endMileage - startMileage;
+        if (totalMileage === 0) {
+            result.textContent = 'Ошибка: общий пробег не может быть нулевым!';
+            return;
+        }
+
         if (highwayKm < 0 || highwayKm > totalMileage) {
-            result.textContent = 'Ошибка: км по трассе должны быть в пределах общего пробега!';
+            result.textContent = 'Ошибка: км по трассе должны быть в пределах общего пробега и не отрицательными!';
             return;
         }
 
@@ -150,6 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cityKm = totalMileage - highwayKm;
         const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
+
+        if (isNaN(consumption) || !isFinite(consumption)) {
+            result.textContent = 'Ошибка: невозможно рассчитать расход (проверьте данные)!';
+            return;
+        }
+
         result.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highwayKm} км, город: ${cityKm} км).`;
         totalMileageElement.textContent = `Общий километраж: ${totalMileage} км`;
     }
