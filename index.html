@@ -47,10 +47,10 @@
         <div class="container">
             <h2 id="calculator-title">Рассчитайте расход топлива</h2>
             <div class="calculator-form">
-                <input type="number" id="start-mileage" placeholder="Начальный пробег (км)" min="0">
-                <input type="number" id="end-mileage" placeholder="Конечный пробег (км)" min="0">
-                <input type="number" id="start-fuel" placeholder="Топливо в баке на начало (л)" min="0">
+                <input type="number" id="start-mileage" placeholder="Начальный пробег (км)" min="0" oninput="updateTotalMileage()">
+                <input type="number" id="end-mileage" placeholder="Конечный пробег (км)" min="0" oninput="updateTotalMileage()">
                 <input type="number" id="highway-km" placeholder="Км по трассе" min="0">
+                <input type="number" id="start-fuel" placeholder="Топливо в баке на начало (л)" min="0">
                 <button onclick="calculateFuel()">Рассчитать</button>
                 <p id="total-mileage"></p>
                 <p id="result"></p>
