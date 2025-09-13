@@ -67,12 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Функция для обновления скриншотов
     function updateScreenshots(theme) {
         const images = gallery.getElementsByTagName('img');
-        for (let img of images) {
+        for (let i = 0; i < images.length; i++) {
+            const img = images[i];
             const lightSrc = img.getAttribute('data-light');
-            if (theme === 'light' && lightSrc) {
+            if (theme === 'light' && lightSrc && i < 9) { // Только 9 светлых скриншотов
                 img.src = lightSrc;
             } else {
-                const darkSrc = img.getAttribute('src').replace('-light.jpg', '-dark.jpg');
+                const darkSrc = `Screenshot-${i + 1}-dark.jpg`; // 12 темных скриншотов
                 img.src = darkSrc;
             }
         }
@@ -99,20 +100,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const startFuel = parseFloat(document.getElementById('start-fuel').value);
         const highwayKm = parseFloat(document.getElementById('highway-km').value);
         const result = document.getElementById('result');
+        const totalMileageElement = document.getElementById('total-mileage');
 
-        if (startMileage >= 0 && endMileage > startMileage && startFuel >= 0 && highwayKm >= 0) {
+        if (startMileage >= 0 && endMileage > startMileage && startFuel > 0 && highwayKm >= 0 && highwayKm <= (endMileage - startMileage)) {
             const totalMileage = endMileage - startMileage;
             const cityKm = totalMileage - highwayKm;
-            const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8); // Корректировка: город +20%, трасса -20%
+            const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
             result.textContent = `Расход: ${consumption.toFixed(2)} л/100 км (трасса: ${highwayKm} км).`;
+            totalMileageElement.textContent = `Общий пробег: ${totalMileage} км.`;
         } else {
-            result.textContent = 'Введите корректные данные!';
+            result.textContent = 'Введите корректные данные! (Конечный пробег > начального, топливо > 0, км по трассе ≤ общему пробегу)';
+            totalMileageElement.textContent = '';
         }
     }
 
     // Скроллинг галереи
     function scrollGallery(direction) {
-        const scrollAmount = gallery.clientWidth;
+        const scrollAmount = gallery.clientWidth - 20; // Учитываем отступы
         gallery.scrollBy({
             left: direction === 'prev' ? -scrollAmount : scrollAmount,
             behavior: 'smooth'
@@ -186,27 +190,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function changeLanguage() {
         const lang = document.getElementById('language-toggle').value;
-        document.getElementById('hero-title').textContent = translations[lang]["hero-title"];
-        document.getElementById('hero-subtitle').textContent = translations[lang]["hero-subtitle"];
-        document.getElementById('download-text').textContent = translations[lang]["download-text"];
-        document.getElementById('calculator-title').textContent = translations[lang]["calculator-title"];
-        document.getElementById('features-title').textContent = translations[lang]["features-title"];
-        document.getElementById('feature1-title').textContent = translations[lang]["feature1-title"];
-        document.getElementById('feature1-desc').textContent = translations[lang]["feature1-desc"];
-        document.getElementById('feature2-title').textContent = translations[lang]["feature2-title"];
-        document.getElementById('feature2-desc').textContent = translations[lang]["feature2-desc"];
-        document.getElementById('feature3-title').textContent = translations[lang]["feature3-title"];
-        document.getElementById('feature3-desc').textContent = translations[lang]["feature3-desc"];
-        document.getElementById('feature4-title').textContent = translations[lang]["feature4-title"];
-        document.getElementById('feature4-desc').textContent = translations[lang]["feature4-desc"];
-        document.getElementById('screenshots-title').textContent = translations[lang]["screenshots-title"];
-        document.getElementById('download-title').textContent = translations[lang]["download-title"];
-        document.getElementById('download-desc').textContent = translations[lang]["download-desc"];
-        document.getElementById('testimonials-title').textContent = translations[lang]["testimonials-title"];
-        document.getElementById('testimonial1-text').textContent = translations[lang]["testimonial1-text"];
-        document.getElementById('testimonial1-author').textContent = translations[lang]["testimonial1-author"];
-        document.getElementById('testimonial2-text').textContent = translations[lang]["testimonial2-text"];
-        document.getElementById('testimonial2-author').textContent = translations[lang]["testimonial2-author"];
+        const elements = {
+            'hero-title': document.getElementById('hero-title'),
+            'hero-subtitle': document.getElementById('hero-subtitle'),
+            'download-text': document.getElementById('download-text'),
+            'calculator-title': document.getElementById('calculator-title'),
+            'features-title': document.getElementById('features-title'),
+            'feature1-title': document.getElementById('feature1-title'),
+            'feature1-desc': document.getElementById('feature1-desc'),
+            'feature2-title': document.getElementById('feature2-title'),
+            'feature2-desc': document.getElementById('feature2-desc'),
+            'feature3-title': document.getElementById('feature3-title'),
+            'feature3-desc': document.getElementById('feature3-desc'),
+            'feature4-title': document.getElementById('feature4-title'),
+            'feature4-desc': document.getElementById('feature4-desc'),
+            'screenshots-title': document.getElementById('screenshots-title'),
+            'download-title': document.getElementById('download-title'),
+            'download-desc': document.getElementById('download-desc'),
+            'testimonials-title': document.getElementById('testimonials-title'),
+            'testimonial1-text': document.getElementById('testimonial1-text'),
+            'testimonial1-author': document.getElementById('testimonial1-author'),
+            'testimonial2-text': document.getElementById('testimonial2-text'),
+            'testimonial2-author': document.getElementById('testimonial2-author')
+        };
+
+        for (let key in elements) {
+            if (elements[key]) {
+                elements[key].textContent = translations[lang][key];
+            }
+        }
     }
 
     // Обратный отсчет для баннера
@@ -223,4 +235,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScreenshots(body.classList.contains('light') ? 'light' : 'dark');
     changeLanguage(); // RU по умолчанию
     updateCountdown();
+    setInterval(updateCountdown, 86400000); // Обновление раз в день
 });
