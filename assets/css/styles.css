@@ -1,1 +1,49 @@
 
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #1e1e2f;
+  color: #fff;
+  text-align: center;
+}
+
+header {
+  background: #007bff;
+  padding: 20px;
+}
+
+h1 {
+  margin: 0;
+}
+
+.hero {
+  margin: 50px 0;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 16px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 8px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+footer {
+  margin-top: 40px;
+  padding: 15px;
+  font-size: 14px;
+  background: #111;
+}
