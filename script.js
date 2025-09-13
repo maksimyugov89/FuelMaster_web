@@ -119,6 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Скроллинг галереи
+    function scrollGallery(direction) {
+        const scrollAmount = gallery.clientWidth - 20;
+        gallery.scrollBy({
+            left: direction === 'prev' ? -scrollAmount : scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+
     // Модальное окно для скриншотов
     function openModal(img) {
         const modal = document.getElementById('modal');
@@ -213,6 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let key in elements) {
             if (elements[key]) {
                 elements[key].textContent = translations[lang][key] || translations['ru'][key]; // Фallback на RU
+            } else {
+                console.warn(`Элемент с id "${key}" не найден`);
             }
         }
     }
