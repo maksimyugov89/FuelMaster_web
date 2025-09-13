@@ -70,10 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < images.length; i++) {
             const img = images[i];
             const lightSrc = img.getAttribute('data-light');
-            if (theme === 'light' && lightSrc && i < 9) { // Только 9 светлых скриншотов
+            if (theme === 'light' && lightSrc && i < 9) {
                 img.src = lightSrc;
             } else {
-                const darkSrc = `Screenshot-${i + 1}-dark.jpg`; // 12 темных скриншотов
+                const darkSrc = `Screenshot-${i + 1}-dark.jpg`;
                 img.src = darkSrc;
             }
         }
@@ -112,15 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
             result.textContent = 'Введите корректные данные! (Конечный пробег > начального, топливо > 0, км по трассе ≤ общему пробегу)';
             totalMileageElement.textContent = '';
         }
-    }
-
-    // Скроллинг галереи
-    function scrollGallery(direction) {
-        const scrollAmount = gallery.clientWidth - 20; // Учитываем отступы
-        gallery.scrollBy({
-            left: direction === 'prev' ? -scrollAmount : scrollAmount,
-            behavior: 'smooth'
-        });
     }
 
     // Модальное окно для скриншотов
