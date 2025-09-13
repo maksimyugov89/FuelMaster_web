@@ -45,6 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
+    // Проверка сохраненной темы
+    if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light');
+    } else {
+        localStorage.setItem('theme', 'dark');
+    }
+
     // Переключение темы и скриншотов
     toggleButton.addEventListener('click', () => {
         body.classList.toggle('light');
@@ -65,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (theme === 'light' && lightSrc) {
                 img.src = lightSrc;
             } else {
-                const darkSrc = img.getAttribute('src');
-                img.src = darkSrc.replace('-light.jpg', '');
+                const darkSrc = img.getAttribute('src').replace('-light.jpg', '-dark.jpg');
+                img.src = darkSrc;
             }
         }
     }
@@ -87,14 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Калькулятор расхода
     function calculateFuel() {
-        const mileage = parseFloat(document.getElementById('mileage').value);
-        const fuel = parseFloat(document.getElementById('fuel').value);
-        const condition = document.getElementById('condition').value;
+        const startMileage = parseFloat(document.getElementById('start-mileage').value);
+        const endMileage = parseFloat(document.getElementById('end-mileage').value);
+        const startFuel = parseFloat(document.getElementById('start-fuel').value);
+        const highwayKm = parseFloat(document.getElementById('highway-km').value);
         const result = document.getElementById('result');
 
-        if (mileage > 0 && fuel > 0) {
-            const consumption = (fuel / mileage) * 100;
-            result.textContent = `Расход: ${consumption.toFixed(2)} л/100 км (${condition}).`;
+        if (startMileage >= 0 && endMileage > startMileage && startFuel >= 0 && highwayKm >= 0) {
+            const totalMileage = endMileage - startMileage;
+            const cityKm = totalMileage - highwayKm;
+            const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8); // Корректировка: город +20%, трасса -20%
+            result.textContent = `Расход: ${consumption.toFixed(2)} л/100 км (трасса: ${highwayKm} км).`;
         } else {
             result.textContent = 'Введите корректные данные!';
         }
@@ -102,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Скроллинг галереи
     function scrollGallery(direction) {
-        const scrollAmount = 200;
+        const scrollAmount = gallery.clientWidth;
         gallery.scrollBy({
             left: direction === 'prev' ? -scrollAmount : scrollAmount,
             behavior: 'smooth'
@@ -199,13 +209,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('testimonial2-author').textContent = translations[lang]["testimonial2-author"];
     }
 
+    // Обратный отсчет для баннера
+    function updateCountdown() {
+        const endDate = new Date('2025-09-30');
+        const now = new Date();
+        const timeDiff = endDate - now;
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        document.getElementById('countdown').textContent = `Осталось ${days} дней!`;
+    }
+
     // Инициализация
     updateWeather();
     updateScreenshots(body.classList.contains('light') ? 'light' : 'dark');
-    if (localStorage.getItem('theme') === 'light') {
-        body.classList.add('light');
-    } else {
-        localStorage.setItem('theme', 'dark');
-    }
-    changeLanguage(); // Установка языка по умолчанию (RU)
+    changeLanguage(); // RU по умолчанию
+    updateCountdown();
 });
