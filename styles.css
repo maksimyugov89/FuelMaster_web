@@ -20,7 +20,7 @@ body.light {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 15px;
+    padding: 10px; /* Уменьшен отступ для мобильных */
 }
 
 header {
@@ -43,11 +43,11 @@ header .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: 10px; /* Уменьшен зазор */
 }
 
 .brand-title {
-    font-size: 32px;
+    font-size: 28px; /* Уменьшен для мобильных */
     font-weight: 700;
     background: linear-gradient(90deg, #007bff, #00c4cc);
     -webkit-background-clip: text;
@@ -64,7 +64,7 @@ header .header-content {
 .header-utils {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .weather-info {
@@ -109,7 +109,7 @@ body.light #theme-toggle:hover {
 
 #hero {
     text-align: center;
-    padding: 80px 20px;
+    padding: 40px 10px; /* Уменьшен для мобильных */
     background: linear-gradient(135deg, #1e1e2f, #2c2c3e);
     position: relative;
     overflow: hidden;
@@ -175,15 +175,15 @@ body.light #theme-toggle:hover {
 }
 
 #hero h1 {
-    font-size: 3em;
-    margin-bottom: 15px;
+    font-size: 1.8em; /* Уменьшен для мобильных */
+    margin-bottom: 10px;
     font-weight: 700;
     text-shadow: 0 0 15px rgba(0,123,255,0.5);
 }
 
 #hero p {
-    font-size: 1.4em;
-    margin-bottom: 25px;
+    font-size: 1.2em; /* Уменьшен для мобильных */
+    margin-bottom: 15px;
     color: #d3d3d3;
     text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
@@ -204,8 +204,8 @@ body.light #hero p {
 }
 
 .seasonal-banner {
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 15px;
+    padding: 10px;
     background: linear-gradient(90deg, #ff7e5f, #feb47b);
     color: #fff;
     border-radius: 15px;
@@ -213,6 +213,7 @@ body.light #hero p {
     animation: fadeIn 2s;
     box-shadow: 0 4px 10px rgba(255,126,95,0.3);
     text-align: center;
+    font-size: 0.9em; /* Уменьшен для мобильных */
 }
 
 @keyframes fadeIn {
@@ -223,13 +224,13 @@ body.light #hero p {
 .btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 25px;
+    gap: 6px; /* Уменьшен зазор */
+    padding: 10px 20px; /* Уменьшен размер */
     text-decoration: none;
-    border-radius: 30px;
+    border-radius: 25px;
     font-weight: bold;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+    box-shadow: 0 3px 8px rgba(0,123,255,0.3);
 }
 
 .btn.primary {
@@ -240,8 +241,8 @@ body.light #hero p {
 }
 
 .btn.primary:hover {
-    box-shadow: 0 6px 15px rgba(0,123,255,0.5);
-    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0,123,255,0.5);
+    transform: translateY(-2px);
 }
 
 .btn.secondary {
@@ -252,18 +253,18 @@ body.light #hero p {
 }
 
 .btn.secondary:hover {
-    box-shadow: 0 6px 15px rgba(108,117,125,0.5);
-    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(108,117,125,0.5);
+    transform: translateY(-2px);
 }
 
 .download-logo {
-    height: 20px;
+    height: 18px; /* Уменьшен для мобильных */
     width: auto;
     filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
 }
 
 #calculator {
-    padding: 40px 20px;
+    padding: 30px 10px; /* Уменьшен для мобильных */
     background: linear-gradient(135deg, #2c2c3e, #3a3a5a);
     color: #fff;
 }
@@ -276,15 +277,17 @@ body.light #calculator {
 .calculator-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-width: 400px;
+    gap: 8px; /* Уменьшен зазор */
+    max-width: 100%; /* Адаптация под мобильные */
     margin: 0 auto;
+    padding: 10px;
 }
 
 .calculator-form input, .calculator-form select, .calculator-form button {
-    padding: 10px;
+    padding: 8px; /* Уменьшен размер */
     border-radius: 5px;
     border: none;
+    font-size: 0.9em; /* Уменьшен шрифт */
 }
 
 .calculator-form button {
@@ -299,46 +302,46 @@ body.light #calculator {
 
 #features h2, #screenshots h2, #download h2, #calculator h2, #testimonials h2 {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px; /* Уменьшен отступ */
     color: #fff;
-    text-shadow: 0 0 10px rgba(0,123,255,0.3);
+    text-shadow: 0 0 8px rgba(0,123,255,0.3); /* Уменьшена тень */
 }
 
 body.light #features h2, body.light #screenshots h2, body.light #download h2, body.light #calculator h2, body.light #testimonials h2 {
     color: #1e1e2f;
-    text-shadow: 0 0 10px rgba(0,123,255,0.1);
+    text-shadow: 0 0 6px rgba(0,123,255,0.1);
 }
 
 .feature-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Уменьшен минимальный размер */
+    gap: 15px; /* Уменьшен зазор */
 }
 
 .feature-card {
     background: linear-gradient(135deg, #2c2c3e, #3a3a5a);
-    padding: 20px;
-    border-radius: 15px;
+    padding: 15px; /* Уменьшен отступ */
+    border-radius: 12px; /* Уменьшен радиус */
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.2);
 }
 
 body.light .feature-card {
     background: linear-gradient(135deg, #e9ecef, #f8f9fa);
     color: #1e1e2f;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
 }
 
 .feature-card:hover {
-    transform: translateY(-5px) rotateX(5deg);
-    box-shadow: 0 8px 20px rgba(0,123,255,0.4);
+    transform: translateY(-4px) rotateX(5deg);
+    box-shadow: 0 6px 16px rgba(0,123,255,0.4);
 }
 
 .feature-card i {
-    font-size: 2.5em;
+    font-size: 2em; /* Уменьшен размер */
     color: #007bff;
-    margin-bottom: 15px;
+    margin-bottom: 10px; /* Уменьшен отступ */
     animation: pulse 1.5s infinite;
 }
 
@@ -351,16 +354,17 @@ body.light .feature-card {
 .gallery {
     display: flex;
     flex-wrap: nowrap;
-    gap: 10px;
+    gap: 8px; /* Уменьшен зазор */
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch; /* Плавность скроллинга на iOS */
 }
 
 .gallery img {
-    max-width: 200px;
+    max-width: 150px; /* Уменьшен размер для мобильных */
     height: auto;
-    border-radius: 10px;
+    border-radius: 8px; /* Уменьшен радиус */
     border: 2px solid #444;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     scroll-snap-align: center;
@@ -373,7 +377,7 @@ body.light .gallery img {
 
 .gallery img:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 15px rgba(0,123,255,0.5);
+    box-shadow: 0 0 12px rgba(0,123,255,0.5);
 }
 
 .slider-prev, .slider-next {
@@ -383,17 +387,18 @@ body.light .gallery img {
     background: rgba(0,0,0,0.5);
     color: #fff;
     border: none;
-    padding: 10px;
+    padding: 8px; /* Уменьшен размер */
     cursor: pointer;
     z-index: 10;
+    font-size: 1em; /* Уменьшен шрифт */
 }
 
 .slider-prev {
-    left: 10px;
+    left: 5px;
 }
 
 .slider-next {
-    right: 10px;
+    right: 5px;
 }
 
 .slider-prev:hover, .slider-next:hover {
@@ -401,7 +406,7 @@ body.light .gallery img {
 }
 
 #testimonials {
-    padding: 40px 20px;
+    padding: 30px 10px; /* Уменьшен для мобильных */
     background: linear-gradient(135deg, #2c2c3e, #3a3a5a);
 }
 
@@ -411,14 +416,14 @@ body.light #testimonials {
 
 .testimonial-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Уменьшен минимальный размер */
+    gap: 15px; /* Уменьшен зазор */
 }
 
 .testimonial-card {
     background: rgba(255,255,255,0.1);
-    padding: 20px;
-    border-radius: 15px;
+    padding: 15px; /* Уменьшен отступ */
+    border-radius: 12px; /* Уменьшен радиус */
     text-align: center;
     transition: transform 0.3s ease;
 }
@@ -428,20 +433,20 @@ body.light .testimonial-card {
 }
 
 .testimonial-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
 }
 
 .stars {
     color: #ffd700;
-    font-size: 1.2em;
-    margin-top: 10px;
+    font-size: 1.1em; /* Уменьшен размер */
+    margin-top: 8px; /* Уменьшен отступ */
 }
 
 footer {
     background: linear-gradient(135deg, #2c2c3e, #4a4a6a);
     text-align: center;
-    padding: 20px 0;
-    margin-top: 40px;
+    padding: 15px 0; /* Уменьшен отступ */
+    margin-top: 20px; /* Уменьшен отступ */
     animation: gradient-shift 5s ease infinite;
     background-size: 200% 200%;
 }
@@ -455,8 +460,8 @@ footer a {
     color: #007bff;
     text-decoration: none;
     transition: color 0.3s ease;
-    margin: 0 10px;
-    font-size: 1.5em;
+    margin: 0 8px; /* Уменьшен зазор */
+    font-size: 1.3em; /* Уменьшен шрифт */
 }
 
 footer a:hover {
@@ -478,13 +483,14 @@ footer a:hover {
 
 .modal-content {
     position: relative;
-    max-width: 90%;
-    max-height: 90%;
+    width: 90%; /* Адаптация под мобильные */
+    height: 90%; /* Адаптация под мобильные */
 }
 
 #modal-img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Изображение влезет в контейнер без обрезки */
     border-radius: 10px;
 }
 
@@ -501,21 +507,42 @@ footer a:hover {
     color: #fff;
     text-align: center;
     margin-top: 10px;
+    font-size: 0.9em; /* Уменьшен шрифт */
 }
 
 @media (max-width: 768px) {
-    .modal {
-        padding: 0;
+    .container {
+        padding: 5px;
+    }
+    #hero h1 {
+        font-size: 1.5em;
+    }
+    #hero p {
+        font-size: 1em;
+    }
+    .btn {
+        padding: 8px 15px;
+    }
+    .feature-card {
+        padding: 10px;
+    }
+    .gallery img {
+        max-width: 120px;
+    }
+    .slider-prev, .slider-next {
+        padding: 6px;
+        font-size: 0.9em;
     }
     #modal-img {
         width: 100vw;
-        height: auto;
-        max-height: 100vh;
+        height: 100vh;
+        max-width: unset;
+        max-height: unset;
     }
     .close-modal {
-        top: 20px;
-        right: 30px;
-        font-size: 40px;
+        top: 15px;
+        right: 25px;
+        font-size: 35px;
     }
 }
 
@@ -526,4 +553,4 @@ footer a:hover {
 @keyframes fadeInSection {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
-}
+                                }
