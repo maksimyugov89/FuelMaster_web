@@ -79,20 +79,6 @@ header .header-content {
     animation: spin 1s linear infinite;
 }
 
-#language-toggle {
-    padding: 5px;
-    border-radius: 5px;
-    background: #3a3a5a;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-body.light #language-toggle {
-    background: #e9ecef;
-    color: #1e1e2f;
-}
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -219,12 +205,14 @@ body.light #hero p {
 
 .seasonal-banner {
     margin-top: 20px;
-    padding: 10px;
+    padding: 10px 20px;
     background: linear-gradient(90deg, #ff7e5f, #feb47b);
     color: #fff;
-    border-radius: 10px;
+    border-radius: 15px;
     font-weight: bold;
     animation: fadeIn 2s;
+    box-shadow: 0 4px 10px rgba(255,126,95,0.3);
+    text-align: center;
 }
 
 @keyframes fadeIn {
@@ -516,37 +504,26 @@ footer a:hover {
 }
 
 @media (max-width: 768px) {
-    #hero h1 {
-        font-size: 1.8em;
+    .modal {
+        padding: 0;
     }
-    .header-content {
-        flex-direction: column;
-        gap: 10px;
+    #modal-img {
+        width: 100vw;
+        height: auto;
+        max-height: 100vh;
     }
-    .header-utils {
-        flex-direction: row;
-        justify-content: center;
-        gap: 10px;
+    .close-modal {
+        top: 20px;
+        right: 30px;
+        font-size: 40px;
     }
-    .brand-title {
-        font-size: 28px;
-    }
-    .gallery {
-        flex-direction: row;
-    }
-    .gallery img {
-        max-width: 150px;
-    }
-    .container {
-        padding: 10px;
-    }
-    .download-logo {
-        height: 18px;
-    }
-    #hero .particles::before, #hero .particles::after {
-        display: none;
-    }
-    .slider-prev, .slider-next {
-        display: none;
-    }
+}
+
+.fade-in {
+    animation: fadeInSection 1s ease-in;
+}
+
+@keyframes fadeInSection {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
