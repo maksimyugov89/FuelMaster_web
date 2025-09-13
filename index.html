@@ -9,7 +9,7 @@
     <link rel="manifest" href="manifest.json">
     <title>FuelMaster - Калькулятор расхода топлива</title>
     <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
@@ -20,11 +20,11 @@
                     <div class="weather-info">
                         <i class="fas fa-cloud"></i> 11°C, Курск <i class="fas fa-arrow-down"></i> 760 мм
                     </div>
-                    <select id="language-toggle" onchange="changeLanguage()" aria-label="Выбор языка">
-                        <option value="ru" selected>RU</option>
+                    <select id="language-toggle" onchange="changeLanguage()">
+                        <option value="ru">RU</option>
                         <option value="en">EN</option>
                     </select>
-                    <button id="theme-toggle" type="button" aria-label="Переключить тему">
+                    <button id="theme-toggle" aria-label="Переключить тему">
                         <span id="theme-text">Светлая</span>
                     </button>
                 </div>
@@ -38,14 +38,8 @@
         <div class="container">
             <h1 id="hero-title">Управляй расходом топлива с умом</h1>
             <p id="hero-subtitle">FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.</p>
-            <a href="#download" class="btn primary">
-                <i class="fas fa-download animated-icon"></i> 
-                <span id="download-text">Скачать</span>
-            </a>
-            <div class="seasonal-banner" id="seasonal-banner">
-                Осенние обновления 2025: Улучшенный расчет и новые советы по экономии до 30 сентября! 
-                <span id="countdown"></span>
-            </div>
+            <a href="#download" class="btn primary"><i class="fas fa-download animated-icon"></i> <span id="download-text">Скачать</span></a>
+            <div class="seasonal-banner" id="seasonal-banner">Осенние обновления 2025: Улучшенный расчет и новые советы по экономии до 30 сентября! <span id="countdown"></span></div>
         </div>
     </section>
 
@@ -57,7 +51,7 @@
                 <input type="number" id="end-mileage" placeholder="Конечный пробег (км)" min="0" oninput="updateTotalMileage()">
                 <input type="number" id="start-fuel" placeholder="Топливо в баке на начало (л)" min="0">
                 <input type="number" id="highway-km" placeholder="Км по трассе" min="0">
-                <button type="button" onclick="calculateFuel()">Рассчитать</button>
+                <button onclick="calculateFuel()">Рассчитать</button>
                 <p id="total-mileage"></p>
                 <p id="result"></p>
             </div>
@@ -134,25 +128,19 @@
         <div class="container">
             <h2 id="download-title">Скачай FuelMaster</h2>
             <p id="download-desc">Доступно для Android и iOS. Установи прямо сейчас!</p>
-            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary">
-                <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> Исходный код
-            </a>
-            <a href="#" class="btn primary">
-                <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> Скачать APK
-            </a>
+            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary"><img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> Исходный код</a>
+            <a href="#" class="btn primary"><img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> Скачать APK</a>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 FuelMaster | 
-                <a href="https://github.com/maksimyugov89" target="_blank"><i class="fab fa-github"></i> maksimyugov89</a>
-            </p>
+            <p>&copy; 2025 FuelMaster | <a href="https://github.com/maksimyugov89" target="_blank"><i class="fab fa-github"></i> maksimyugov89</a></p>
             <a href="https://twitter.com/yourhandle" target="_blank"><i class="fab fa-twitter"></i></a>
         </div>
     </footer>
 
-    <div id="modal" class="modal" onclick="if(event.target==this) closeModal()">
+    <div id="modal" class="modal">
         <span class="close-modal" onclick="closeModal()">&times;</span>
         <img id="modal-img" src="" alt="Увеличенное изображение">
         <p id="modal-caption"></p>
