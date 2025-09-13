@@ -107,25 +107,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = document.getElementById('result');
         const totalMileageElement = document.getElementById('total-mileage');
 
-        if (endMileage > startMileage && startFuel > 0 && highwayKm >= 0 && highwayKm <= (endMileage - startMileage)) {
-            const totalMileage = endMileage - startMileage;
-            const cityKm = totalMileage - highwayKm;
-            const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
-            result.textContent = `Расход: ${consumption.toFixed(2)} л/100 км (трасса: ${highwayKm} км).`;
-            totalMileageElement.textContent = `Общий пробег: ${totalMileage} км.`;
-        } else {
-            result.textContent = 'Введите корректные данные! (Конечный пробег > начального, топливо > 0, км по трассе ≤ общему пробегу)';
-            totalMileageElement.textContent = endMileage > startMileage ? `Общий пробег: ${endMileage - startMileage} км.` : '';
+        if (isNaN(startMileage) || isNaN(endMileage) || isNaN(startFuel) || isNaN(highwayKm)) {
+            result.textContent = 'Ошибка: введите числовые значения!';
+            totalMileageElement.textContent = '';
+            return;
         }
-    }
 
-    // Скроллинг галереи
-    function scrollGallery(direction) {
-        const scrollAmount = gallery.clientWidth - 20;
-        gallery.scrollBy({
-            left: direction === 'prev' ? -scrollAmount : scrollAmount,
-            behavior: 'smooth'
-        });
+        if (endMileage <= startMileage) {
+            result.textContent = 'Ошибка: конечный пробег должен быть больше начального!';
+            totalMileageElement.textContent = '';
+            return;
+        }
+
+        if (startFuel <= 0) {
+            result.textContent = 'Ошибка: топливо должно быть больше 0!';
+            totalMileageElement.textContent = '';
+            return;
+        }
+
+        const totalMileage = endMileage - startMileage;
+        if (highwayKm < 0 || highwayKm > totalMileage) {
+            result.textContent = 'Ошибка: км по трассе должны быть в пределах общего пробега!';
+            totalMileageElement.textContent = `Общий пробег: ${totalMileage} км.`;
+            return;
+        }
+
+        const cityKm = totalMileage - highwayKm;
+        const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
+        result.textContent = `Расход: ${consumption.toFixed(2)} л/100 км (трасса: ${highwayKm} км).`;
+        totalMileageElement.textContent = `Общий пробег: ${totalMileage} км.`;
     }
 
     // Модальное окно для скриншотов
