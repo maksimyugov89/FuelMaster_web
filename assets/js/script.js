@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const weatherInfo = document.querySelector('.weather-info');
     const weatherIcon = document.querySelector('.weather-info i');
 
+    console.log('DOM loaded, initializing...');
+
     // Инициализация погоды
     function updateWeather() {
         if (!navigator.geolocation) {
@@ -100,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Обновление общего километража при вводе
     function updateTotalMileage() {
+        console.log('Updating total mileage...');
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
         const totalMileageElement = document.getElementById('total-mileage');
@@ -116,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Расчет расхода топлива
     function calculateFuel() {
+        console.log('Calculating fuel...');
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
         const startFuel = parseFloat(document.getElementById('start-fuel').value) || 0;
@@ -216,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function changeLanguage() {
+        console.log('Changing language...');
         const lang = document.getElementById('language-toggle').value;
         const elements = {
             'hero-title': document.getElementById('hero-title'),
@@ -244,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let key in elements) {
             if (elements[key]) {
                 elements[key].textContent = translations[lang][key] || translations['ru'][key]; // Фallback на RU
+                console.log(`Updated ${key} to ${translations[lang][key] || translations['ru'][key]}`);
             } else {
                 console.warn(`Элемент с id "${key}" не найден`);
             }
@@ -260,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Инициализация
+    console.log('Initializing app...');
     updateWeather();
     updateScreenshots(body.classList.contains('light') ? 'light' : 'dark');
     changeLanguage();
