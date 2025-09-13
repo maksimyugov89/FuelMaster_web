@@ -100,17 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(section);
     });
 
-    // Обновление общего километража при вводе
+    // Обновление общего километража
     function updateTotalMileage() {
-        console.log('Updating total mileage...');
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
         const totalMileageElement = document.getElementById('total-mileage');
-
-        if (isNaN(startMileage) || isNaN(endMileage)) {
-            totalMileageElement.textContent = 'Ошибка: введите корректные значения!';
-            return;
-        }
 
         if (endMileage > startMileage) {
             const totalMileage = endMileage - startMileage;
@@ -124,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Расчет расхода топлива
     function calculateFuel() {
-        console.log('Calculating fuel...');
         const startMileage = parseFloat(document.getElementById('start-mileage').value) || 0;
         const endMileage = parseFloat(document.getElementById('end-mileage').value) || 0;
         const startFuel = parseFloat(document.getElementById('start-fuel').value) || 0;
@@ -132,41 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = document.getElementById('result');
         const totalMileageElement = document.getElementById('total-mileage');
 
-        // Валидация входных данных
-        if (isNaN(startMileage) || isNaN(endMileage) || isNaN(startFuel) || isNaN(highwayKm)) {
-            result.textContent = 'Ошибка: введите числовые значения!';
-            return;
-        }
-
         if (endMileage <= startMileage) {
             result.textContent = 'Ошибка: конечный пробег должен быть больше начального!';
             return;
         }
 
         const totalMileage = endMileage - startMileage;
-        if (totalMileage === 0) {
-            result.textContent = 'Ошибка: общий пробег не может быть нулевым!';
-            return;
-        }
-
-        if (highwayKm < 0 || highwayKm > totalMileage) {
-            result.textContent = 'Ошибка: км по трассе должны быть в пределах общего пробега и не отрицательными!';
-            return;
-        }
-
-        if (startFuel <= 0) {
-            result.textContent = 'Ошибка: топливо должно быть больше 0!';
-            return;
-        }
-
         const cityKm = totalMileage - highwayKm;
         const consumption = ((startFuel / totalMileage) * 100) * (cityKm / totalMileage * 1.2 + highwayKm / totalMileage * 0.8);
-
-        if (isNaN(consumption) || !isFinite(consumption)) {
-            result.textContent = 'Ошибка: невозможно рассчитать расход (проверьте данные)!';
-            return;
-        }
-
         result.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highwayKm} км, город: ${cityKm} км).`;
         totalMileageElement.textContent = `Общий километраж: ${totalMileage} км`;
     }
