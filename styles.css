@@ -351,9 +351,12 @@ body.light .feature-card {
 
 .gallery {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
     padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
 }
 
 .gallery img {
@@ -362,6 +365,7 @@ body.light .feature-card {
     border-radius: 8px;
     border: 2px solid #444;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    scroll-snap-align: center;
     cursor: pointer;
 }
 
@@ -515,4 +519,4 @@ footer a:hover {
 @keyframes fadeInSection {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
-    }
+}
