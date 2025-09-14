@@ -54,8 +54,8 @@
                 <input type="number" id="start-fuel" placeholder="Топливо в баке на начало (л)" min="0" data-i18n="start-fuel">
                 <input type="number" id="highway-km" placeholder="Км по трассе" min="0" data-i18n="highway-km">
                 <button id="calculate-btn" data-i18n="calculate-btn">Рассчитать</button>
-                <p id="total-mileage" data-i18n="total-mileage">0 км</p>
-                <p id="result" data-i18n="result">Полный расчет: расход NaN л/100 км (трасса: 0 км, город: 0 км).</p>
+                <p id="total-mileage"></p>
+                <p id="result"></p>
             </div>
         </div>
     </section>
@@ -92,7 +92,18 @@
         <div class="container">
             <h2 id="screenshots-title" data-i18n="screenshots-title">Скриншоты</h2>
             <div class="gallery" id="screenshot-gallery">
-                <!-- Скриншоты вставь сюда -->
+                <img src="assets/img/Screenshot-1-dark.jpg" alt="Скриншот 1" loading="lazy" data-light="assets/img/Screenshot-1-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-2-dark.jpg" alt="Скриншот 2" loading="lazy" data-light="assets/img/Screenshot-2-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-3-dark.jpg" alt="Скриншот 3" loading="lazy" data-light="assets/img/Screenshot-3-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-4-dark.jpg" alt="Скриншот 4" loading="lazy" data-light="assets/img/Screenshot-4-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-5-dark.jpg" alt="Скриншот 5" loading="lazy" data-light="assets/img/Screenshot-5-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-6-dark.jpg" alt="Скриншот 6" loading="lazy" data-light="assets/img/Screenshot-6-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-7-dark.jpg" alt="Скриншот 7" loading="lazy" data-light="assets/img/Screenshot-7-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-8-dark.jpg" alt="Скриншот 8" loading="lazy" data-light="assets/img/Screenshot-8-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-9-dark.jpg" alt="Скриншот 9" loading="lazy" data-light="assets/img/Screenshot-9-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-10-dark.jpg" alt="Скриншот 10" loading="lazy" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-11-dark.jpg" alt="Скриншот 11" loading="lazy" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-12-dark.jpg" alt="Скриншот 12" loading="lazy" ondblclick="openModal(this)">
             </div>
         </div>
     </section>
@@ -116,18 +127,18 @@
     </section>
 
     <section id="download">
-    <div class="container">
-        <h2 id="download-title" data-i18n="download-title">Скачай FuelMaster</h2>
-        <p id="download-desc" data-i18n="download-desc">Доступно для Android и iOS. Установи прямо сейчас!</p>
-        <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary" data-i18n="download-github">
-            <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> 
-            <span id="source-code-text" data-i18n="download-github">Исходный код</span>
-        </a>
-        <a href="#" class="btn primary" data-i18n="download-apk">
-            <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> 
-            <span id="apk-text" data-i18n="download-apk">Скачать APK</span>
-        </a>
-    </div>
+        <div class="container">
+            <h2 id="download-title" data-i18n="download-title">Скачай FuelMaster</h2>
+            <p id="download-desc" data-i18n="download-desc">Доступно для Android и iOS. Установи прямо сейчас!</p>
+            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary" data-i18n="download-github">
+                <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> 
+                <span>Исходный код</span>
+            </a>
+            <a href="#" class="btn primary" data-i18n="download-apk">
+                <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> 
+                <span>Скачать APK</span>
+            </a>
+        </div>
     </section>
 
     <footer>
