@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Применяем перевод
+    // Присвоение перевода элементам
     function applyTranslation(lang) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
@@ -109,9 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
         body.classList.toggle('light');
         localStorage.setItem('theme', body.classList.contains('light') ? 'light' : 'dark');
         themeText.textContent = body.classList.contains('light') ? translations[languageSelect.value].themeDark : translations[languageSelect.value].themeLight;
+        updateGalleryImages();
     });
 
-    // Калькулятор топлива
+    // Функции калькулятора
     function updateMileageAndResult() {
         const start = parseFloat(document.getElementById('start-mileage').value) || 0;
         const end = parseFloat(document.getElementById('end-mileage').value) || 0;
@@ -138,30 +139,41 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(id).addEventListener('input', updateMileageAndResult);
     });
 
-    applyTranslation(languageSelect.value);
-
     // Модальное окно для скриншотов
-window.openModal = function(img) {
-    modal.style.display = 'block';
-    // Выбор изображения в зависимости от темы
-    if (body.classList.contains('light')) {
-        // Если есть data-light, используем его
-        modalImg.src = img.dataset.light ? img.dataset.light : img.src;
-    } else {
-        // Тёмная тема — оставляем тёмный вариант
-        modalImg.src = img.src;
+    function openModal(img) {
+        modal.style.display = "block";
+        modalImg.src = body.classList.contains('light') && img.dataset.light ? img.dataset.light : img.src;
+        modalCaption.textContent = img.alt;
     }
-    modalCaption.textContent = img.alt;
-};
 
-// Закрытие модального окна
-window.closeModal = function() {
-    modal.style.display = 'none';
-};
-
-// Закрытие при клике вне картинки или по крестику
-modal.addEventListener('click', (e) => {
-    if (e.target === modal || e.target.classList.contains('close-modal')) {
-        closeModal();
+    function closeModal() {
+        modal.style.display = "none";
     }
+
+    window.closeModal = closeModal;
+    window.openModal = openModal;
+
+    // Обновление изображений галереи при смене темы
+    function updateGalleryImages() {
+        const screenshots = document.querySelectorAll('#screenshot-gallery img');
+        screenshots.forEach(img => {
+            if (body.classList.contains('light') && img.dataset.light) {
+                img.src = img.dataset.light;
+            } else if (!body.classList.contains('light')) {
+                img.src = img.src.includes('-light') ? img.src.replace('-light', '-dark') : img.src;
+            }
+        });
+
+        // Если открыт модал — обновляем его изображение
+        if (modal.style.display === 'block') {
+            const openImg = Array.from(screenshots).find(i => i.alt === modalCaption.textContent);
+            if (openImg) {
+                modalImg.src = body.classList.contains('light') && openImg.dataset.light ? openImg.dataset.light : openImg.src;
+            }
+        }
+    }
+
+    // Изначальная установка
+    updateGalleryImages();
+    applyTranslation(languageSelect.value);
 });
