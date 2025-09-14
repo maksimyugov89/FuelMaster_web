@@ -169,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // === Изменение: автоматическое определение города по координатам ===
     async function loadWeather() {
         if (!weatherInfo) return;
         const lang = languageSelect.value;
@@ -182,20 +183,23 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.geolocation.getCurrentPosition(async (pos) => {
             const { latitude, longitude } = pos.coords;
             try {
+                // Получаем текущую погоду
                 const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
                 const data = await res.json();
                 if (data && data.current_weather) {
                     const temp = data.current_weather.temperature;
                     const weatherCode = data.current_weather.weathercode;
-                    const city = "Курск"; // пример города
-                    const pressure = 760; // пример давления
-
-                    // Иконка осадков (пример, можно расширить по weatherCode)
+                    const pressure = 760; // можно уточнить по API
                     let icon = '☀️';
                     if (weatherCode >= 51 && weatherCode <= 67) icon = '🌧️';
                     else if (weatherCode >= 71 && weatherCode <= 77) icon = '❄️';
                     else if (weatherCode >= 80 && weatherCode <= 82) icon = '🌦️';
                     else if (weatherCode >= 95) icon = '⛈️';
+
+                    // Получаем город через обратное геокодирование
+                    const geoRes = await fetch(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`);
+                    const geoData = await geoRes.json();
+                    const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.county || '—';
 
                     weatherInfo.textContent = translations[lang]["weather-info"]
                         .replace("{city}", city)
@@ -210,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
             weatherInfo.textContent = translations[lang]["weather-error"];
         });
     }
+    // === Конец изменения ===
 
     loadWeather();
 
