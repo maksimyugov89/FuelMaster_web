@@ -17,7 +17,7 @@
             <div class="header-content">
                 <h1 class="brand-title">FuelMaster</h1>
                 <div class="header-utils">
-                    <div class="weather-info">
+                    <div class="weather-info" id="weather-info">
                         <i class="fas fa-cloud"></i> 11°C, Курск <i class="fas fa-arrow-down"></i> 760 мм
                     </div>
                     <select id="language-toggle">
@@ -25,7 +25,7 @@
                         <option value="en">EN</option>
                     </select>
                     <button id="theme-toggle" aria-label="Переключить тему">
-                        <span id="theme-text" data-i18n="theme-light">Светлая</span>
+                        <span id="theme-text" data-i18n="themeLight">Светлая</span>
                     </button>
                 </div>
             </div>
@@ -47,13 +47,13 @@
         <div class="container">
             <h2 id="calculator-title" data-i18n="calculator-title">Рассчитайте расход топлива</h2>
             <div class="calculator-form">
-                <input type="number" id="start-mileage" data-i18n="start-mileage" placeholder="Начальный пробег (км)" min="0">
-                <input type="number" id="end-mileage" data-i18n="end-mileage" placeholder="Конечный пробег (км)" min="0">
-                <input type="number" id="start-fuel" data-i18n="start-fuel" placeholder="Топливо в баке на начало (л)" min="0">
-                <input type="number" id="highway-km" data-i18n="highway-km" placeholder="Км по трассе" min="0">
+                <input type="number" id="start-mileage" placeholder="Начальный пробег (км)" min="0" data-i18n="start-mileage">
+                <input type="number" id="end-mileage" placeholder="Конечный пробег (км)" min="0" data-i18n="end-mileage">
+                <input type="number" id="start-fuel" placeholder="Топливо в баке на начало (л)" min="0" data-i18n="start-fuel">
+                <input type="number" id="highway-km" placeholder="Км по трассе" min="0" data-i18n="highway-km">
                 <button id="calculate-btn" data-i18n="calculate-btn">Рассчитать</button>
-                <p id="total-mileage" data-i18n="total-mileage"></p>
-                <p id="result" data-i18n="fuel-result"></p>
+                <p id="total-mileage"></p>
+                <p id="result"></p>
             </div>
         </div>
     </section>
@@ -90,7 +90,7 @@
         <div class="container">
             <h2 id="screenshots-title" data-i18n="screenshots-title">Скриншоты</h2>
             <div class="gallery" id="screenshot-gallery">
-                <!-- Скриншоты здесь как у тебя в коде -->
+                <!-- Скриншоты вставь сюда -->
             </div>
         </div>
     </section>
@@ -117,12 +117,8 @@
         <div class="container">
             <h2 id="download-title" data-i18n="download-title">Скачай FuelMaster</h2>
             <p id="download-desc" data-i18n="download-desc">Доступно для Android и iOS. Установи прямо сейчас!</p>
-            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary">
-                <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> <span data-i18n="download-github">Исходный код</span>
-            </a>
-            <a href="#" class="btn primary">
-                <img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> <span data-i18n="download-apk">Скачать APK</span>
-            </a>
+            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary" data-i18n="download-github">Исходный код</a>
+            <a href="#" class="btn primary" data-i18n="download-apk">Скачать APK</a>
         </div>
     </section>
 
