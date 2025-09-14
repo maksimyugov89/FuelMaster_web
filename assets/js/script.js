@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "download-apk": "Скачать APK",
             "weather-loading": "Загрузка погоды...",
             "weather-error": "Не удалось загрузить погоду",
-            "weather-info": "{city}: {icon} : {temp}°C ; {pressure} мм рт.ст."
+            "weather-info": "{city}: {icon} : {temp}°C ; {pressure} мм"
         },
         en: {
             themeLight: "Light",
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "download-apk": "Download APK",
             "weather-loading": "Loading weather...",
             "weather-error": "Failed to load weather",
-            "weather-info": "{city}: {icon} : {temp}°C ; {pressure} mmHg"
+            "weather-info": "{city}: {icon} : {temp}°C ; {pressure} mm"
         }
     };
 
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // === Изменение: автоматическое определение города по координатам ===
+    // === Изменение: автоматическое определение города по координатам и сокращение мм рт.ст. ===
     async function loadWeather() {
         if (!weatherInfo) return;
         const lang = languageSelect.value;
@@ -183,7 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.geolocation.getCurrentPosition(async (pos) => {
             const { latitude, longitude } = pos.coords;
             try {
-                // Получаем текущую погоду
                 const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
                 const data = await res.json();
                 if (data && data.current_weather) {
@@ -196,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     else if (weatherCode >= 80 && weatherCode <= 82) icon = '🌦️';
                     else if (weatherCode >= 95) icon = '⛈️';
 
-                    // Получаем город через обратное геокодирование
+                    // Обратное геокодирование
                     const geoRes = await fetch(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`);
                     const geoData = await geoRes.json();
                     const city = geoData.address.city || geoData.address.town || geoData.address.village || geoData.address.county || '—';
@@ -227,7 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentIndex = [...galleryImages].indexOf(img);
     };
 
-    // Кнопка закрытия всегда видна
     window.closeModal = function() {
         modal.style.display = 'none';
     };
