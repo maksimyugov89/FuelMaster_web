@@ -133,16 +133,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalEl = document.getElementById('total-mileage');
         const resultEl = document.getElementById('result');
 
-        if (end >= start && end - start > 0) {
-            const total = end - start;
-            const city = total - highway;
-            totalEl.textContent = `${total} км`;
-            const consumption = ((fuel / total) * 100) * (city / total * 1.2 + highway / total * 0.8);
-            resultEl.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highway} км, город: ${city} км).`;
-        } else {
-            totalEl.textContent = "0 км";
-            resultEl.textContent = "Полный расчет: расход NaN л/100 км (трасса: 0 км, город: 0 км).";
-        }
+        if (end >= start && end - start > 0 && fuel > 0) {
+           const total = end - start;
+           const city = total - highway;
+           totalEl.textContent = `${total} км`;
+           const consumption = ((fuel / total) * 100) * (city / total * 1.2 + highway / total * 0.8);
+        resultEl.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highway} км, город: ${city} км).`;
+      } else {
+           totalEl.textContent = "0 км";
+           resultEl.textContent = "Введите корректные данные для расчета.";
+      }
+       
     }
 
     document.getElementById('calculate-btn').addEventListener('click', updateMileageAndResult);
