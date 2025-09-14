@@ -260,16 +260,6 @@ body.light #hero p {
     transform: translateY(-2px);
 }
 
-/* Download logo */
-.download-logo {
-    width: 22px;
-    height: 22px;
-    border-radius: 5px;
-    object-fit: cover;
-    margin-right: 6px;
-    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
-}
-
 /* Calculator */
 #calculator {
     padding: 30px 10px;
@@ -561,11 +551,15 @@ footer a:hover {
     color: #00c4cc;
 }
 
+/* Logo */
 .download-logo {
-    width: 24px;       /* размер иконки */
+    width: 24px;
     height: 24px;
-    margin-right: 8px; /* отступ от текста */
+    border-radius: 5px;
+    object-fit: cover;
+    margin-right: 8px;
     vertical-align: middle;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
 }
 
 /* Fade-in sections */
