@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("theme-toggle");
     const themeText = document.getElementById("theme-text");
 
+    const totalMileageEl = document.getElementById("total-mileage");
+    const resultEl = document.getElementById("result");
+
     const translations = {
         ru: {
             "theme-light": "Светлая",
@@ -64,13 +67,11 @@ document.addEventListener("DOMContentLoaded", () => {
             themeText.textContent = translations[lang]["theme-dark"];
         }
 
-        // Переводим результаты калькулятора если они уже рассчитаны
-        const totalMileageEl = document.getElementById("total-mileage");
-        const resultEl = document.getElementById("result");
-        if (totalMileageEl.dataset.km) {
+        // обновляем перевод для результатов калькулятора
+        if (totalMileageEl.dataset.km !== undefined) {
             totalMileageEl.textContent = translations[lang]["total-mileage"](totalMileageEl.dataset.km);
         }
-        if (resultEl.dataset.consumption) {
+        if (resultEl.dataset.consumption !== undefined) {
             resultEl.textContent = translations[lang]["result"](
                 resultEl.dataset.consumption,
                 resultEl.dataset.highway,
@@ -101,22 +102,30 @@ document.addEventListener("DOMContentLoaded", () => {
         const startFuel = parseFloat(document.getElementById("start-fuel").value) || 0;
         const highwayKm = parseFloat(document.getElementById("highway-km").value) || 0;
 
-        const totalMileage = endMileage - startMileage;
-        const cityKm = totalMileage - highwayKm;
-        const consumption = ((startFuel / totalMileage) * 100).toFixed(2);
+        const totalMileage = Math.max(endMileage - startMileage, 0);
+        const cityKm = Math.max(totalMileage - highwayKm, 0);
+        let consumption = "NaN";
+
+        if (totalMileage > 0) {
+            consumption = ((startFuel / totalMileage) * 100).toFixed(2);
+        }
 
         const lang = languageToggle.value;
 
-        const totalMileageEl = document.getElementById("total-mileage");
         totalMileageEl.dataset.km = totalMileage;
         totalMileageEl.textContent = translations[lang]["total-mileage"](totalMileage);
 
-        const resultEl = document.getElementById("result");
         resultEl.dataset.consumption = consumption;
         resultEl.dataset.highway = highwayKm;
         resultEl.dataset.city = cityKm;
         resultEl.textContent = translations[lang]["result"](consumption, highwayKm, cityKm);
     });
+
+    // начальные значения (0 км, 0 расход)
+    totalMileageEl.dataset.km = 0;
+    resultEl.dataset.consumption = "NaN";
+    resultEl.dataset.highway = 0;
+    resultEl.dataset.city = 0;
 
     applyTranslations("ru");
 });
