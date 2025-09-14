@@ -451,7 +451,7 @@ body.light .gallery img {
 }
 
 body.light .modal {
-    background: rgba(255,255,255,0.9);
+    background: rgba(240,240,240,0.95); /* чуть серее и плотнее */
 }
 
 body.light #modal-caption {
@@ -491,6 +491,15 @@ body.light .close-modal:hover {
     border-radius: 50%;
     transition: 0.3s;
 }
+/* Для светлой темы кнопки прокрутки */
+body.light .carousel-btn {
+    background: rgba(200,200,200,0.6);
+    color: #1e1e2f;
+}
+body.light .carousel-btn:hover {
+    background: rgba(200,200,200,0.9);
+}
+
 .carousel-btn:hover {
     background: rgba(0,0,0,0.9);
 }
