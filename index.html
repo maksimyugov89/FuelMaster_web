@@ -39,7 +39,9 @@
             <h1 id="hero-title" data-i18n="hero-title">Управляй расходом топлива с умом</h1>
             <p id="hero-subtitle" data-i18n="hero-subtitle">FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.</p>
             <a href="#download" class="btn primary"><i class="fas fa-download animated-icon"></i> <span id="download-text" data-i18n="download-text">Скачать</span></a>
-            <div class="seasonal-banner" id="seasonal-banner">Осенние обновления 2025: Улучшенный расчет и новые советы по экономии до 30 сентября! <span id="countdown"></span></div>
+            <div class="seasonal-banner" id="seasonal-banner" data-i18n="seasonal-banner">
+                Осенние обновления 2025: Улучшенный расчет и новые советы по экономии до 30 сентября! <span id="countdown"></span>
+            </div>
         </div>
     </section>
 
@@ -52,8 +54,8 @@
                 <input type="number" id="start-fuel" placeholder="Топливо в баке на начало (л)" min="0" data-i18n="start-fuel">
                 <input type="number" id="highway-km" placeholder="Км по трассе" min="0" data-i18n="highway-km">
                 <button id="calculate-btn" data-i18n="calculate-btn">Рассчитать</button>
-                <p id="total-mileage"></p>
-                <p id="result"></p>
+                <p id="total-mileage" data-i18n="total-mileage">0 км</p>
+                <p id="result" data-i18n="result">Полный расчет: расход NaN л/100 км (трасса: 0 км, город: 0 км).</p>
             </div>
         </div>
     </section>
