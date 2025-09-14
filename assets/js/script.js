@@ -219,15 +219,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentIndex = 0;
 
+    // ==== Исправленные функции модалки ====
     window.openModal = function(img) {
-        modal.style.display = 'flex';
+        currentIndex = [...galleryImages].indexOf(img);
         modalImg.src = img.src;
         modalCaption.textContent = img.alt;
-        currentIndex = [...galleryImages].indexOf(img);
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('show'), 10); // плавное появление
     };
 
     window.closeModal = function() {
-        modal.style.display = 'none';
+        modal.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 300); // ждём завершения анимации
     };
 
     window.nextImage = function() {
@@ -241,4 +244,16 @@ document.addEventListener('DOMContentLoaded', () => {
         modalImg.src = galleryImages[currentIndex].src;
         modalCaption.textContent = galleryImages[currentIndex].alt;
     };
+
+    // Добавляем событие двойного клика для открытия модалки
+    galleryImages.forEach(img => {
+        img.addEventListener('dblclick', () => openModal(img));
+    });
+
+    // Закрытие модалки по клику на фон
+    modal.addEventListener('click', e => {
+        if (e.target === modal || e.target.classList.contains('close-modal')) {
+            closeModal();
+        }
+    });
 });
