@@ -441,7 +441,7 @@ footer a:hover {
 }
 
 .modal {
-    display: none;
+    display: none; /* скрыта по умолчанию */
     position: fixed;
     top: 0;
     left: 0;
@@ -449,19 +449,28 @@ footer a:hover {
     height: 100vh;
     background: rgba(0,0,0,0.8);
     z-index: 1000;
+
+    /* flex для центрирования содержимого */
+    display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px; /* небольшой отступ для мобильных */
 }
 
 .modal-content {
     position: relative;
-    width: 90%;
-    height: 90%;
+    max-width: 90%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #modal-img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     border-radius: 10px;
 }
@@ -469,46 +478,26 @@ footer a:hover {
 .close-modal {
     position: absolute;
     top: 10px;
-    right: 20px;
+    right: 10px;
     font-size: 30px;
     color: #fff;
     cursor: pointer;
+    z-index: 1010; /* поверх картинки */
+    transition: color 0.3s ease;
 }
 
-#modal-caption {
-    color: #fff;
-    text-align: center;
-    margin-top: 10px;
-    font-size: 0.9em;
+.close-modal:hover {
+    color: #ff4d4d;
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 5px;
-    }
-    #hero h1 {
-        font-size: 1.5em;
-    }
-    #hero p {
-        font-size: 1em;
-    }
-    .btn {
-        padding: 8px 15px;
-    }
-    .feature-card {
+    .modal {
         padding: 10px;
-    }
-    .gallery img {
-        max-width: 120px;
     }
     .close-modal {
         top: 15px;
-        right: 25px;
-        font-size: 35px;
-    }
-    #modal-img {
-        width: 100vw;
-        height: 100vh;
+        right: 15px;
+        font-size: 28px;
     }
 }
 
