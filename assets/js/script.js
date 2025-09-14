@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalImg = document.getElementById('modal-img');
     const modalCaption = document.getElementById('modal-caption');
 
+    const weatherInfo = document.getElementById('weather-info'); // новый блок для погоды
+
     // Переводы
     const translations = {
         ru: {
@@ -45,7 +47,10 @@ document.addEventListener('DOMContentLoaded', () => {
             "download-title": "Скачай FuelMaster",
             "download-desc": "Доступно для Android и iOS. Установи прямо сейчас!",
             "download-github": "Исходный код",
-            "download-apk": "Скачать APK"
+            "download-apk": "Скачать APK",
+            "weather-loading": "Загрузка погоды...",
+            "weather-error": "Не удалось загрузить погоду",
+            "weather-info": "Погода: {temp}°C, {desc}"
         },
         en: {
             themeLight: "Light",
@@ -81,7 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
             "download-title": "Download FuelMaster",
             "download-desc": "Available for Android and iOS. Install now!",
             "download-github": "Source Code",
-            "download-apk": "Download APK"
+            "download-apk": "Download APK",
+            "weather-loading": "Loading weather...",
+            "weather-error": "Failed to load weather",
+            "weather-info": "Weather: {temp}°C, {desc}"
         }
     };
 
@@ -104,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     languageSelect.addEventListener('change', () => {
         applyTranslation(languageSelect.value);
         updateGalleryImages();
+        if (weatherInfo) loadWeather(); // при смене языка обновляем текст погоды
     });
 
     // Переключение темы
@@ -173,6 +182,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // === Погода ===
+    async function loadWeather() {
+        if (!weatherInfo) return;
+        const lang = languageSelect.value;
+        weatherInfo.textContent = translations[lang]["weather-loading"];
+
+        if (!navigator.geolocation) {
+            weatherInfo.textContent = translations[lang]["weather-error"];
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            const { latitude, longitude } = pos.coords;
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+                const data = await res.json();
+                if (data && data.current_weather) {
+                    const temp = data.current_weather.temperature;
+                    const desc = data.current_weather.weathercode; // код погоды
+                    weatherInfo.textContent = translations[lang]["weather-info"]
+                        .replace("{temp}", temp)
+                        .replace("{desc}", "код " + desc);
+                } else {
+                    weatherInfo.textContent = translations[lang]["weather-error"];
+                }
+            } catch (e) {
+                weatherInfo.textContent = translations[lang]["weather-error"];
+            }
+        }, () => {
+            weatherInfo.textContent = translations[lang]["weather-error"];
+        });
+    }
+
+    loadWeather();
 
     // Модальное окно для скриншотов
     let currentIndex = 0;
