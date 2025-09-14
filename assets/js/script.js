@@ -4,12 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeText = document.getElementById('theme-text');
     const languageSelect = document.getElementById('language-toggle');
 
-    const galleryImages = document.querySelectorAll('#screenshot-gallery img');
     const modal = document.getElementById('modal');
     const modalImg = document.getElementById('modal-img');
     const modalCaption = document.getElementById('modal-caption');
 
-    // Переводы
+    // Перевод текста
     const translations = {
         ru: {
             themeLight: "Светлая",
@@ -83,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Применение перевода
+    // Применяем перевод
     function applyTranslation(lang) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
@@ -97,33 +96,22 @@ document.addEventListener('DOMContentLoaded', () => {
         updateMileageAndResult();
     }
 
-    languageSelect.addEventListener('change', () => {
-        applyTranslation(languageSelect.value);
-        updateGalleryImages();
-    });
+    languageSelect.addEventListener('change', () => applyTranslation(languageSelect.value));
 
-    // Переключение темы
-    toggleButton.addEventListener('click', () => {
-        body.classList.toggle('light');
-        const currentTheme = body.classList.contains('light') ? 'light' : 'dark';
-        localStorage.setItem('theme', currentTheme);
-        themeText.textContent = currentTheme === 'light' ? translations[languageSelect.value].themeDark : translations[languageSelect.value].themeLight;
-        applyTranslation(languageSelect.value);
-        updateGalleryImages();
-    });
-
-    // Инициализация темы при загрузке
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    if(savedTheme === 'light') {
+    // Инициализация темы
+    if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light');
     } else {
-        body.classList.remove('light');
+        localStorage.setItem('theme', 'dark');
     }
-    themeText.textContent = savedTheme === 'light' ? translations[languageSelect.value].themeDark : translations[languageSelect.value].themeLight;
-    updateGalleryImages();
-    applyTranslation(languageSelect.value);
 
-    // Калькулятор
+    toggleButton.addEventListener('click', () => {
+        body.classList.toggle('light');
+        localStorage.setItem('theme', body.classList.contains('light') ? 'light' : 'dark');
+        themeText.textContent = body.classList.contains('light') ? translations[languageSelect.value].themeDark : translations[languageSelect.value].themeLight;
+    });
+
+    // Калькулятор топлива
     function updateMileageAndResult() {
         const start = parseFloat(document.getElementById('start-mileage').value) || 0;
         const end = parseFloat(document.getElementById('end-mileage').value) || 0;
@@ -140,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const consumption = ((fuel / total) * 100) * (city / total * 1.2 + highway / total * 0.8);
             resultEl.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highway} км, город: ${city} км).`;
         } else {
-            totalEl.textContent = "0 км";
-            resultEl.textContent = "Полный расчет: расход NaN л/100 км (трасса: 0 км, город: 0 км).";
+            totalEl.textContent = translations[languageSelect.value]['total-mileage'];
+            resultEl.textContent = translations[languageSelect.value]['result'];
         }
     }
 
@@ -150,26 +138,22 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(id).addEventListener('input', updateMileageAndResult);
     });
 
-    // Обновление скриншотов для текущей темы
-    function updateGalleryImages() {
-        const theme = body.classList.contains('light') ? 'light' : 'dark';
-        galleryImages.forEach(img => {
-            const lightSrc = img.getAttribute('data-light');
-            const darkSrc = img.src.includes('-dark') ? img.src : img.src; // если уже тёмный
-            if (lightSrc) {
-                img.src = theme === 'light' ? lightSrc : darkSrc.replace('-light', '-dark');
-            }
-        });
-    }
+    applyTranslation(languageSelect.value);
 
     // Модальное окно для скриншотов
     window.openModal = function(img) {
         modal.style.display = 'block';
-        modalImg.src = img.src;
+        modalImg.src = img.src.includes('-dark') && body.classList.contains('light') ? img.dataset.light : img.src;
         modalCaption.textContent = img.alt;
     };
 
     window.closeModal = function() {
         modal.style.display = 'none';
     };
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.classList.contains('close-modal')) {
+            closeModal();
+        }
+    });
 });
