@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fuelmaster-v1';
+const CACHE_NAME = 'fuelmaster-v2';
 const urlsToCache = [
     '/',
     '/index.html',
