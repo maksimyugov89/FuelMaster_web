@@ -29,7 +29,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
-    animation: gradient-shift 5s ease infinite;
+    animation: gradient-shift 40s ease infinite;
     background-size: 200% 200%;
 }
 
@@ -171,7 +171,7 @@ body.light #theme-toggle {
 
 @keyframes particle-float {
     0% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-20px) scale(1.2); }
+    50% { transform: translateY(-10px) scale(1.1); }
     100% { transform: translateY(0) scale(1); }
 }
 
@@ -520,3 +520,22 @@ footer a:hover {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.6);
+    border: none;
+    color: white;
+    font-size: 30px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.carousel-btn:hover {
+    background: rgba(0,0,0,0.9);
+}
+.carousel-btn.prev { left: 20px; }
+.carousel-btn.next { right: 20px; }
