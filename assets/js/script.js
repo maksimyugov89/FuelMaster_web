@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeText = document.getElementById('theme-text');
     const languageSelect = document.getElementById('language-toggle');
 
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCaption = document.getElementById('modal-caption');
+
     // Перевод текста
     const translations = {
         ru: {
@@ -78,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Присвоение перевода элементам
+    // Применяем перевод
     function applyTranslation(lang) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
@@ -120,11 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (end >= start && end - start > 0) {
             const total = end - start;
             const city = total - highway;
-            totalEl.textContent = `${translations[languageSelect.value].totalMileageText || translations[languageSelect.value]['total-mileage']}: ${total} км`;
+            totalEl.textContent = `${total} км`;
             const consumption = ((fuel / total) * 100) * (city / total * 1.2 + highway / total * 0.8);
-            resultEl.textContent = translations[languageSelect.value]['result'].replace('NaN', consumption.toFixed(2))
-                .replace('0', highway)
-                .replace('0', city);
+            resultEl.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highway} км, город: ${city} км).`;
         } else {
             totalEl.textContent = translations[languageSelect.value]['total-mileage'];
             resultEl.textContent = translations[languageSelect.value]['result'];
@@ -137,4 +139,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     applyTranslation(languageSelect.value);
+
+    // Модальное окно для скриншотов
+    window.openModal = function(img) {
+        modal.style.display = 'block';
+        modalImg.src = img.src.includes('-dark') && body.classList.contains('light') ? img.dataset.light : img.src;
+        modalCaption.textContent = img.alt;
+    };
+
+    window.closeModal = function() {
+        modal.style.display = 'none';
+    };
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.classList.contains('close-modal')) {
+            closeModal();
+        }
+    });
 });
