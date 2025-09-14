@@ -77,6 +77,10 @@ header .header-content {
     gap: 5px;
 }
 
+body.light .weather-info {
+    color: #2c2c3e; /* тёмный цвет текста для светлой темы */
+}
+
 .weather-loading {
     animation: spin 1s linear infinite;
 }
@@ -452,6 +456,14 @@ body.light .modal {
 
 body.light #modal-caption {
     color: #1e1e2f;
+}
+
+body.light .close-modal {
+    color: #1e1e2f; /* тёмный цвет крестика для светлой темы */
+}
+
+body.light .close-modal:hover {
+    color: #ff4d4d; /* оставляем красным при наведении */
 }
 
 @media (max-width: 768px) {
