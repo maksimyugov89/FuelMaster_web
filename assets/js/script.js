@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modal');
     const modalImg = document.getElementById('modal-img');
     const modalCaption = document.getElementById('modal-caption');
+    const closeModalBtn = document.getElementById('modal-close'); // кнопка закрытия
 
     const weatherInfo = document.getElementById('weather-info');
 
-    // Переводы
     const translations = {
         ru: {
             themeLight: "Светлая",
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "download-apk": "Скачать APK",
             "weather-loading": "Загрузка погоды...",
             "weather-error": "Не удалось загрузить погоду",
-            "weather-info": "Погода: {temp}°C, {city}, Давление: {pressure} мм рт.ст."
+            "weather-info": "{city}: {icon} : {temp}°C; {pressure} мм рт.ст."
         },
         en: {
             themeLight: "Light",
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "download-apk": "Download APK",
             "weather-loading": "Loading weather...",
             "weather-error": "Failed to load weather",
-            "weather-info": "Weather: {temp}°C, {city}, Pressure: {pressure} mmHg"
+            "weather-info": "{city}: {icon} : {temp}°C; {pressure} mmHg"
         }
     };
 
@@ -186,11 +186,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 if (data && data.current_weather) {
                     const temp = data.current_weather.temperature;
-                    const city = "Курск"; // пример города
-                    const pressure = 760; // пример давления
+                    const icon = data.current_weather.weathercode; // код осадков
+                    const city = "Курск";
+                    const pressure = 760;
                     weatherInfo.textContent = translations[lang]["weather-info"]
-                        .replace("{temp}", temp)
                         .replace("{city}", city)
+                        .replace("{icon}", "🌦" /* или выбрать по коду */)
+                        .replace("{temp}", temp)
                         .replace("{pressure}", pressure);
                 } else weatherInfo.textContent = translations[lang]["weather-error"];
             } catch {
@@ -210,11 +212,12 @@ document.addEventListener('DOMContentLoaded', () => {
         modalImg.src = img.src;
         modalCaption.textContent = img.alt;
         currentIndex = [...galleryImages].indexOf(img);
+        closeModalBtn.style.display = 'block'; // показываем кнопку
     };
 
-    // Кнопка закрытия всегда видна
     window.closeModal = function() {
         modal.style.display = 'none';
+        closeModalBtn.style.display = 'none';
     };
 
     window.nextImage = function() {
