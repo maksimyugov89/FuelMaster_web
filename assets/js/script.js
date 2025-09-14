@@ -173,4 +173,29 @@ document.addEventListener('DOMContentLoaded', () => {
     window.closeModal = function() {
         modal.style.display = 'none';
     };
+
+    let currentIndex = 0;
+
+    window.openModal = function(img) {
+        modal.style.display = 'block';
+        modalImg.src = img.src;
+        modalCaption.textContent = img.alt;
+        currentIndex = [...galleryImages].indexOf(img);
+    };
+
+    window.closeModal = function() {
+        modal.style.display = 'none';
+    };
+
+    window.nextImage = function() {
+        currentIndex = (currentIndex + 1) % galleryImages.length;
+        modalImg.src = galleryImages[currentIndex].src;
+        modalCaption.textContent = galleryImages[currentIndex].alt;
+    };
+
+    window.prevImage = function() {
+        currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+        modalImg.src = galleryImages[currentIndex].src;
+        modalCaption.textContent = galleryImages[currentIndex].alt;
+    };
 });
