@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalImg = document.getElementById('modal-img');
     const modalCaption = document.getElementById('modal-caption');
 
-    const weatherInfo = document.getElementById('weather-info'); // новый блок для погоды
+    const weatherInfo = document.getElementById('weather-info');
 
     // Переводы
     const translations = {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "download-apk": "Скачать APK",
             "weather-loading": "Загрузка погоды...",
             "weather-error": "Не удалось загрузить погоду",
-            "weather-info": "Погода: {temp}°C, {desc}"
+            "weather-info": "Погода: {temp}°C, {city}, Давление: {pressure} мм рт.ст."
         },
         en: {
             themeLight: "Light",
@@ -89,19 +89,15 @@ document.addEventListener('DOMContentLoaded', () => {
             "download-apk": "Download APK",
             "weather-loading": "Loading weather...",
             "weather-error": "Failed to load weather",
-            "weather-info": "Weather: {temp}°C, {desc}"
+            "weather-info": "Weather: {temp}°C, {city}, Pressure: {pressure} mmHg"
         }
     };
 
-    // Применение перевода
     function applyTranslation(lang) {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            if (el.tagName === 'INPUT') {
-                el.placeholder = translations[lang][key];
-            } else {
-                el.textContent = translations[lang][key];
-            }
+            if (el.tagName === 'INPUT') el.placeholder = translations[lang][key];
+            else el.textContent = translations[lang][key];
         });
         themeText.textContent = body.classList.contains('light')
             ? translations[lang].themeDark
@@ -112,10 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
     languageSelect.addEventListener('change', () => {
         applyTranslation(languageSelect.value);
         updateGalleryImages();
-        if (weatherInfo) loadWeather(); // при смене языка обновляем текст погоды
+        if (weatherInfo) loadWeather();
     });
 
-    // Переключение темы
     toggleButton.addEventListener('click', () => {
         body.classList.toggle('light');
         const currentTheme = body.classList.contains('light') ? 'light' : 'dark';
@@ -127,20 +122,14 @@ document.addEventListener('DOMContentLoaded', () => {
         updateGalleryImages();
     });
 
-    // Инициализация темы при загрузке
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    if (savedTheme === 'light') {
-        body.classList.add('light');
-    } else {
-        body.classList.remove('light');
-    }
+    if (savedTheme === 'light') body.classList.add('light'); else body.classList.remove('light');
     themeText.textContent = savedTheme === 'light'
         ? translations[languageSelect.value].themeDark
         : translations[languageSelect.value].themeLight;
     updateGalleryImages();
     applyTranslation(languageSelect.value);
 
-    // Калькулятор
     function updateMileageAndResult() {
         const lang = languageSelect.value;
         const start = parseFloat(document.getElementById('start-mileage').value) || 0;
@@ -172,18 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(id).addEventListener('input', updateMileageAndResult);
     });
 
-    // Обновление скриншотов для текущей темы
     function updateGalleryImages() {
         const theme = body.classList.contains('light') ? 'light' : 'dark';
         galleryImages.forEach(img => {
             const lightSrc = img.getAttribute('data-light');
-            if (lightSrc) {
-                img.src = theme === 'light' ? lightSrc : lightSrc.replace('-light', '-dark');
-            }
+            if (lightSrc) img.src = theme === 'light' ? lightSrc : lightSrc.replace('-light', '-dark');
         });
     }
 
-    // === Погода ===
     async function loadWeather() {
         if (!weatherInfo) return;
         const lang = languageSelect.value;
@@ -201,14 +186,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 if (data && data.current_weather) {
                     const temp = data.current_weather.temperature;
-                    const desc = data.current_weather.weathercode; // код погоды
+                    const city = "Курск"; // пример города
+                    const pressure = 760; // пример давления
                     weatherInfo.textContent = translations[lang]["weather-info"]
                         .replace("{temp}", temp)
-                        .replace("{desc}", "код " + desc);
-                } else {
-                    weatherInfo.textContent = translations[lang]["weather-error"];
-                }
-            } catch (e) {
+                        .replace("{city}", city)
+                        .replace("{pressure}", pressure);
+                } else weatherInfo.textContent = translations[lang]["weather-error"];
+            } catch {
                 weatherInfo.textContent = translations[lang]["weather-error"];
             }
         }, () => {
@@ -218,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadWeather();
 
-    // Модальное окно для скриншотов
     let currentIndex = 0;
 
     window.openModal = function(img) {
@@ -228,6 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentIndex = [...galleryImages].indexOf(img);
     };
 
+    // Кнопка закрытия всегда видна
     window.closeModal = function() {
         modal.style.display = 'none';
     };
