@@ -23,8 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "start-fuel": "Топливо в баке на начало (л)",
             "highway-km": "Км по трассе",
             "calculate-btn": "Рассчитать",
-            "total-mileage": "0 км",
-            "result": "Полный расчет: расход NaN л/100 км (трасса: 0 км, город: 0 км).",
+            "total-mileage-template": "{total} км",
+            "result-template": "Полный расчет: расход {consumption} л/100 км (трасса: {highway} км, город: {city} км).",
+            "result-invalid": "Введите корректные данные для расчета.",
             "seasonal-banner": "Осенние обновления 2025: Улучшенный расчет и новые советы по экономии до 30 сентября!",
             "features-title": "Основные возможности",
             "feature1-title": "Управление авто",
@@ -58,8 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "start-fuel": "Fuel in Tank at Start (l)",
             "highway-km": "Highway km",
             "calculate-btn": "Calculate",
-            "total-mileage": "0 km",
-            "result": "Full calculation: consumption NaN L/100 km (highway: 0 km, city: 0 km).",
+            "total-mileage-template": "{total} km",
+            "result-template": "Full calculation: consumption {consumption} L/100 km (highway: {highway} km, city: {city} km).",
+            "result-invalid": "Enter valid data for calculation.",
             "seasonal-banner": "Autumn updates 2025: Improved calculation and new saving tips until September 30!",
             "features-title": "Key Features",
             "feature1-title": "Vehicle Management",
@@ -93,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.textContent = translations[lang][key];
             }
         });
-        themeText.textContent = body.classList.contains('light') ? translations[lang].themeDark : translations[lang].themeLight;
+        themeText.textContent = body.classList.contains('light')
+            ? translations[lang].themeDark
+            : translations[lang].themeLight;
         updateMileageAndResult();
     }
 
@@ -107,24 +111,29 @@ document.addEventListener('DOMContentLoaded', () => {
         body.classList.toggle('light');
         const currentTheme = body.classList.contains('light') ? 'light' : 'dark';
         localStorage.setItem('theme', currentTheme);
-        themeText.textContent = currentTheme === 'light' ? translations[languageSelect.value].themeDark : translations[languageSelect.value].themeLight;
+        themeText.textContent = currentTheme === 'light'
+            ? translations[languageSelect.value].themeDark
+            : translations[languageSelect.value].themeLight;
         applyTranslation(languageSelect.value);
         updateGalleryImages();
     });
 
     // Инициализация темы при загрузке
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    if(savedTheme === 'light') {
+    if (savedTheme === 'light') {
         body.classList.add('light');
     } else {
         body.classList.remove('light');
     }
-    themeText.textContent = savedTheme === 'light' ? translations[languageSelect.value].themeDark : translations[languageSelect.value].themeLight;
+    themeText.textContent = savedTheme === 'light'
+        ? translations[languageSelect.value].themeDark
+        : translations[languageSelect.value].themeLight;
     updateGalleryImages();
     applyTranslation(languageSelect.value);
 
     // Калькулятор
     function updateMileageAndResult() {
+        const lang = languageSelect.value;
         const start = parseFloat(document.getElementById('start-mileage').value) || 0;
         const end = parseFloat(document.getElementById('end-mileage').value) || 0;
         const fuel = parseFloat(document.getElementById('start-fuel').value) || 0;
@@ -134,16 +143,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultEl = document.getElementById('result');
 
         if (end >= start && end - start > 0 && fuel > 0) {
-           const total = end - start;
-           const city = total - highway;
-           totalEl.textContent = `${total} км`;
-           const consumption = ((fuel / total) * 100) * (city / total * 1.2 + highway / total * 0.8);
-        resultEl.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highway} км, город: ${city} км).`;
-      } else {
-           totalEl.textContent = "0 км";
-           resultEl.textContent = "Введите корректные данные для расчета.";
-      }
-       
+            const total = end - start;
+            const city = total - highway;
+            const consumption = ((fuel / total) * 100) * (city / total * 1.2 + highway / total * 0.8);
+
+            totalEl.textContent = translations[lang]["total-mileage-template"].replace("{total}", total);
+            resultEl.textContent = translations[lang]["result-template"]
+                .replace("{consumption}", consumption.toFixed(2))
+                .replace("{highway}", highway)
+                .replace("{city}", city);
+        } else {
+            totalEl.textContent = translations[lang]["total-mileage-template"].replace("{total}", 0);
+            resultEl.textContent = translations[lang]["result-invalid"];
+        }
     }
 
     document.getElementById('calculate-btn').addEventListener('click', updateMileageAndResult);
@@ -156,24 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const theme = body.classList.contains('light') ? 'light' : 'dark';
         galleryImages.forEach(img => {
             const lightSrc = img.getAttribute('data-light');
-            const darkSrc = img.src.includes('-dark') ? img.src : img.src; // если уже тёмный
             if (lightSrc) {
-                img.src = theme === 'light' ? lightSrc : darkSrc.replace('-light', '-dark');
+                img.src = theme === 'light' ? lightSrc : lightSrc.replace('-light', '-dark');
             }
         });
     }
 
     // Модальное окно для скриншотов
-    window.openModal = function(img) {
-        modal.style.display = 'block';
-        modalImg.src = img.src;
-        modalCaption.textContent = img.alt;
-    };
-
-    window.closeModal = function() {
-        modal.style.display = 'none';
-    };
-
     let currentIndex = 0;
 
     window.openModal = function(img) {
