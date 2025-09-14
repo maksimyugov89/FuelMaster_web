@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "start-fuel": "Топливо в баке на начало (л)",
             "highway-km": "Км по трассе",
             "calculate-btn": "Рассчитать",
-            totalMileageText: "Общий километраж",
+            "total-mileage": "0 км",
+            "result": "Полный расчет: расход NaN л/100 км (трасса: 0 км, город: 0 км).",
+            "seasonal-banner": "Осенние обновления 2025: Улучшенный расчет и новые советы по экономии до 30 сентября!",
             "features-title": "Основные возможности",
             "feature1-title": "Управление авто",
             "feature1-desc": "Добавление, редактирование, удаление автомобилей с базой моделей из CSV.",
@@ -51,7 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "start-fuel": "Fuel in Tank at Start (l)",
             "highway-km": "Highway km",
             "calculate-btn": "Calculate",
-            totalMileageText: "Total Mileage",
+            "total-mileage": "0 km",
+            "result": "Full calculation: consumption NaN L/100 km (highway: 0 km, city: 0 km).",
+            "seasonal-banner": "Autumn updates 2025: Improved calculation and new saving tips until September 30!",
             "features-title": "Key Features",
             "feature1-title": "Vehicle Management",
             "feature1-desc": "Add, edit, and delete vehicles with a CSV model database.",
@@ -113,15 +117,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalEl = document.getElementById('total-mileage');
         const resultEl = document.getElementById('result');
 
-        if (end >= start) {
+        if (end >= start && end - start > 0) {
             const total = end - start;
             const city = total - highway;
-            totalEl.textContent = `${translations[languageSelect.value].totalMileageText}: ${total} км`;
+            totalEl.textContent = `${translations[languageSelect.value].totalMileageText || translations[languageSelect.value]['total-mileage']}: ${total} км`;
             const consumption = ((fuel / total) * 100) * (city / total * 1.2 + highway / total * 0.8);
-            resultEl.textContent = `Полный расчет: расход ${consumption.toFixed(2)} л/100 км (трасса: ${highway} км, город: ${city} км).`;
+            resultEl.textContent = translations[languageSelect.value]['result'].replace('NaN', consumption.toFixed(2))
+                .replace('0', highway)
+                .replace('0', city);
         } else {
-            totalEl.textContent = `${translations[languageSelect.value].totalMileageText}: 0 км (конечный пробег должен быть больше начального)`;
-            resultEl.textContent = '';
+            totalEl.textContent = translations[languageSelect.value]['total-mileage'];
+            resultEl.textContent = translations[languageSelect.value]['result'];
         }
     }
 
@@ -130,33 +136,5 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(id).addEventListener('input', updateMileageAndResult);
     });
 
-    // Присваиваем data-i18n элементам
-    function initDataI18n() {
-        const elements = [
-            "hero-title","hero-subtitle","download-text","calculator-title",
-            "start-mileage","end-mileage","start-fuel","highway-km","calculate-btn",
-            "features-title","feature1-title","feature1-desc","feature2-title","feature2-desc",
-            "feature3-title","feature3-desc","feature4-title","feature4-desc",
-            "screenshots-title","testimonials-title",
-            "testimonial1-text","testimonial1-author","testimonial2-text","testimonial2-author",
-            "download-title","download-desc","download-github","download-apk"
-        ];
-        elements.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.setAttribute('data-i18n', id);
-        });
-        // input placeholders
-        ['start-mileage','end-mileage','start-fuel','highway-km'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.setAttribute('data-i18n', id);
-        });
-        // кнопки
-        const downloadGit = document.querySelector('a.btn.secondary');
-        if (downloadGit) downloadGit.setAttribute('data-i18n','download-github');
-        const downloadApk = document.querySelector('a.btn.primary');
-        if (downloadApk) downloadApk.setAttribute('data-i18n','download-apk');
-    }
-
-    initDataI18n();
     applyTranslation(languageSelect.value);
 });
