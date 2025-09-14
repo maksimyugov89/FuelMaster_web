@@ -25,10 +25,9 @@
                         <option value="en">EN</option>
                     </select>
                     <button id="theme-toggle" aria-label="Переключить тему">
-                        <span id="theme-text" data-i18n="themeLight">Светлая</span>
+                        <span id="theme-text"></span>
                     </button>
                 </div>
-                <div id="weather-info"></div>
             </div>
         </div>
     </header>
@@ -151,11 +150,13 @@
 
     <div id="modal" class="modal">
        <span class="close-modal" onclick="closeModal()">&times;</span>
-         <button class="carousel-btn prev" onclick="prevImage()">&#10094;</button>
-                 <img id="modal-img" src="" alt="Увеличенное изображение">
-         <button class="carousel-btn next" onclick="nextImage()">&#10095;</button>
-    <p id="modal-caption"></p>
-</div>
+       <div class="modal-content">
+           <button class="carousel-btn prev" onclick="prevImage()">&#10094;</button>
+           <img id="modal-img" src="" alt="Увеличенное изображение">
+           <button class="carousel-btn next" onclick="nextImage()">&#10095;</button>
+           <p id="modal-caption"></p>
+       </div>
+    </div>
 
     <script src="assets/js/script.js"></script>
 </body>
