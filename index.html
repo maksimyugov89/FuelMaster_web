@@ -92,18 +92,18 @@
         <div class="container">
             <h2 id="screenshots-title" data-i18n="screenshots-title">Скриншоты</h2>
             <div class="gallery" id="screenshot-gallery">
-                <img src="assets/img/Screenshot-1-dark.jpg" alt="Скриншот 1" loading="lazy" data-light="assets/img/Screenshot-1-light.jpg">
-                <img src="assets/img/Screenshot-2-dark.jpg" alt="Скриншот 2" loading="lazy" data-light="assets/img/Screenshot-2-light.jpg">
-                <img src="assets/img/Screenshot-3-dark.jpg" alt="Скриншот 3" loading="lazy" data-light="assets/img/Screenshot-3-light.jpg">
-                <img src="assets/img/Screenshot-4-dark.jpg" alt="Скриншот 4" loading="lazy" data-light="assets/img/Screenshot-4-light.jpg">
-                <img src="assets/img/Screenshot-5-dark.jpg" alt="Скриншот 5" loading="lazy" data-light="assets/img/Screenshot-5-light.jpg">
-                <img src="assets/img/Screenshot-6-dark.jpg" alt="Скриншот 6" loading="lazy" data-light="assets/img/Screenshot-6-light.jpg">
-                <img src="assets/img/Screenshot-7-dark.jpg" alt="Скриншот 7" loading="lazy" data-light="assets/img/Screenshot-7-light.jpg">
-                <img src="assets/img/Screenshot-8-dark.jpg" alt="Скриншот 8" loading="lazy" data-light="assets/img/Screenshot-8-light.jpg">
-                <img src="assets/img/Screenshot-9-dark.jpg" alt="Скриншот 9" loading="lazy" data-light="assets/img/Screenshot-9-light.jpg">
-                <img src="assets/img/Screenshot-10-dark.jpg" alt="Скриншот 10" loading="lazy">
-                <img src="assets/img/Screenshot-11-dark.jpg" alt="Скриншот 11" loading="lazy">
-                <img src="assets/img/Screenshot-12-dark.jpg" alt="Скриншот 12" loading="lazy">
+                <img src="assets/img/Screenshot-1-dark.jpg" alt="Скриншот 1" loading="lazy" data-light="assets/img/Screenshot-1-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-2-dark.jpg" alt="Скриншот 2" loading="lazy" data-light="assets/img/Screenshot-2-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-3-dark.jpg" alt="Скриншот 3" loading="lazy" data-light="assets/img/Screenshot-3-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-4-dark.jpg" alt="Скриншот 4" loading="lazy" data-light="assets/img/Screenshot-4-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-5-dark.jpg" alt="Скриншот 5" loading="lazy" data-light="assets/img/Screenshot-5-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-6-dark.jpg" alt="Скриншот 6" loading="lazy" data-light="assets/img/Screenshot-6-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-7-dark.jpg" alt="Скриншот 7" loading="lazy" data-light="assets/img/Screenshot-7-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-8-dark.jpg" alt="Скриншот 8" loading="lazy" data-light="assets/img/Screenshot-8-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-9-dark.jpg" alt="Скриншот 9" loading="lazy" data-light="assets/img/Screenshot-9-light.jpg" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-10-dark.jpg" alt="Скриншот 10" loading="lazy" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-11-dark.jpg" alt="Скриншот 11" loading="lazy" ondblclick="openModal(this)">
+                <img src="assets/img/Screenshot-12-dark.jpg" alt="Скриншот 12" loading="lazy" ondblclick="openModal(this)">
             </div>
         </div>
     </section>
@@ -155,26 +155,5 @@
     </div>
 
     <script src="assets/js/script.js"></script>
-    <script>
-        // Открытие модального окна при двойном клике на скриншот
-        const gallery = document.getElementById('screenshot-gallery');
-        const modal = document.getElementById('modal');
-        const modalImg = document.getElementById('modal-img');
-        const modalCaption = document.getElementById('modal-caption');
-
-        gallery.querySelectorAll('img').forEach(img => {
-            img.addEventListener('dblclick', () => {
-                modal.style.display = 'block';
-                modalImg.src = img.src.includes('-dark') && document.body.classList.contains('light') ? img.dataset.light : img.src;
-                modalCaption.textContent = img.alt;
-            });
-        });
-
-        function closeModal() {
-            modal.style.display = 'none';
-            modalImg.src = '';
-            modalCaption.textContent = '';
-        }
-    </script>
 </body>
 </html>
