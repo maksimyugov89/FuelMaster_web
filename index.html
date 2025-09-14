@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FuelMaster</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
     <header>
         <div class="top-bar">
-            <div class="weather">11°C, Курск **760 мм</div>
+            <div class="weather" id="weather">11°C, Курск 760 мм</div>
             <div class="lang-switch">
                 <button class="lang-btn" data-lang="ru">RU</button>
                 <button class="lang-btn" data-lang="en">EN</button>
@@ -25,44 +24,46 @@
 
     <main>
         <section class="intro">
-            <h1># Manage fuel consumption wisely</h1>
-            <p>FuelMaster — a comprehensive app for tracking cars, calculating fuel, and useful tips.</p>
-            <a href="https://maksimyugov89.github.io/FuelMaster_web/#download" data-i18n="downloadApk">Скачать APK</a>
+            <h1 id="hero-title">Управляй расходом топлива с умом</h1>
+            <p id="hero-subtitle">FuelMaster — комплексное приложение для отслеживания автомобилей, расчёта топлива и полезных советов.</p>
+            <a href="#download" class="btn primary" data-i18n="downloadApk">Скачать APK</a>
         </section>
 
         <section class="calculator">
-            <h2 data-i18n="calcTitle">## Рассчитать расход топлива</h2>
+            <h2 data-i18n="calcTitle">Рассчитайте расход топлива</h2>
             <button id="calc-btn">Рассчитать</button>
-            <p id="total-mileage" data-value="0">Total Mileage: 0 км</p>
-            <p id="full-calc" data-consumption="NaN" data-highway="0" data-city="0">Полный расчёт: расход NaN л/100 км (трасса: 0 км, город: 0 км).</p>
+            <p id="total-mileage" data-value="0">Общий километраж: 0 км</p>
+            <p id="full-calc" data-consumption="NaN" data-highway="0" data-city="0">
+                Полный расчёт: расход NaN л/100 км (трасса: 0 км, город: 0 км).
+            </p>
         </section>
 
         <section class="features">
-            <h2 data-i18n="features">## Основные возможности</h2>
+            <h2 data-i18n="features">Основные возможности</h2>
 
             <div class="feature">
-                <h3 data-i18n="feature1">### Управление авто</h3>
+                <h3 data-i18n="feature1">Управление авто</h3>
                 <p data-i18n="feature1_desc">Добавление, редактирование, удаление автомобилей с базой моделей из CSV.</p>
             </div>
 
             <div class="feature">
-                <h3 data-i18n="feature2">### Расчёт расхода</h3>
+                <h3 data-i18n="feature2">Расчёт расхода</h3>
                 <p data-i18n="feature2_desc">Учёт города/трассы, погоды, кондиционера и других факторов.</p>
             </div>
 
             <div class="feature">
-                <h3 data-i18n="feature3">### История и графики</h3>
+                <h3 data-i18n="feature3">История и графики</h3>
                 <p data-i18n="feature3_desc">Хранение, фильтры и визуализация с fl_chart.</p>
             </div>
 
             <div class="feature">
-                <h3 data-i18n="feature4">### Безопасность и премиум</h3>
+                <h3 data-i18n="feature4">Безопасность и премиум</h3>
                 <p data-i18n="feature4_desc">Firebase вход, синхронизация с Firestore для премиум.</p>
             </div>
         </section>
 
         <section class="screenshots">
-            <h2>## Screenshots</h2>
+            <h2>Скриншоты</h2>
             <div class="gallery">
                 <span>Скриншот 1</span><span>Скриншот 2</span><span>Скриншот 3</span>
                 <span>Скриншот 4</span><span>Скриншот 5</span><span>Скриншот 6</span>
@@ -72,23 +73,29 @@
         </section>
 
         <section class="reviews">
-            <h2 data-i18n="reviews">## Отзывы пользователей</h2>
-            <blockquote>
+            <h2 data-i18n="reviews">Отзывы пользователей</h2>
+            <blockquote id="review1">
                 "Отлично помогает экономить топливо!"<br>
                 — Иван, Москва<br>★★★★★
             </blockquote>
-            <blockquote>
+            <blockquote id="review2">
                 "Простое и удобное приложение!"<br>
                 — Ольга, Санкт-Петербург<br>★★★★☆
             </blockquote>
         </section>
 
-        <section class="download">
-            <h2 data-i18n="download">## Скачать FuelMaster</h2>
-            <p>Available for Android and iOS. Install now!</p>
-            <a href="https://github.com/maksimyugov89/FuelMaster" data-i18n="sourceCode">Исходный код</a>
-            <a href="https://maksimyugov89.github.io/FuelMaster_web/#" data-i18n="downloadApk">Скачать APK</a>
+        <section class="download" id="download">
+            <h2 data-i18n="download">Скачать FuelMaster</h2>
+            <p id="download-desc">Доступно для Android и iOS. Установи прямо сейчас!</p>
+            <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary" data-i18n="sourceCode">Исходный код</a>
+            <a href="#" class="btn primary" data-i18n="downloadApk">Скачать APK</a>
         </section>
     </main>
+
+    <footer>
+        <p>&copy; 2025 FuelMaster</p>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
