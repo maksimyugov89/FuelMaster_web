@@ -141,19 +141,27 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTranslation(languageSelect.value);
 
     // Модальное окно для скриншотов
-    window.openModal = function(img) {
-        modal.style.display = 'block';
-        modalImg.src = img.src.includes('-dark') && body.classList.contains('light') ? img.dataset.light : img.src;
-        modalCaption.textContent = img.alt;
-    };
+window.openModal = function(img) {
+    modal.style.display = 'block';
+    // Выбор изображения в зависимости от темы
+    if (body.classList.contains('light')) {
+        // Если есть data-light, используем его
+        modalImg.src = img.dataset.light ? img.dataset.light : img.src;
+    } else {
+        // Тёмная тема — оставляем тёмный вариант
+        modalImg.src = img.src;
+    }
+    modalCaption.textContent = img.alt;
+};
 
-    window.closeModal = function() {
-        modal.style.display = 'none';
-    };
+// Закрытие модального окна
+window.closeModal = function() {
+    modal.style.display = 'none';
+};
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal || e.target.classList.contains('close-modal')) {
-            closeModal();
-        }
-    });
+// Закрытие при клике вне картинки или по крестику
+modal.addEventListener('click', (e) => {
+    if (e.target === modal || e.target.classList.contains('close-modal')) {
+        closeModal();
+    }
 });
