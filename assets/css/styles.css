@@ -539,3 +539,11 @@ footer a:hover {
 }
 .carousel-btn.prev { left: 20px; }
 .carousel-btn.next { right: 20px; }
+
+.download-logo {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    object-fit: cover;
+    margin-right: 6px;
+}
