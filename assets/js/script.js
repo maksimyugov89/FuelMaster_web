@@ -1,160 +1,122 @@
-// ================== Переводы ==================
-const translations = {
-    ru: {
-        themeLight: "Светлая",
-        themeDark: "Тёмная",
-        "hero-title": "Управляй расходом топлива с умом",
-        "hero-subtitle": "FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.",
-        "download-text": "Скачать",
-        "calculator-title": "Рассчитайте расход топлива",
-        "features-title": "Основные возможности",
-        "screenshots-title": "Скриншоты",
-        "testimonials-title": "Отзывы пользователей",
-        "download-title": "Скачай FuelMaster",
-        "download-desc": "Доступно для Android и iOS. Установи прямо сейчас!",
-        "feature1-title": "Управление авто",
-        "feature1-desc": "Добавление, редактирование, удаление автомобилей с базой моделей из CSV.",
-        "feature2-title": "Расчет расхода",
-        "feature2-desc": "Учет города/трассы, погоды, кондиционера и других факторов.",
-        "feature3-title": "История и графики",
-        "feature3-desc": "Хранение, фильтры и визуализация с fl_chart.",
-        "feature4-title": "Безопасность и премиум",
-        "feature4-desc": "Firebase вход, синхронизация с Firestore для премиум.",
-        "testimonial1-text": "Отлично помогает экономить топливо!",
-        "testimonial1-author": "— Иван, Москва",
-        "testimonial2-text": "Простое и удобное приложение!",
-        "testimonial2-author": "— Ольга, Санкт-Петербург",
-        "seasonal-banner": "Осенние обновления 2025: Улучшенный расчёт и новые советы по  экономии до 30 сентября!",
-        totalMileage: "Общий километраж: {km} км",
-        calculation: "Полный расчет: расход {consumption} л/100 км (трасса: {highway} км, город: {city} км).",
-        "source-code": "Исходный код",
-        "download-apk": "Скачать APK"
-    },
-    en: {
-        themeLight: "Light",
-        themeDark: "Dark",
-        "hero-title": "Manage fuel consumption wisely",
-        "hero-subtitle": "FuelMaster is a comprehensive app for tracking cars, calculating fuel and useful tips.",
-        "download-text": "Download",
-        "calculator-title": "Fuel consumption calculator",
-        "features-title": "Main Features",
-        "screenshots-title": "Screenshots",
-        "testimonials-title": "User Reviews",
-        "download-title": "Download FuelMaster",
-        "download-desc": "Available for Android and iOS. Install now!",
-        "feature1-title": "Car management",
-        "feature1-desc": "Add, edit, delete cars with model database from CSV.",
-        "feature2-title": "Fuel calculation",
-        "feature2-desc": "Takes into account city/highway, weather, AC and other factors.",
-        "feature3-title": "History and charts",
-        "feature3-desc": "Storage, filters and visualization with fl_chart.",
-        "feature4-title": "Security & premium",
-        "feature4-desc": "Firebase login, Firestore sync for premium.",
-        "testimonial1-text": "Helps save fuel a lot!",
-        "testimonial1-author": "— Ivan, Moscow",
-        "testimonial2-text": "Simple and convenient app!",
-        "testimonial2-author": "— Olga, Saint Petersburg",
-        "seasonal-banner": "Autumn updates 2025: Improved calculation and new saving tips until September 30!",
-        totalMileage: "Total mileage: {km} km",
-        calculation: "Full calculation: consumption {consumption} l/100 km (highway: {highway} km, city: {city} km).",
-        "source-code": "Source Code",
-        "download-apk": "Download APK"
-    }
-};
+document.addEventListener("DOMContentLoaded", () => {
+    const languageToggle = document.getElementById("language-toggle");
+    const themeToggle = document.getElementById("theme-toggle");
+    const themeText = document.getElementById("theme-text");
 
-// ================== Переключение языка ==================
-function changeLanguage(lang) {
-    document.querySelectorAll("[id]").forEach(el => {
-        const key = el.id;
-        if (translations[lang][key]) {
-            el.textContent = translations[lang][key];
+    const translations = {
+        ru: {
+            "theme-light": "Светлая",
+            "theme-dark": "Тёмная",
+            "seasonal-banner": "Осенние обновления 2025: Улучшенный расчет и новые советы по экономии до 30 сентября!",
+            "hero-title": "Управляй расходом топлива с умом",
+            "hero-subtitle": "FuelMaster — комплексное приложение для отслеживания автомобилей, расчета топлива и полезных советов.",
+            "download-text": "Скачать",
+            "calculator-title": "Рассчитайте расход топлива",
+            "features-title": "Основные возможности",
+            "screenshots-title": "Скриншоты",
+            "testimonials-title": "Отзывы пользователей",
+            "download-title": "Скачай FuelMaster",
+            "download-desc": "Доступно для Android и iOS. Установи прямо сейчас!",
+            "source-code-text": "Исходный код",
+            "apk-text": "Скачать APK",
+            "total-mileage": (km) => `Общий километраж: ${km} км`,
+            "result": (consumption, highway, city) => 
+                `Полный расчет: расход ${consumption} л/100 км (трасса: ${highway} км, город: ${city} км).`
+        },
+        en: {
+            "theme-light": "Light",
+            "theme-dark": "Dark",
+            "seasonal-banner": "Autumn updates 2025: Improved calculation and new saving tips until September 30!",
+            "hero-title": "Manage fuel consumption wisely",
+            "hero-subtitle": "FuelMaster — a comprehensive app for tracking cars, calculating fuel, and useful tips.",
+            "download-text": "Download",
+            "calculator-title": "Calculate fuel consumption",
+            "features-title": "Main Features",
+            "screenshots-title": "Screenshots",
+            "testimonials-title": "User Reviews",
+            "download-title": "Download FuelMaster",
+            "download-desc": "Available for Android and iOS. Install now!",
+            "source-code-text": "Source Code",
+            "apk-text": "Download APK",
+            "total-mileage": (km) => `Total Mileage: ${km} km`,
+            "result": (consumption, highway, city) => 
+                `Full calculation: consumption ${consumption} L/100 km (highway: ${highway} km, city: ${city} km).`
+        }
+    };
+
+    function applyTranslations(lang) {
+        document.getElementById("hero-title").textContent = translations[lang]["hero-title"];
+        document.getElementById("hero-subtitle").textContent = translations[lang]["hero-subtitle"];
+        document.getElementById("download-text").textContent = translations[lang]["download-text"];
+        document.getElementById("calculator-title").textContent = translations[lang]["calculator-title"];
+        document.getElementById("features-title").textContent = translations[lang]["features-title"];
+        document.getElementById("screenshots-title").textContent = translations[lang]["screenshots-title"];
+        document.getElementById("testimonials-title").textContent = translations[lang]["testimonials-title"];
+        document.getElementById("download-title").textContent = translations[lang]["download-title"];
+        document.getElementById("download-desc").textContent = translations[lang]["download-desc"];
+        document.getElementById("seasonal-banner").textContent = translations[lang]["seasonal-banner"];
+        document.getElementById("source-code-text").textContent = translations[lang]["source-code-text"];
+        document.getElementById("apk-text").textContent = translations[lang]["apk-text"];
+
+        if (document.body.classList.contains("light")) {
+            themeText.textContent = translations[lang]["theme-light"];
+        } else {
+            themeText.textContent = translations[lang]["theme-dark"];
+        }
+
+        // Переводим результаты калькулятора если они уже рассчитаны
+        const totalMileageEl = document.getElementById("total-mileage");
+        const resultEl = document.getElementById("result");
+        if (totalMileageEl.dataset.km) {
+            totalMileageEl.textContent = translations[lang]["total-mileage"](totalMileageEl.dataset.km);
+        }
+        if (resultEl.dataset.consumption) {
+            resultEl.textContent = translations[lang]["result"](
+                resultEl.dataset.consumption,
+                resultEl.dataset.highway,
+                resultEl.dataset.city
+            );
+        }
+    }
+
+    languageToggle.addEventListener("change", (e) => {
+        const lang = e.target.value;
+        applyTranslations(lang);
+    });
+
+    themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("light");
+        const lang = languageToggle.value;
+        if (document.body.classList.contains("light")) {
+            themeText.textContent = translations[lang]["theme-light"];
+        } else {
+            themeText.textContent = translations[lang]["theme-dark"];
         }
     });
 
-    // Обновляем текст кнопки темы
-    updateThemeText(lang);
+    // калькулятор
+    document.getElementById("calculate-btn").addEventListener("click", () => {
+        const startMileage = parseFloat(document.getElementById("start-mileage").value) || 0;
+        const endMileage = parseFloat(document.getElementById("end-mileage").value) || 0;
+        const startFuel = parseFloat(document.getElementById("start-fuel").value) || 0;
+        const highwayKm = parseFloat(document.getElementById("highway-km").value) || 0;
 
-    // Обновляем баннер
-    updateBanner(lang);
+        const totalMileage = endMileage - startMileage;
+        const cityKm = totalMileage - highwayKm;
+        const consumption = ((startFuel / totalMileage) * 100).toFixed(2);
 
-    // Обновляем кнопки загрузки
-    updateDownloadButtons(lang);
-}
+        const lang = languageToggle.value;
 
-// ================== Обновление текста темы ==================
-function updateThemeText(lang) {
-    const themeText = document.getElementById("theme-text");
-    if (!themeText) return;
+        const totalMileageEl = document.getElementById("total-mileage");
+        totalMileageEl.dataset.km = totalMileage;
+        totalMileageEl.textContent = translations[lang]["total-mileage"](totalMileage);
 
-    if (document.body.classList.contains("light")) {
-        themeText.textContent = translations[lang].themeDark;
-    } else {
-        themeText.textContent = translations[lang].themeLight;
-    }
-}
+        const resultEl = document.getElementById("result");
+        resultEl.dataset.consumption = consumption;
+        resultEl.dataset.highway = highwayKm;
+        resultEl.dataset.city = cityKm;
+        resultEl.textContent = translations[lang]["result"](consumption, highwayKm, cityKm);
+    });
 
-// ================== Обновление баннера ==================
-function updateBanner(lang) {
-    const banner = document.getElementById("seasonal-banner");
-    if (banner && translations[lang]["seasonal-banner"]) {
-        banner.innerHTML = translations[lang]["seasonal-banner"] + ' <span id="countdown"></span>';
-    }
-}
-
-// ================== Переключение темы ==================
-document.getElementById("theme-toggle").addEventListener("click", () => {
-    document.body.classList.toggle("light");
-    const lang = document.getElementById("language-toggle").value || "ru";
-    updateThemeText(lang);
-});
-
-// ================== Переключение языка ==================
-document.getElementById("language-toggle").addEventListener("change", (e) => {
-    changeLanguage(e.target.value);
-});
-
-// ================== Калькулятор ==================
-document.getElementById("calculate-btn").addEventListener("click", () => {
-    const startMileage = parseFloat(document.getElementById("start-mileage").value) || 0;
-    const endMileage = parseFloat(document.getElementById("end-mileage").value) || 0;
-    const startFuel = parseFloat(document.getElementById("start-fuel").value) || 0;
-    const highwayKm = parseFloat(document.getElementById("highway-km").value) || 0;
-
-    const totalKm = endMileage - startMileage;
-    const cityKm = totalKm - highwayKm;
-
-    let consumption = 0;
-    if (totalKm > 0 && startFuel > 0) {
-        consumption = ((startFuel / totalKm) * 100).toFixed(2);
-    }
-
-    const lang = document.getElementById("language-toggle").value || "ru";
-
-    document.getElementById("total-mileage").textContent =
-        translations[lang].totalMileage.replace("{km}", totalKm);
-
-    document.getElementById("result").textContent =
-        translations[lang].calculation
-            .replace("{consumption}", consumption)
-            .replace("{highway}", highwayKm)
-            .replace("{city}", cityKm);
-});
-
-// ================== Перевод кнопок загрузки ==================
-function updateDownloadButtons(lang) {
-    const sourceBtn = document.querySelector(".btn.secondary");
-    const apkBtn = document.querySelector(".btn.primary:last-of-type");
-
-    if (sourceBtn) {
-        sourceBtn.innerHTML = `<img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> ${translations[lang]["source-code"]}`;
-    }
-    if (apkBtn) {
-        apkBtn.innerHTML = `<img src="assets/img/logo.PNG" alt="Logo" class="download-logo"> ${translations[lang]["download-apk"]}`;
-    }
-}
-
-// ================== Инициализация ==================
-document.addEventListener("DOMContentLoaded", () => {
-    const lang = document.getElementById("language-toggle").value || "ru";
-    changeLanguage(lang);
+    applyTranslations("ru");
 });
