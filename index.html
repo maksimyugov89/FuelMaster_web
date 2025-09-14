@@ -149,10 +149,12 @@
     </footer>
 
     <div id="modal" class="modal">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <img id="modal-img" src="" alt="Увеличенное изображение">
-        <p id="modal-caption"></p>
-    </div>
+       <span class="close-modal" onclick="closeModal()">&times;</span>
+         <button class="carousel-btn prev" onclick="prevImage()">&#10094;</button>
+                 <img id="modal-img" src="" alt="Увеличенное изображение">
+         <button class="carousel-btn next" onclick="nextImage()">&#10095;</button>
+    <p id="modal-caption"></p>
+</div>
 
     <script src="assets/js/script.js"></script>
 </body>
