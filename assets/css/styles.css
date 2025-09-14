@@ -552,6 +552,13 @@ footer a:hover {
     color: #00c4cc;
 }
 
+.download-logo {
+    width: 24px;       /* размер иконки */
+    height: 24px;
+    margin-right: 8px; /* отступ от текста */
+    vertical-align: middle;
+}
+
 /* Fade-in sections */
 .fade-in {
     animation: fadeInSection 1s ease-in;
