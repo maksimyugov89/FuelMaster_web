@@ -535,11 +535,18 @@ class FuelMasterApp {
         this.galleryImages.forEach(img => {
             const lightSrc = img.getAttribute('data-light');
             const darkSrc = img.getAttribute('data-dark');
-            
+        
             if (lightSrc && darkSrc) {
                 const newSrc = this.currentTheme === 'light' ? lightSrc : darkSrc;
-                if (img.src !== newSrc) {
+                const currentSrcBasename = img.src.split('/').pop();
+                const newSrcBasename = newSrc.split('/').pop();
+            
+                if (currentSrcBasename !== newSrcBasename) {
                     img.src = newSrc;
+                    // Обновляем модальный менеджер с новыми изображениями
+                    if (this.modalManager) {
+                        this.modalManager.setGalleryImages(this.galleryImages);
+                    }
                 }
             }
         });
