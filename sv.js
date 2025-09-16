@@ -1076,20 +1076,31 @@ self.addEventListener('unhandledrejection', event => {
 // === ИНИЦИАЛИЗАЦИЯ ИНТЕРВАЛОВ ===
 
 // ИСПРАВЛЕНО: Очищаем предыдущие интервалы перед созданием новых
-if (maintenanceInterval) clearInterval(maintenanceInterval);
-if (cleanupInterval) clearInterval(cleanupInterval);
+let maintenanceInterval = null;
+let cleanupInterval = null;
 
-// Обслуживание каждые 2 часа
-maintenanceInterval = setInterval(() => {
-    performMaintenance();
-}, 2 * 60 * 60 * 1000);
+// Очищаем предыдущие интервалы
+if (typeof maintenanceInterval !== 'undefined' && maintenanceInterval) {
+    clearInterval(maintenanceInterval);
+}
+if (typeof cleanupInterval !== 'undefined' && cleanupInterval) {
+    clearInterval(cleanupInterval);
+}
 
-// Очистка кеша каждые 6 часов
-cleanupInterval = setInterval(() => {
-    cleanExpiredCache().catch(err => {
-        console.error('SW: Cache cleanup failed:', err);
-    });
-}, 6 * 60 * 60 * 1000);
+// Создаем новые интервалы только если их еще нет
+if (!self.maintenanceActive) {
+    self.maintenanceActive = true;
+    
+    maintenanceInterval = setInterval(() => {
+        performMaintenance();
+    }, 2 * 60 * 60 * 1000);
+    
+    cleanupInterval = setInterval(() => {
+        cleanExpiredCache().catch(err => {
+            console.error('SW: Cache cleanup failed:', err);
+        });
+    }, 6 * 60 * 60 * 1000);
+}
 
 // === ФИНАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ ===
 
