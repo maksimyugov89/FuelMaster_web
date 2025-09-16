@@ -104,28 +104,24 @@ class ModalManager {
     }
     
     setGalleryImages(images) {
-        // Удаляем старые обработчики
-         this.galleryImages.forEach(img => {
-             img.removeEventListener('click', this.handleImageClick);
-             img.removeEventListener('keydown', this.handleImageKeydown);
-         });
+        this.galleryImages = Array.from(images);
     
-         this.galleryImages = Array.from(images);
-    
-         // Bind методы один раз
-         this.handleImageClick = this.handleImageClick.bind(this);
-         this.handleImageKeydown = this.handleImageKeydown.bind(this);
-    
-         this.galleryImages.forEach((img, index) => {
-             img.addEventListener('click', (e) => {
-                 e.preventDefault();
-                 this.openModal(index);
-             });
+        // Добавляем обработчики кликов на изображения галереи
+        this.galleryImages.forEach((img, index) => {
+            // Удаляем старые обработчики если есть
+            const newImg = img.cloneNode(true);
+            img.parentNode.replaceChild(newImg, img);
+            this.galleryImages[index] = newImg;
         
-             img.addEventListener('keydown', (e) => {
-                 if (e.key === 'Enter' || e.key === ' ') {
-                     e.preventDefault();
-                     this.openModal(index);
+            newImg.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.openModal(index);
+            });
+        
+            newImg.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.openModal(index);
                 }
             });
         });
@@ -255,6 +251,36 @@ class ModalManager {
             this.modal.setAttribute('data-single-image', 'true');
         }
     }
+
+    destroy() {
+        // Удаляем обработчики событий
+        if (this.closeBtn) {
+            this.closeBtn.removeEventListener('click', this.closeModal);
+        }
+        
+        if (this.backdrop) {
+            this.backdrop.removeEventListener('click', this.closeModal);
+        }
+        
+        if (this.modal) {
+            this.modal.removeEventListener('click', this.closeModal);
+        }
+        
+        if (this.prevBtn) {
+            this.prevBtn.removeEventListener('click', this.prevImage);
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.removeEventListener('click', this.nextImage);
+        }
+        
+        // Очищаем массив изображений
+        this.galleryImages = [];
+        this.isOpen = false;
+        
+        console.log('ModalManager destroyed successfully');
+    }
+  }
 }
 
 // === MAIN FUEL MASTER APP CLASS ===
@@ -275,6 +301,8 @@ class FuelMasterApp {
         this.handleCalculatorInput = this.debounce(this.handleCalculatorInput.bind(this), 300);
         this.handleKeyboardNavigation = this.handleKeyboardNavigation.bind(this);
         this.handleImageKeydown = this.handleImageKeydown.bind(this);
+        this.handleResize = this.debounce(this.handleResize.bind(this), 250);
+        this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
         
         this.init();
     }
@@ -370,18 +398,22 @@ class FuelMasterApp {
         this.elements.errorClose?.addEventListener('click', () => this.hideError());
 
         // Window resize for responsive behavior
-        window.addEventListener('resize', this.debounce(() => {
-            this.handleResize();
-        }, 250));
+        window.addEventListener('resize', this.handleResize);
 
         // Page visibility for pause/resume
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                this.pauseAnimations();
-            } else {
-                this.resumeAnimations();
-            }
-        });
+        document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    }
+
+    handleVisibilityChange() {
+        if (document.hidden) {
+            this.pauseAnimations();
+        } else {
+            this.resumeAnimations();
+            // Обновляем погоду при возврате к странице
+            setTimeout(() => {
+                this.loadWeatherData();
+            }, 1000);
+        }
     }
 
     initializeAccessibility() {
@@ -1358,15 +1390,16 @@ class FuelMasterApp {
     }
 
     debounce(func, wait) {
+        let timeout;
         return function executedFunction(...args) {
             const later = () => {
-                clearTimeout(this.debounceTimeout);
-                func(...args);
+                clearTimeout(timeout);
+                func.apply(this, args);
             };
-            clearTimeout(this.debounceTimeout);
-            this.debounceTimeout = setTimeout(later, wait);
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
         };
-    }
+       }
 
     // Analytics tracking
     trackEvent(eventName, properties = {}) {
@@ -1485,6 +1518,34 @@ class FuelMasterApp {
             "errorEndMileage": "End mileage must be greater than start mileage"
         }
     };
+
+    // === CLEANUP METHOD ===
+    destroy() {
+        // Очистка интервалов
+        if (this.errorTimeout) clearTimeout(this.errorTimeout);
+        if (this.debounceTimeout) clearTimeout(this.debounceTimeout);
+        
+        // Удаление обработчиков событий
+        Object.values(this.elements.inputs).forEach(input => {
+            if (input) {
+                input.removeEventListener('input', this.handleCalculatorInput);
+                input.removeEventListener('blur', this.validateInput);
+            }
+        });
+        
+        // Удаляем глобальные обработчики
+        document.removeEventListener('keydown', this.handleKeyboardNavigation);
+        window.removeEventListener('resize', this.handleResize);
+        document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+        
+        // Очистка модального менеджера
+        if (this.modalManager && typeof this.modalManager.destroy === 'function') {
+            this.modalManager.destroy();
+        }
+        
+        console.log('FuelMaster app destroyed successfully');
+    }
+ }
 }
 
 // === GLOBAL FUNCTIONS FOR MODAL (for backward compatibility) ===
