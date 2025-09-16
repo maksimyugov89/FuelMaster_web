@@ -1,4 +1,4 @@
-// === FUEL MASTER - ENHANCED SCRIPT ===
+// === FUEL MASTER - ENHANCED SCRIPT V2.0 ===
 
 class FuelMasterApp {
     constructor() {
@@ -10,9 +10,10 @@ class FuelMasterApp {
         this.weatherCacheTime = 0;
         this.debounceTimeout = null;
         this.errorTimeout = null;
+        this.calculationHistory = [];
         
         // Bind methods to preserve context
-        this.handleCalculatorInput = this.debounce(this.handleCalculatorInput.bind(this), 500);
+        this.handleCalculatorInput = this.debounce(this.handleCalculatorInput.bind(this), 300);
         this.handleKeyboardNavigation = this.handleKeyboardNavigation.bind(this);
         this.handleImageKeydown = this.handleImageKeydown.bind(this);
         
@@ -29,7 +30,8 @@ class FuelMasterApp {
             this.loadWeatherData();
             this.startCountdown();
             this.initializeIntersectionObserver();
-            console.log('FuelMaster app initialized successfully');
+            this.loadCalculationHistory();
+            console.log('FuelMaster app initialized successfully v2.0');
         } catch (error) {
             this.showError('Ошибка инициализации приложения');
             console.error('Init error:', error);
@@ -53,7 +55,8 @@ class FuelMasterApp {
                 startMileage: document.getElementById('start-mileage'),
                 endMileage: document.getElementById('end-mileage'),
                 startFuel: document.getElementById('start-fuel'),
-                highwayKm: document.getElementById('highway-km')
+                highwayKm: document.getElementById('highway-km'),
+                fuelPrice: document.getElementById('fuel-price')
             },
             results: {
                 totalMileage: document.getElementById('total-mileage'),
@@ -89,6 +92,7 @@ class FuelMasterApp {
             if (input) {
                 input.addEventListener('input', this.handleCalculatorInput);
                 input.addEventListener('blur', (e) => this.validateInput(e.target));
+                input.addEventListener('focus', (e) => this.handleInputFocus(e.target));
             }
         });
 
@@ -120,6 +124,15 @@ class FuelMasterApp {
         window.addEventListener('resize', this.debounce(() => {
             this.handleResize();
         }, 250));
+
+        // Page visibility for pause/resume
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.pauseAnimations();
+            } else {
+                this.resumeAnimations();
+            }
+        });
     }
 
     initializeAccessibility() {
@@ -142,22 +155,27 @@ class FuelMasterApp {
             liveRegion.id = 'aria-live-region';
             liveRegion.setAttribute('aria-live', 'polite');
             liveRegion.setAttribute('aria-atomic', 'true');
-            liveRegion.style.position = 'absolute';
-            liveRegion.style.left = '-10000px';
-            liveRegion.style.width = '1px';
-            liveRegion.style.height = '1px';
-            liveRegion.style.overflow = 'hidden';
+            liveRegion.style.cssText = `
+                position: absolute; left: -10000px; width: 1px; 
+                height: 1px; overflow: hidden;
+            `;
             document.body.appendChild(liveRegion);
         }
 
-        // Add touch support detection
+        // Touch support detection
         if ('ontouchstart' in window) {
             document.body.classList.add('touch-device');
+        }
+
+        // Reduced motion support
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.body.classList.add('reduced-motion');
         }
     }
 
     initializeIntersectionObserver() {
-        // Lazy loading and animations
+        if (!window.IntersectionObserver) return;
+
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '50px'
@@ -179,28 +197,59 @@ class FuelMasterApp {
     }
 
     loadUserPreferences() {
-        // Load theme
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        this.currentTheme = savedTheme;
-        
-        if (savedTheme === 'light') {
-            this.elements.body.classList.add('light');
-        } else {
-            this.elements.body.classList.remove('light');
-        }
-        
-        this.elements.themeToggle?.setAttribute('aria-pressed', savedTheme === 'light');
+        try {
+            // Load theme
+            const savedTheme = localStorage.getItem('fuelmaster-theme') || 'dark';
+            this.currentTheme = savedTheme;
+            
+            if (savedTheme === 'light') {
+                this.elements.body.classList.add('light');
+            } else {
+                this.elements.body.classList.remove('light');
+            }
+            
+            this.elements.themeToggle?.setAttribute('aria-pressed', savedTheme === 'light');
 
-        // Load language
-        const savedLang = localStorage.getItem('language') || 'ru';
-        this.currentLang = savedLang;
-        if (this.elements.languageSelect) {
-            this.elements.languageSelect.value = savedLang;
-        }
+            // Load language
+            const savedLang = localStorage.getItem('fuelmaster-language') || 'ru';
+            this.currentLang = savedLang;
+            if (this.elements.languageSelect) {
+                this.elements.languageSelect.value = savedLang;
+            }
 
-        this.updateThemeText();
-        this.updateGalleryImages();
-        this.applyTranslation();
+            this.updateThemeText();
+            this.updateGalleryImages();
+            this.applyTranslation();
+        } catch (error) {
+            console.warn('Failed to load user preferences:', error);
+        }
+    }
+
+    loadCalculationHistory() {
+        try {
+            const history = localStorage.getItem('fuelmaster-history');
+            this.calculationHistory = history ? JSON.parse(history) : [];
+        } catch (error) {
+            console.warn('Failed to load calculation history:', error);
+            this.calculationHistory = [];
+        }
+    }
+
+    saveCalculationHistory(calculation) {
+        try {
+            this.calculationHistory.unshift({
+                ...calculation,
+                timestamp: Date.now(),
+                id: Date.now() + Math.random()
+            });
+            
+            // Keep only last 50 calculations
+            this.calculationHistory = this.calculationHistory.slice(0, 50);
+            
+            localStorage.setItem('fuelmaster-history', JSON.stringify(this.calculationHistory));
+        } catch (error) {
+            console.warn('Failed to save calculation history:', error);
+        }
     }
 
     // === THEME MANAGEMENT ===
@@ -209,14 +258,16 @@ class FuelMasterApp {
             this.elements.body.classList.toggle('light');
             this.currentTheme = this.elements.body.classList.contains('light') ? 'light' : 'dark';
             
-            localStorage.setItem('theme', this.currentTheme);
+            localStorage.setItem('fuelmaster-theme', this.currentTheme);
             this.elements.themeToggle.setAttribute('aria-pressed', this.currentTheme === 'light');
             
             this.updateThemeText();
             this.updateGalleryImages();
             
             // Announce theme change to screen readers
-            this.announceToScreenReader(`Тема изменена на ${this.currentTheme === 'light' ? 'светлую' : 'тёмную'}`);
+            this.announceToScreenReader(
+                `Тема изменена на ${this.currentTheme === 'light' ? 'светлую' : 'тёмную'}`
+            );
             
             // Track theme change
             this.trackEvent('theme_toggle', { theme: this.currentTheme });
@@ -241,7 +292,10 @@ class FuelMasterApp {
             const darkSrc = img.getAttribute('data-dark');
             
             if (lightSrc && darkSrc) {
-                img.src = this.currentTheme === 'light' ? lightSrc : darkSrc;
+                const newSrc = this.currentTheme === 'light' ? lightSrc : darkSrc;
+                if (img.src !== newSrc) {
+                    img.src = newSrc;
+                }
             }
         });
     }
@@ -250,6 +304,7 @@ class FuelMasterApp {
     applyTranslation() {
         try {
             const translations = this.translations[this.currentLang];
+            if (!translations) return;
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -263,13 +318,12 @@ class FuelMasterApp {
             });
             
             this.updateThemeText();
-            this.updateCalculatorResults();
             
             // Update document language
             document.documentElement.lang = this.currentLang;
             
             // Save language preference
-            localStorage.setItem('language', this.currentLang);
+            localStorage.setItem('fuelmaster-language', this.currentLang);
             
             // Track language change
             this.trackEvent('language_change', { language: this.currentLang });
@@ -279,57 +333,80 @@ class FuelMasterApp {
         }
     }
 
-    // === FUEL CALCULATOR ===
+    // === FUEL CALCULATOR - ENHANCED ===
     validateInput(input) {
-    const value = parseFloat(input.value);
-    const min = parseFloat(input.min) || 0;
-    const errorElement = document.getElementById(`${input.id}-error`);
-    
-    let isValid = true;
-    let errorMessage = '';
+        const value = parseFloat(input.value);
+        const min = parseFloat(input.min) || 0;
+        const errorElement = document.getElementById(`${input.id}-error`);
+        
+        let isValid = true;
+        let errorMessage = '';
 
-    // Проверка на пустое значение для обязательных полей
-    if (input.hasAttribute('required') && !input.value.trim()) {
-        isValid = false;
-        errorMessage = 'Это поле обязательно для заполнения';
-    }
-    // Проверка на корректность числа
-    else if (input.value && (isNaN(value) || value < min)) {
-        isValid = false;
-        errorMessage = `Введите число больше или равное ${min}`;
-    }
-    // Специальная проверка для конечного пробега
-    else if (input.id === 'end-mileage' && input.value) {
-        const startMileage = parseFloat(this.elements.inputs.startMileage.value) || 0;
-        if (value <= startMileage) {
+        // Check for required fields
+        if (input.hasAttribute('required') && !input.value.trim()) {
             isValid = false;
-            errorMessage = 'Конечный пробег должен быть больше начального';
+            errorMessage = this.translations[this.currentLang].errorRequired || 'Это поле обязательно';
         }
-    }
-    // Проверка разумных пределов
-    else if (input.value) {
-        if (input.id.includes('mileage') && value > 999999) {
+        // Check for valid number
+        else if (input.value && (isNaN(value) || value < min)) {
             isValid = false;
-            errorMessage = 'Слишком большое значение пробега';
+            errorMessage = this.translations[this.currentLang].errorInvalidNumber || `Введите число больше ${min}`;
         }
-        if (input.id === 'start-fuel' && value > 200) {
-            isValid = false;
-            errorMessage = 'Слишком большой объем топливного бака';
+        // Special validation for end mileage
+        else if (input.id === 'end-mileage' && input.value) {
+            const startMileage = parseFloat(this.elements.inputs.startMileage.value) || 0;
+            if (value <= startMileage) {
+                isValid = false;
+                errorMessage = this.translations[this.currentLang].errorEndMileage || 'Конечный пробег должен быть больше начального';
+            }
         }
+        // Highway km validation
+        else if (input.id === 'highway-km' && input.value) {
+            const startMileage = parseFloat(this.elements.inputs.startMileage.value) || 0;
+            const endMileage = parseFloat(this.elements.inputs.endMileage.value) || 0;
+            const totalDistance = endMileage - startMileage;
+            if (value > totalDistance && totalDistance > 0) {
+                isValid = false;
+                errorMessage = 'Километры по трассе не могут превышать общий пробег';
+            }
+        }
+        // Reasonable limits check
+        else if (input.value) {
+            if (input.id.includes('mileage') && value > 999999) {
+                isValid = false;
+                errorMessage = 'Слишком большое значение пробега';
+            }
+            if (input.id === 'start-fuel' && (value > 200 || value < 0.1)) {
+                isValid = false;
+                errorMessage = 'Объем топлива должен быть от 0.1 до 200 литров';
+            }
+            if (input.id === 'fuel-price' && (value > 200 || value < 10)) {
+                isValid = false;
+                errorMessage = 'Цена топлива должна быть от 10 до 200 руб/л';
+            }
+        }
+
+        // Display error
+        if (errorElement) {
+            errorElement.textContent = errorMessage;
+            errorElement.style.display = errorMessage ? 'block' : 'none';
+        }
+
+        // Visual indication
+        input.classList.toggle('error', !isValid);
+        input.classList.toggle('valid', isValid && input.value);
+        
+        return isValid;
     }
 
-    if (errorElement) {
-        errorElement.textContent = errorMessage;
-        errorElement.style.display = errorMessage ? 'block' : 'none';
+    handleInputFocus(input) {
+        // Clear previous errors on focus
+        const errorElement = document.getElementById(`${input.id}-error`);
+        if (errorElement) {
+            errorElement.style.display = 'none';
+        }
+        input.classList.remove('error');
     }
-
-    input.classList.toggle('error', !isValid);
-    
-    // Добавляем визуальную индикацию успешной валидации
-    input.classList.toggle('valid', isValid && input.value);
-    
-    return isValid;
-}
 
     calculateFuelConsumption() {
         try {
@@ -337,105 +414,410 @@ class FuelMasterApp {
             
             // Validate all inputs
             let allValid = true;
-            Object.values(this.elements.inputs).forEach(input => {
-                if (!this.validateInput(input)) allValid = false;
+            const requiredInputs = ['startMileage', 'endMileage', 'startFuel'];
+            
+            Object.entries(this.elements.inputs).forEach(([key, input]) => {
+                if (input) {
+                    // Set required attribute for required fields
+                    if (requiredInputs.includes(key)) {
+                        input.setAttribute('required', 'true');
+                    }
+                    if (!this.validateInput(input)) allValid = false;
+                }
             });
 
             if (!allValid) {
                 this.hideLoading();
+                this.showError('Пожалуйста, исправьте ошибки в форме');
                 return;
             }
 
+            // Get values
             const startMileage = parseFloat(this.elements.inputs.startMileage.value) || 0;
             const endMileage = parseFloat(this.elements.inputs.endMileage.value) || 0;
             const startFuel = parseFloat(this.elements.inputs.startFuel.value) || 0;
             const highwayKm = parseFloat(this.elements.inputs.highwayKm.value) || 0;
 
+            // Additional logic validation
             if (endMileage <= startMileage || startFuel <= 0) {
-                this.showError(this.translations[this.currentLang]["result-invalid"]);
+                this.showError(this.translations[this.currentLang]["result-invalid"] || 'Введите корректные данные');
                 this.hideLoading();
                 return;
             }
 
+            // Calculations
             const totalDistance = endMileage - startMileage;
             const cityKm = Math.max(0, totalDistance - highwayKm);
-            
-            // Enhanced calculation with different consumption factors
-            const cityFactor = 1.3; // City driving uses 30% more fuel
-            const highwayFactor = 0.8; // Highway driving uses 20% less fuel
-            
-            const adjustedDistance = (cityKm * cityFactor + highwayKm * highwayFactor);
-            const consumption = (startFuel / totalDistance) * 100;
-            const adjustedConsumption = adjustedDistance > 0 ? (startFuel / adjustedDistance) * 100 : consumption;
 
-            // Update results with animation
+            // Realistic fuel consumption factors
+            const fuelFactors = {
+                city: 1.4,          // City: +40% (traffic, lights, frequent stops)
+                highway: 0.75,      // Highway: -25% (constant speed)
+                mixed: 1.0,         // Mixed: baseline
+                winter: 1.15,       // Winter: +15% (heating, warm-up)
+                summer: 1.05        // Summer: +5% (AC)
+            };
+
+            // Determine trip type and calculate
+            let adjustedDistance;
+            let drivingMode = '';
+            let modeDescription = '';
+
+            if (highwayKm > 0 && cityKm > 0) {
+                // Mixed trip
+                adjustedDistance = (cityKm * fuelFactors.city + highwayKm * fuelFactors.highway);
+                drivingMode = 'mixed';
+                modeDescription = `Смешанный режим: ${cityKm.toFixed(1)} км город, ${highwayKm.toFixed(1)} км трасса`;
+            } else if (highwayKm > 0 && cityKm === 0) {
+                // Highway only
+                adjustedDistance = totalDistance * fuelFactors.highway;
+                drivingMode = 'highway';
+                modeDescription = `Трасса: ${totalDistance.toFixed(1)} км`;
+            } else {
+                // City only
+                adjustedDistance = totalDistance * fuelFactors.city;
+                drivingMode = 'city';
+                modeDescription = `Город: ${totalDistance.toFixed(1)} км`;
+            }
+
+            // Main consumption calculations
+            const baseConsumption = (startFuel / totalDistance) * 100;
+            const adjustedConsumption = adjustedDistance > 0 ? 
+                (startFuel / adjustedDistance) * 100 : baseConsumption;
+
+            // Efficiency rating system
+            let efficiencyData = this.calculateEfficiencyRating(adjustedConsumption);
+
+            // Trip cost calculation
+            let costData = this.calculateTripCost(startFuel, adjustedConsumption, totalDistance);
+
+            // Additional statistics
+            const additionalStats = {
+                co2Emission: (startFuel * 2.31).toFixed(1), // kg CO2
+                fuelEfficiency: (totalDistance / startFuel).toFixed(1), // km/l
+                avgSpeed: drivingMode === 'highway' ? '90' : drivingMode === 'city' ? '30' : '60',
+                fuelSaved: drivingMode === 'highway' ? ((baseConsumption - adjustedConsumption) * totalDistance / 100 * 50).toFixed(0) : '0'
+            };
+
+            // Prepare calculation data for history
+            const calculationData = {
+                startMileage, endMileage, startFuel, highwayKm, cityKm,
+                totalDistance, baseConsumption, adjustedConsumption,
+                drivingMode, efficiencyLevel: efficiencyData.level,
+                cost: costData ? costData.totalCost : null
+            };
+
+            // Show results with delay for better UX
             setTimeout(() => {
-                this.updateCalculatorResults(totalDistance, consumption, adjustedConsumption, highwayKm, cityKm);
+                this.updateCalculatorResults({
+                    totalDistance,
+                    baseConsumption,
+                    adjustedConsumption,
+                    highwayKm,
+                    cityKm,
+                    efficiency: efficiencyData,
+                    cost: costData,
+                    mode: modeDescription,
+                    stats: additionalStats,
+                    drivingMode
+                });
+                
                 this.hideLoading();
                 
-                // Announce result to screen readers
-                this.announceToScreenReader(`Расчет завершен. Расход топлива: ${consumption.toFixed(2)} литров на 100 километров`);
+                // Save to history
+                this.saveCalculationHistory(calculationData);
                 
-                // Track calculation
+                // Announce result for screen readers
+                this.announceToScreenReader(
+                    `Расчет завершен. Расход топлива: ${adjustedConsumption.toFixed(2)} литров на 100 километров. ${efficiencyData.text}`
+                );
+                
+                // Analytics
                 this.trackEvent('fuel_calculation', {
-                    totalDistance,
-                    consumption: consumption.toFixed(2),
-                    cityKm,
-                    highwayKm
+                    totalDistance: totalDistance.toFixed(1),
+                    consumption: adjustedConsumption.toFixed(2),
+                    cityKm: cityKm.toFixed(1),
+                    highwayKm: highwayKm.toFixed(1),
+                    drivingMode,
+                    efficiency: efficiencyData.level
                 });
-            }, 500);
+            }, 800);
 
         } catch (error) {
             this.hideLoading();
-            this.showError('Ошибка расчета расхода топлива');
+            this.showError('Произошла ошибка при расчете. Попробуйте еще раз.');
             console.error('Calculation error:', error);
         }
     }
 
-    updateCalculatorResults(total = 0, consumption = 0, adjustedConsumption = 0, highway = 0, city = 0) {
+    calculateEfficiencyRating(consumption) {
+        let level, color, text, tips;
+
+        if (consumption < 5) {
+            level = 'excellent';
+            color = '🟢';
+            text = 'Отлично! Очень экономичный расход';
+            tips = ['Поддерживайте текущий стиль вождения', 'Регулярно проверяйте давление в шинах'];
+        } else if (consumption < 7) {
+            level = 'good';
+            color = '🟢';
+            text = 'Хорошо! Экономичный расход';
+            tips = ['Избегайте резких ускорений', 'Планируйте маршруты заранее'];
+        } else if (consumption < 9) {
+            level = 'average';
+            color = '🟡';
+            text = 'Средний расход топлива';
+            tips = ['Больше используйте трассы', 'Проверьте техническое состояние авто'];
+        } else if (consumption < 12) {
+            level = 'high';
+            color = '🟠';
+            text = 'Повышенный расход';
+            tips = ['Избегайте поездок в час пик', 'Проверьте воздушный фильтр'];
+        } else {
+            level = 'very-high';
+            color = '🔴';
+            text = 'Высокий расход топлива';
+            tips = ['Обратитесь к автомеханику', 'Пересмотрите стиль вождения'];
+        }
+
+        return { level, color, text, tips, consumption };
+    }
+
+    calculateTripCost(fuelUsed, consumption, distance) {
+        const fuelPriceInput = this.elements.inputs.fuelPrice;
+        
+        if (!fuelPriceInput || !fuelPriceInput.value) {
+            return null;
+        }
+
+        const fuelPrice = parseFloat(fuelPriceInput.value);
+        const totalCost = fuelUsed * fuelPrice;
+        const costPer100km = (consumption / 100) * distance * fuelPrice;
+        const costPerKm = totalCost / distance;
+
+        return {
+            totalCost: totalCost.toFixed(0),
+            costPer100km: costPer100km.toFixed(0),
+            costPerKm: costPerKm.toFixed(1),
+            fuelPrice
+        };
+    }
+
+    updateCalculatorResults(data) {
+        const {
+            totalDistance, baseConsumption, adjustedConsumption,
+            highwayKm, cityKm, efficiency, cost, mode, stats, drivingMode
+        } = data;
+
         const lang = this.currentLang;
         const translations = this.translations[lang];
         
+        // Display total distance and breakdown
         if (this.elements.results.totalMileage) {
-            this.elements.results.totalMileage.textContent = 
-                translations["total-mileage-template"]?.replace("{total}", total) || `Общий пробег: ${total} км`;
+            this.elements.results.totalMileage.innerHTML = `
+                <div class="distance-summary">
+                    <h4>📏 ${translations['distance-summary'] || 'Информация о поездке'}</h4>
+                    <div class="distance-main">${totalDistance.toFixed(1)} км</div>
+                    <div class="distance-breakdown">${mode}</div>
+                </div>
+            `;
         }
         
-        if (this.elements.results.result && total > 0) {
-            this.elements.results.result.textContent = 
-                translations["result-template"]
-                    ?.replace("{consumption}", consumption.toFixed(2))
-                    ?.replace("{highway}", highway)
-                    ?.replace("{city}", city) 
-                || `Расход: ${consumption.toFixed(2)} л/100км (трасса: ${highway} км, город: ${city} км)`;
+        // Main calculation results
+        if (this.elements.results.result && totalDistance > 0) {
+            let resultHTML = `
+                <div class="result-container">
+                    <!-- Main result -->
+                    <div class="result-main">
+                        <div class="consumption-display">
+                            <span class="consumption-value">${adjustedConsumption.toFixed(2)}</span>
+                            <span class="consumption-unit">л/100км</span>
+                        </div>
+                    </div>
+
+                    <!-- Efficiency rating -->
+                    <div class="efficiency-section">
+                        <div class="efficiency-badge ${efficiency.level}">
+                            ${efficiency.color} ${efficiency.text}
+                        </div>
+                    </div>
+
+                    <!-- Trip cost -->
+                    ${cost ? `
+                        <div class="cost-section">
+                            <h5>💰 Стоимость поездки</h5>
+                            <div class="cost-details">
+                                <div>Общая стоимость: <strong>${cost.totalCost} руб</strong></div>
+                                <div>На 100 км: ${cost.costPer100km} руб</div>
+                                <div>За километр: ${cost.costPerKm} руб</div>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- Additional statistics -->
+                    <div class="stats-section">
+                        <h5>📊 Статистика поездки</h5>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Экономичность:</span>
+                                <span class="stat-value">${stats.fuelEfficiency} км/л</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">CO₂ выброс:</span>
+                                <span class="stat-value">${stats.co2Emission} кг</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Базовый расход:</span>
+                                <span class="stat-value">${baseConsumption.toFixed(2)} л/100км</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Economy tips -->
+                    <div class="tips-section">
+                        <h5>💡 Советы по экономии</h5>
+                        <ul class="tips-list">
+                            ${efficiency.tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="result-actions">
+                        <button class="btn secondary" onclick="fuelMasterApp.shareResult()" aria-label="Поделиться результатом">
+                            <i class="fas fa-share" aria-hidden="true"></i> Поделиться
+                        </button>
+                        <button class="btn secondary" onclick="fuelMasterApp.clearCalculator()" aria-label="Очистить форму">
+                            <i class="fas fa-refresh" aria-hidden="true"></i> Новый расчет
+                        </button>
+                    </div>
+                </div>
+            `;
             
-            // Add fade-in animation
+            this.elements.results.result.innerHTML = resultHTML;
+            
+            // Result appearance animation
             this.elements.results.result.classList.remove('fade-in');
             setTimeout(() => {
                 this.elements.results.result.classList.add('fade-in');
-            }, 10);
+                
+                // Smooth scroll to results
+                this.elements.results.result.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }, 100);
         }
     }
 
-    handleCalculatorInput() {
-        // Real-time validation and calculation preview
-        let hasValidData = true;
+    handleCalculatorInput(event) {
+        const input = event.target;
         
-        Object.values(this.elements.inputs).forEach(input => {
-            if (input.value && !this.validateInput(input)) {
-                hasValidData = false;
-            }
-        });
-
-        if (hasValidData) {
+        // Real-time validation
+        this.validateInput(input);
+        
+        // Automatic calculation when main fields are filled
+        const requiredFields = [
+            this.elements.inputs.startMileage,
+            this.elements.inputs.endMileage,
+            this.elements.inputs.startFuel
+        ];
+        
+        const allRequiredFilled = requiredFields.every(field => 
+            field && field.value && parseFloat(field.value) > 0
+        );
+        
+        if (allRequiredFilled) {
+            // Show preview calculation
             const startMileage = parseFloat(this.elements.inputs.startMileage.value) || 0;
             const endMileage = parseFloat(this.elements.inputs.endMileage.value) || 0;
+            const startFuel = parseFloat(this.elements.inputs.startFuel.value) || 0;
             
-            if (endMileage > startMileage) {
-                const total = endMileage - startMileage;
-                this.updateCalculatorResults(total);
+            if (endMileage > startMileage && startFuel > 0) {
+                const totalDistance = endMileage - startMileage;
+                const quickConsumption = (startFuel / totalDistance) * 100;
+                
+                // Show quick calculation
+                if (this.elements.results.totalMileage) {
+                    this.elements.results.totalMileage.innerHTML = `
+                        <div class="quick-preview">
+                            📏 Пробег: ${totalDistance.toFixed(1)} км
+                            <small style="display: block; margin-top: 5px; opacity: 0.7;">
+                                Предварительный расход: ~${quickConsumption.toFixed(1)} л/100км
+                            </small>
+                        </div>
+                    `;
+                }
             }
         }
+        
+        // Auto-adjust highway km
+        if (input.id === 'end-mileage') {
+            const startMileage = parseFloat(this.elements.inputs.startMileage.value) || 0;
+            const endMileage = parseFloat(input.value) || 0;
+            
+            // Check highway km logic
+            if (this.elements.inputs.highwayKm.value) {
+                const highway = parseFloat(this.elements.inputs.highwayKm.value);
+                const totalDistance = endMileage - startMileage;
+                
+                if (highway > totalDistance && totalDistance > 0) {
+                    this.elements.inputs.highwayKm.value = totalDistance;
+                    this.validateInput(this.elements.inputs.highwayKm);
+                }
+            }
+        }
+    }
+
+    // Calculator utility methods
+    clearCalculator() {
+        Object.values(this.elements.inputs).forEach(input => {
+            if (input) {
+                input.value = '';
+                input.classList.remove('valid', 'error');
+                const errorElement = document.getElementById(`${input.id}-error`);
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+        });
+        
+        if (this.elements.results.totalMileage) {
+            this.elements.results.totalMileage.innerHTML = '';
+        }
+        if (this.elements.results.result) {
+            this.elements.results.result.innerHTML = '';
+        }
+        
+        // Focus on first input
+        if (this.elements.inputs.startMileage) {
+            this.elements.inputs.startMileage.focus();
+        }
+        
+        this.trackEvent('calculator_cleared');
+    }
+
+    shareResult() {
+        if (!this.elements.results.result.textContent) return;
+        
+        const resultText = this.elements.results.result.textContent
+            .replace(/\s+/g, ' ').trim();
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'FuelMaster - Расчет расхода топлива',
+                text: resultText,
+                url: window.location.href
+            }).catch(err => console.log('Share failed:', err));
+        } else {
+            // Fallback: copy to clipboard
+            navigator.clipboard.writeText(resultText).then(() => {
+                this.showError('Результат скопирован в буфер обмена', 'success');
+            }).catch(() => {
+                this.showError('Не удалось скопировать результат');
+            });
+        }
+        
+        this.trackEvent('result_shared');
     }
 
     // === WEATHER API ===
@@ -525,7 +907,7 @@ class FuelMasterApp {
 
         const temp = Math.round(data.current_weather.temperature);
         const weatherCode = data.current_weather.weathercode;
-        const pressure = 760; // Default value, can be enhanced with actual pressure data
+        const windSpeed = Math.round(data.current_weather.windspeed);
 
         // Weather icon mapping
         let icon = '☀️';
@@ -535,17 +917,16 @@ class FuelMasterApp {
         else if (weatherCode >= 95) icon = '⛈️';
         else if (weatherCode >= 1 && weatherCode <= 3) icon = '⛅';
 
-        return { temp, icon, city: cityName, pressure };
+        return { temp, icon, city: cityName, windSpeed, code: weatherCode };
     }
 
     displayWeather(weatherInfo) {
         const translations = this.translations[this.currentLang];
-        this.elements.weatherInfo.innerHTML = translations["weather-info"]
-            ?.replace("{city}", weatherInfo.city)
-            ?.replace("{icon}", weatherInfo.icon)
-            ?.replace("{temp}", weatherInfo.temp)
-            ?.replace("{pressure}", weatherInfo.pressure) ||
-            `${weatherInfo.city}: ${weatherInfo.icon} ${weatherInfo.temp}°C, ${weatherInfo.pressure} мм рт.ст.`;
+        this.elements.weatherInfo.innerHTML = `
+            <span class="weather-location">${weatherInfo.city}</span>
+            <span class="weather-temp">${weatherInfo.icon} ${weatherInfo.temp}°C</span>
+            <span class="weather-wind">💨 ${weatherInfo.windSpeed} км/ч</span>
+        `;
     }
 
     displayWeatherError() {
@@ -669,6 +1050,12 @@ class FuelMasterApp {
                     e.preventDefault();
                     this.toggleTheme();
                     break;
+                case 'Enter':
+                    if (document.activeElement && document.activeElement.closest('.calculator-form')) {
+                        e.preventDefault();
+                        this.calculateFuelConsumption();
+                    }
+                    break;
             }
         }
     }
@@ -719,7 +1106,6 @@ class FuelMasterApp {
         // Close modal on resize if needed
         if (this.elements.modal.classList.contains('show')) {
             if (window.innerWidth < 768) {
-                // Adjust modal for mobile
                 this.elements.modal.style.padding = '10px';
             } else {
                 this.elements.modal.style.padding = '20px';
@@ -731,6 +1117,14 @@ class FuelMasterApp {
         if (gallery && window.innerWidth < 768) {
             gallery.style.gap = '10px';
         }
+    }
+
+    pauseAnimations() {
+        document.body.classList.add('animations-paused');
+    }
+
+    resumeAnimations() {
+        document.body.classList.remove('animations-paused');
     }
 
     // === UTILITY FUNCTIONS ===
@@ -748,9 +1142,13 @@ class FuelMasterApp {
         }
     }
 
-    showError(message) {
+    showError(message, type = 'error') {
         if (this.elements.errorNotification && this.elements.errorMessage) {
             this.elements.errorMessage.textContent = message;
+            this.elements.errorNotification.classList.remove('success');
+            if (type === 'success') {
+                this.elements.errorNotification.classList.add('success');
+            }
             this.elements.errorNotification.classList.add('show');
             this.elements.errorNotification.setAttribute('aria-hidden', 'false');
             
@@ -762,7 +1160,7 @@ class FuelMasterApp {
 
     hideError() {
         if (this.elements.errorNotification) {
-            this.elements.errorNotification.classList.remove('show');
+            this.elements.errorNotification.classList.remove('show', 'success');
             this.elements.errorNotification.setAttribute('aria-hidden', 'true');
         }
         if (this.errorTimeout) {
@@ -795,7 +1193,19 @@ class FuelMasterApp {
     // Analytics tracking
     trackEvent(eventName, properties = {}) {
         console.log('Event tracked:', eventName, properties);
-        // Здесь можно добавить интеграцию с Google Analytics или другими сервисами
+        
+        // Google Analytics 4 integration
+        if (typeof gtag !== 'undefined') {
+            gtag('event', eventName, {
+                ...properties,
+                timestamp: Date.now(),
+                user_agent: navigator.userAgent,
+                language: this.currentLang,
+                theme: this.currentTheme
+            });
+        }
+        
+        // Custom analytics can be added here
     }
 
     // === TRANSLATIONS ===
@@ -811,7 +1221,9 @@ class FuelMasterApp {
             "end-mileage": "Конечный пробег (км)",
             "start-fuel": "Топливо в баке на начало (л)",
             "highway-km": "Км по трассе",
+            "fuel-price": "Цена топлива (руб/л)",
             "calculate-btn": "Рассчитать",
+            "distance-summary": "Информация о поездке",
             "total-mileage-template": "Общий пробег: {total} км",
             "result-template": "Расход: {consumption} л/100км (трасса: {highway} км, город: {city} км)",
             "result-invalid": "Введите корректные данные для расчета.",
@@ -837,12 +1249,10 @@ class FuelMasterApp {
             "download-apk": "Скачать APK",
             "weather-loading": "Загрузка погоды...",
             "weather-error": "Не удалось загрузить погоду",
-            "weather-info": "{city}: {icon} {temp}°C, {pressure} мм рт.ст.",
+            "weather-info": "{city}: {icon} {temp}°C, {wind} км/ч",
+            "errorRequired": "Это поле обязательно",
             "errorInvalidNumber": "Введите корректное число",
-            "errorEndMileage": "Конечный пробег должен быть больше начального", 
-            "efficiency-rating": "Оценка экономичности: {rating}",
-            "fuel-cost-estimate": "Примерная стоимость: {cost} руб",
-            "distance-breakdown": "Расстояние: город {city} км, трасса {highway} км"
+            "errorEndMileage": "Конечный пробег должен быть больше начального"
         },
         en: {
             themeLight: "Light",
@@ -855,7 +1265,9 @@ class FuelMasterApp {
             "end-mileage": "End Mileage (km)",
             "start-fuel": "Fuel in Tank at Start (l)",
             "highway-km": "Highway km",
+            "fuel-price": "Fuel Price (RUB/l)",
             "calculate-btn": "Calculate",
+            "distance-summary": "Trip Information",
             "total-mileage-template": "Total distance: {total} km",
             "result-template": "Consumption: {consumption} L/100km (highway: {highway} km, city: {city} km)",
             "result-invalid": "Enter valid data for calculation.",
@@ -881,12 +1293,10 @@ class FuelMasterApp {
             "download-apk": "Download APK",
             "weather-loading": "Loading weather...",
             "weather-error": "Failed to load weather",
-            "weather-info": "{city}: {icon} {temp}°C, {pressure} mmHg",
+            "weather-info": "{city}: {icon} {temp}°C, {wind} km/h",
+            "errorRequired": "This field is required",
             "errorInvalidNumber": "Enter a valid number",
-            "errorEndMileage": "End mileage must be greater than start mileage", 
-            "efficiency-rating": "Efficiency rating: {rating}",
-            "fuel-cost-estimate": "Estimated cost: {cost} RUB",
-            "distance-breakdown": "Distance: city {city} km, highway {highway} km"
+            "errorEndMileage": "End mileage must be greater than start mileage"
         }
     };
 }
@@ -925,31 +1335,28 @@ window.prevImage = function() {
 document.addEventListener('DOMContentLoaded', () => {
     try {
         fuelMasterApp = new FuelMasterApp();
-        console.log('FuelMaster app initialized successfully');
+        console.log('FuelMaster app initialized successfully v2.0');
     } catch (error) {
         console.error('Failed to initialize FuelMaster app:', error);
         
         // Fallback error display
         const errorDiv = document.createElement('div');
         errorDiv.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #ff6b6b;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            z-index: 9999;
-            max-width: 300px;
+            position: fixed; top: 20px; right: 20px; background: #ff6b6b;
+            color: white; padding: 15px; border-radius: 5px; z-index: 9999;
+            max-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         `;
-        errorDiv.textContent = 'Ошибка загрузки приложения. Пожалуйста, обновите страницу.';
+        errorDiv.innerHTML = `
+            <strong>Ошибка загрузки</strong><br>
+            Пожалуйста, обновите страницу или проверьте подключение к интернету.
+        `;
         document.body.appendChild(errorDiv);
         
         setTimeout(() => {
             if (errorDiv.parentNode) {
                 errorDiv.parentNode.removeChild(errorDiv);
             }
-        }, 5000);
+        }, 8000);
     }
 });
 
@@ -967,3 +1374,19 @@ window.addEventListener('unhandledrejection', (event) => {
         fuelMasterApp.showError('Ошибка загрузки данных. Проверьте подключение к интернету.');
     }
 });
+
+// === PERFORMANCE MONITORING ===
+if ('performance' in window) {
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const perfData = performance.getEntriesByType('navigation')[0];
+            if (perfData && fuelMasterApp) {
+                fuelMasterApp.trackEvent('page_performance', {
+                    loadTime: Math.round(perfData.loadEventEnd - perfData.loadEventStart),
+                    domContentLoaded: Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart),
+                    totalTime: Math.round(perfData.loadEventEnd - perfData.fetchStart)
+                });
+            }
+        }, 1000);
+    });
+}
