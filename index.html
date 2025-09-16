@@ -358,7 +358,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sv.js')
+                navigator.serviceWorker.register('./sv.js') 
                     .then(registration => {
                         console.log('SW registered: ', registration);
                     })
@@ -554,5 +554,5 @@
         }
     }
     </style>
-</body > 
+</body> 
 </html>
