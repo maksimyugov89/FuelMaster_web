@@ -9,20 +9,20 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yoursite.com/">
+    <meta property="og:url" content="https://maksimyugov89.github.io/FuelMaster_web/">
     <meta property="og:title" content="FuelMaster - Калькулятор расхода топлива">
     <meta property="og:description" content="Управляй расходом топлива с умом. Комплексное приложение для отслеживания автомобилей и экономии топлива.">
-    <meta property="og:image" content="https://yoursite.com/assets/img/logo.jpg">
+    <meta property="og:image" content="https://maksimyugov89.github.io/FuelMaster_web/assets/img/icon-512.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://yoursite.com/">
+    <meta property="twitter:url" content="https://maksimyugov89.github.io/FuelMaster_web/">
     <meta property="twitter:title" content="FuelMaster - Калькулятор расхода топлива">
     <meta property="twitter:description" content="Управляй расходом топлива с умом">
-    <meta property="twitter:image" content="https://yoursite.com/assets/img/logo.jpg">
+    <meta property="twitter:image" content="https://maksimyugov89.github.io/FuelMaster_web/assets/img/icon-512.png">
 
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://yoursite.com/">
+    <link rel="canonical" href="https://maksimyugov89.github.io/FuelMaster_web/">
     
     <!-- PWA -->
     <link rel="manifest" href="manifest.json">
@@ -30,17 +30,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="FuelMaster">
-
-    <!-- Добавьте эти строки: -->
-    <link rel="apple-touch-icon" href="assets/img/icon-180.png">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="assets/img/icon-152.png">
     <link rel="apple-touch-icon" sizes="152x152" href="assets/img/icon-152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon-180.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon-192.png">
     <link rel="apple-touch-icon" sizes="192x192" href="assets/img/icon-192.png">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/icon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/icon-16.png">
-    <link rel="shortcut icon" href="assets/img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/icon-96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/icon-96.png">
+    <link rel="shortcut icon" href="assets/img/icon-96.png">
     
     <title>FuelMaster - Калькулятор расхода топлива</title>
     
@@ -50,6 +50,28 @@
     
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- SEO JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "FuelMaster",
+      "description": "Калькулятор расхода топлива и управление автомобилями",
+      "url": "https://maksimyugov89.github.io/FuelMaster_web/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "author": {
+        "@type": "Person",
+        "name": "maksimyugov89"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RUB"
+      }
+    }
+    </script>
 </head>
 <body>
     <!-- Skip to main content for accessibility -->
@@ -143,6 +165,7 @@
                     <div id="calculation-result" aria-live="polite">
                         <p id="total-mileage" class="result-text"></p>
                         <p id="result" class="result-text"></p>
+                        <p id="cost-result" class="result-text"></p>
                     </div>
                 </form>
             </div>
@@ -245,17 +268,17 @@
         <section id="download" aria-labelledby="download-title">
             <div class="container">
                 <h2 id="download-title" data-i18n="download-title">Скачай FuelMaster</h2>
-                <p id="download-desc" data-i18n="download-desc" aria-describedby="download-description">Доступно для Android и iOS. Установи прямо сейчас!</p>
+                <p id="download-desc" data-i18n="download-desc">Доступно для Android и iOS. Установи прямо сейчас!</p>
                 <div class="download-buttons">
                     <a href="https://github.com/maksimyugov89/FuelMaster" class="btn secondary" 
                        data-i18n="download-github" target="_blank" rel="noopener noreferrer"
                        aria-label="Перейти к исходному коду на GitHub">
-                        <img src="assets/img/logo.jpg" alt="" class="download-logo" aria-hidden="true"> 
+                        <img src="assets/img/icon-96.png" alt="" class="download-logo" aria-hidden="true"> 
                         <span>Исходный код</span>
                     </a>
                     <a href="#" class="btn primary" data-i18n="download-apk" 
                        aria-label="Скачать APK файл приложения">
-                        <img src="assets/img/logo.jpg" alt="" class="download-logo" aria-hidden="true"> 
+                        <img src="assets/img/icon-96.png" alt="" class="download-logo" aria-hidden="true"> 
                         <span>Скачать APK</span>
                     </a>
                 </div>
@@ -271,9 +294,9 @@
                     <i class="fab fa-github" aria-hidden="true"></i> maksimyugov89
                 </a>
             </p>
-            <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer" 
-               aria-label="Профиль в Twitter">
-                <i class="fab fa-twitter" aria-hidden="true"></i>
+            <a href="https://t.me/Satir45" target="_blank" rel="noopener noreferrer" 
+               aria-label="Связаться в Telegram">
+                <i class="fab fa-telegram" aria-hidden="true"></i> Telegram
             </a>
         </div>
     </footer>
@@ -314,21 +337,222 @@
         <button class="error-close" aria-label="Закрыть уведомление">&times;</button>
     </div>
 
+    <!-- PWA Install Banner -->
+    <div id="install-banner" class="install-banner" style="display: none;">
+        <div class="install-content">
+            <img src="assets/img/icon-96.png" alt="FuelMaster" class="install-icon">
+            <div class="install-text">
+                <h3>Установить FuelMaster</h3>
+                <p>Получите быстрый доступ к приложению</p>
+            </div>
+            <div class="install-buttons">
+                <button id="install-btn" class="btn primary">Установить</button>
+                <button id="dismiss-btn" class="btn secondary">Позже</button>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/script.js"></script>
     
     <!-- Register Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sv.js')
+                navigator.serviceWorker.register('/FuelMaster_web/sv.js')
                     .then(registration => {
                         console.log('SW registered: ', registration);
                     })
                     .catch(registrationError => {
                         console.log('SW registration failed: ', registrationError);
                     });
+                
+                // Обработчик сообщений от Service Worker
+                navigator.serviceWorker.addEventListener('message', event => {
+                    const { type, online, version } = event.data || {};
+                    
+                    switch (type) {
+                        case 'CONNECTIVITY_CHANGED':
+                            const status = online ? 'Подключение восстановлено' : 'Работаем в оффлайн режиме';
+                            console.log('Статус соединения:', status);
+                            
+                            // Показываем уведомление пользователю
+                            if (window.fuelMasterApp && window.fuelMasterApp.showError) {
+                                window.fuelMasterApp.showError(status);
+                            }
+                            break;
+                            
+                        case 'SW_READY':
+                            console.log('Service Worker готов, версия:', version);
+                            break;
+                    }
+                });
             });
         }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+        const installBtn = document.getElementById('install-btn');
+        const dismissBtn = document.getElementById('dismiss-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Показываем баннер установки если не был установлен ранее
+            if (!localStorage.getItem('pwa-dismissed')) {
+                installBanner.style.display = 'block';
+            }
+        });
+
+        // Обработчик кнопки установки
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    
+                    if (outcome === 'accepted') {
+                        console.log('PWA установлено');
+                    } else {
+                        console.log('Установка PWA отклонена');
+                    }
+                    
+                    deferredPrompt = null;
+                    installBanner.style.display = 'none';
+                }
+            });
+        }
+
+        // Обработчик кнопки "Позже"
+        if (dismissBtn) {
+            dismissBtn.addEventListener('click', () => {
+                installBanner.style.display = 'none';
+                localStorage.setItem('pwa-dismissed', 'true');
+                // Показывать снова через 7 дней
+                setTimeout(() => {
+                    localStorage.removeItem('pwa-dismissed');
+                }, 7 * 24 * 60 * 60 * 1000);
+            });
+        }
+
+        // Обработчик успешной установки
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA установлено успешно');
+            installBanner.style.display = 'none';
+            localStorage.setItem('pwa-installed', 'true');
+            
+            // Показываем уведомление об успешной установке
+            if (window.fuelMasterApp && window.fuelMasterApp.showError) {
+                window.fuelMasterApp.showError('Приложение успешно установлено!');
+            }
+        });
+
+        // Проверка уже установленного PWA
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            console.log('PWA запущено в standalone режиме');
+            localStorage.setItem('pwa-installed', 'true');
+        }
     </script>
-</body>
-</html>
+
+    <!-- Стили для PWA Install Banner -->
+    <style>
+        .install-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #007bff, #00c4cc);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            max-width: 90vw;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .install-content {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            gap: 15px;
+        }
+
+        .install-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+        }
+
+        .install-text h3 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .install-text p {
+        margin: 0;
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .install-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .install-buttons .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .install-buttons .btn.primary {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .install-buttons .btn.secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    .install-buttons .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateX(-50%) translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .install-content {
+            padding: 12px 15px;
+            gap: 10px;
+        }
+    
+        .install-icon {
+            width: 40px;
+            height: 40px;
+        }
+    
+        .install-buttons .btn {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+    }
+    </style>
+    </body>
+    </html>
