@@ -465,7 +465,6 @@ body.light .calculator-form input::placeholder {
     box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
 }
 
-.error-message {
     color: #ff6b6b;
     font-size: 14px;
     margin-top: 5px;
@@ -1155,5 +1154,375 @@ footer a:hover {
 @media (prefers-color-scheme: light) {
     body.light {
         background: linear-gradient(135deg, #f0f4ff, #ffffff);
+    }
+}
+
+/* === СТИЛИ ДЛЯ УЛУЧШЕННЫХ РЕЗУЛЬТАТОВ КАЛЬКУЛЯТОРА === */
+.result-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light .result-container {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.distance-summary {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.distance-summary h4 {
+    color: #007bff;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.distance-main {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.distance-breakdown {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.consumption-display {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(0, 123, 255, 0.1);
+    border-radius: 10px;
+}
+
+.consumption-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #007bff;
+    display: block;
+}
+
+.consumption-unit {
+    font-size: 1.2em;
+    color: #b0b0b0;
+    margin-left: 10px;
+}
+
+body.light .consumption-unit {
+    color: #666;
+}
+
+.efficiency-section {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.efficiency-badge {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1em;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+}
+
+.efficiency-badge:hover {
+    transform: scale(1.05);
+}
+
+/* Цвета для разных уровней экономичности */
+.efficiency-badge.excellent { 
+    background: rgba(40, 167, 69, 0.2); 
+    color: #28a745; 
+    border: 2px solid rgba(40, 167, 69, 0.5);
+}
+
+.efficiency-badge.good { 
+    background: rgba(40, 167, 69, 0.15); 
+    color: #28a745; 
+    border: 2px solid rgba(40, 167, 69, 0.4);
+}
+
+.efficiency-badge.average { 
+    background: rgba(255, 193, 7, 0.2); 
+    color: #ffc107; 
+    border: 2px solid rgba(255, 193, 7, 0.5);
+}
+
+.efficiency-badge.high { 
+    background: rgba(253, 126, 20, 0.2); 
+    color: #fd7e14; 
+    border: 2px solid rgba(253, 126, 20, 0.5);
+}
+
+.efficiency-badge.very-high { 
+    background: rgba(220, 53, 69, 0.2); 
+    color: #dc3545; 
+    border: 2px solid rgba(220, 53, 69, 0.5);
+}
+
+.cost-section, 
+.stats-section, 
+.tips-section {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light .cost-section,
+body.light .stats-section,
+body.light .tips-section {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.cost-section h5, 
+.stats-section h5, 
+.tips-section h5 {
+    margin-bottom: 12px;
+    color: #007bff;
+    font-size: 1.1em;
+}
+
+.cost-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cost-details div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light .cost-details div {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.light .stat-item {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+.stat-label {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tips-list li {
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.light .tips-list li {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+.tips-list li:before {
+    content: "💡";
+    position: absolute;
+    left: 0;
+    top: 8px;
+}
+
+.tips-list li:last-child {
+    border-bottom: none;
+}
+
+.result-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.quick-preview {
+    padding: 15px;
+    background: rgba(0, 123, 255, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid rgba(0, 123, 255, 0.2);
+    animation: fadeIn 0.5s ease;
+}
+
+.quick-preview small {
+    display: block;
+    margin-top: 8px;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+/* Стили для погоды */
+.weather-location, 
+.weather-temp, 
+.weather-wind {
+    margin-right: 12px;
+    font-size: 13px;
+}
+
+.weather-location {
+    font-weight: 600;
+}
+
+.weather-temp {
+    color: #007bff;
+}
+
+.weather-wind {
+    opacity: 0.8;
+}
+
+/* Стили для уведомлений об успехе */
+.error-notification.success {
+    background: #28a745;
+}
+
+.error-notification.success .error-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* === АДАПТИВНЫЕ СТИЛИ ДЛЯ НОВЫХ ЭЛЕМЕНТОВ === */
+@media (max-width: 768px) {
+    .consumption-value { 
+        font-size: 2em; 
+    }
+    
+    .stats-grid { 
+        grid-template-columns: 1fr; 
+        gap: 8px;
+    }
+    
+    .result-actions { 
+        flex-direction: column; 
+        align-items: center;
+    }
+    
+    .result-actions .btn {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .cost-details {
+        font-size: 0.9em;
+    }
+    
+    .efficiency-badge {
+        font-size: 0.9em;
+        padding: 8px 16px;
+    }
+    
+    .tips-list li {
+        padding-left: 20px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .consumption-display {
+        padding: 10px;
+    }
+    
+    .consumption-value {
+        font-size: 1.8em;
+    }
+    
+    .distance-main {
+        font-size: 1.5em;
+    }
+    
+    .result-container {
+        padding: 15px;
+    }
+    
+    .cost-section, 
+    .stats-section, 
+    .tips-section {
+        padding: 12px;
+        margin: 15px 0;
+    }
+    
+    .weather-location, 
+    .weather-temp, 
+    .weather-wind {
+        font-size: 11px;
+        margin-right: 8px;
+    }
+}
+
+/* Анимации для результатов */
+.result-container {
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация для эффективности */
+.efficiency-badge {
+    animation: bounceIn 0.8s ease-out 0.3s both;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }
