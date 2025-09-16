@@ -2,29 +2,76 @@
     "name": "FuelMaster - Калькулятор расхода топлива",
     "short_name": "FuelMaster",
     "description": "Управляй расходом топлива с умом. Комплексное приложение для отслеживания автомобилей и экономии топлива.",
-    "start_url": "/index.html",
+    "start_url": "/",
     "scope": "/",
     "display": "standalone",
     "orientation": "portrait-primary",
-    "background_color": "#2c2c3e",
+    "background_color": "#1a1a2e",
     "theme_color": "#007bff",
     "lang": "ru",
     "dir": "ltr",
     "categories": ["automotive", "utilities", "productivity"],
-    "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "assets/img/logo.jpg",
-            "sizes": "167x192",
-            "type": "image/jpeg",
-            "purpose": "any maskable"
+            "src": "assets/img/icon-72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "any"
         },
         {
-            "src": "assets/img/logo.jpg",
-            "sizes": "512x512",
-            "type": "image/jpeg",
+            "src": "assets/img/icon-96.png",
+            "sizes": "96x96",
+            "type": "image/png",
             "purpose": "any"
+        },
+        {
+            "src": "assets/img/icon-128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/img/icon-144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/img/icon-152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/img/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/img/icon-384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/img/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "assets/img/icon-192-maskable.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "assets/img/icon-512-maskable.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
         }
     ],
     "screenshots": [
@@ -36,7 +83,7 @@
             "label": "Главный экран приложения FuelMaster"
         },
         {
-            "src": "assets/img/Screenshot-2-dark.jpg", 
+            "src": "assets/img/Screenshot-2-dark.jpg",
             "sizes": "390x844",
             "type": "image/jpeg",
             "platform": "narrow",
@@ -44,10 +91,24 @@
         },
         {
             "src": "assets/img/Screenshot-3-dark.jpg",
-            "sizes": "390x844", 
+            "sizes": "390x844",
             "type": "image/jpeg",
             "platform": "narrow",
             "label": "Список автомобилей"
+        },
+        {
+            "src": "assets/img/Screenshot-4-dark.jpg",
+            "sizes": "390x844",
+            "type": "image/jpeg",
+            "platform": "narrow",
+            "label": "Добавление нового автомобиля"
+        },
+        {
+            "src": "assets/img/Screenshot-5-dark.jpg",
+            "sizes": "390x844",
+            "type": "image/jpeg",
+            "platform": "narrow",
+            "label": "История поездок"
         }
     ],
     "shortcuts": [
@@ -55,25 +116,38 @@
             "name": "Калькулятор",
             "short_name": "Калькулятор",
             "description": "Быстрый расчет расхода топлива",
-            "url": "/index.html#calculator",
+            "url": "/#calculator",
             "icons": [
                 {
-                    "src": "assets/img/logo.jpg",
-                    "sizes": "192x192",
-                    "type": "image/jpeg"
+                    "src": "assets/img/icon-96.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
                 }
             ]
         },
         {
             "name": "Скриншоты",
-            "short_name": "Скриншоты", 
+            "short_name": "Скриншоты",
             "description": "Просмотр скриншотов приложения",
-            "url": "/index.html#screenshots",
+            "url": "/#screenshots",
             "icons": [
                 {
-                    "src": "assets/img/logo.jpg",
-                    "sizes": "192x192",
-                    "type": "image/jpeg"
+                    "src": "assets/img/icon-96.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Статистика кеша",
+            "short_name": "Кеш",
+            "description": "Просмотр информации о кеше",
+            "url": "/cache-stats",
+            "icons": [
+                {
+                    "src": "assets/img/icon-96.png",
+                    "sizes": "96x96",
+                    "type": "image/png"
                 }
             ]
         }
@@ -88,36 +162,5 @@
             "platform": "itunes",
             "url": "https://apps.apple.com/app/fuelmaster/id123456789"
         }
-    ],
-    "protocol_handlers": [
-        {
-            "protocol": "web+fuelmaster",
-            "url": "/index.html?action=%s"
-        }
-    ],
-    "share_target": {
-        "action": "/share-target/",
-        "method": "POST",
-        "enctype": "multipart/form-data",
-        "params": {
-            "title": "title",
-            "text": "text",
-            "url": "url"
-        }
-    },
-    "file_handlers": [
-        {
-            "action": "/file-handler/",
-            "accept": {
-                "text/csv": [".csv"],
-                "application/json": [".json"]
-            }
-        }
-    ],
-    "edge_side_panel": {
-        "preferred_width": 400
-    },
-    "launch_handler": {
-        "client_mode": ["navigate-existing", "auto"]
-    }
+    ]
 }
