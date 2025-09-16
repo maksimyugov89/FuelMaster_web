@@ -281,34 +281,55 @@ class FuelMasterApp {
 
     // === FUEL CALCULATOR ===
     validateInput(input) {
-        const value = parseFloat(input.value);
-        const min = parseFloat(input.min) || 0;
-        const errorElement = document.getElementById(`${input.id}-error`);
-        
-        let isValid = true;
-        let errorMessage = '';
+    const value = parseFloat(input.value);
+    const min = parseFloat(input.min) || 0;
+    const errorElement = document.getElementById(`${input.id}-error`);
+    
+    let isValid = true;
+    let errorMessage = '';
 
-        if (input.value && (isNaN(value) || value < min)) {
-            isValid = false;
-            errorMessage = this.translations[this.currentLang].errorInvalidNumber || 'Введите корректное число';
-        }
-
-        if (input.id === 'end-mileage' && input.value) {
-            const startMileage = parseFloat(this.elements.inputs.startMileage.value) || 0;
-            if (value <= startMileage) {
-                isValid = false;
-                errorMessage = this.translations[this.currentLang].errorEndMileage || 'Конечный пробег должен быть больше начального';
-            }
-        }
-
-        if (errorElement) {
-            errorElement.textContent = errorMessage;
-            errorElement.style.display = errorMessage ? 'block' : 'none';
-        }
-
-        input.classList.toggle('error', !isValid);
-        return isValid;
+    // Проверка на пустое значение для обязательных полей
+    if (input.hasAttribute('required') && !input.value.trim()) {
+        isValid = false;
+        errorMessage = 'Это поле обязательно для заполнения';
     }
+    // Проверка на корректность числа
+    else if (input.value && (isNaN(value) || value < min)) {
+        isValid = false;
+        errorMessage = `Введите число больше или равное ${min}`;
+    }
+    // Специальная проверка для конечного пробега
+    else if (input.id === 'end-mileage' && input.value) {
+        const startMileage = parseFloat(this.elements.inputs.startMileage.value) || 0;
+        if (value <= startMileage) {
+            isValid = false;
+            errorMessage = 'Конечный пробег должен быть больше начального';
+        }
+    }
+    // Проверка разумных пределов
+    else if (input.value) {
+        if (input.id.includes('mileage') && value > 999999) {
+            isValid = false;
+            errorMessage = 'Слишком большое значение пробега';
+        }
+        if (input.id === 'start-fuel' && value > 200) {
+            isValid = false;
+            errorMessage = 'Слишком большой объем топливного бака';
+        }
+    }
+
+    if (errorElement) {
+        errorElement.textContent = errorMessage;
+        errorElement.style.display = errorMessage ? 'block' : 'none';
+    }
+
+    input.classList.toggle('error', !isValid);
+    
+    // Добавляем визуальную индикацию успешной валидации
+    input.classList.toggle('valid', isValid && input.value);
+    
+    return isValid;
+}
 
     calculateFuelConsumption() {
         try {
