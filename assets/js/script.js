@@ -380,7 +380,7 @@ class FuelMasterApp {
         });
     }
 
-        initializeAccessibility() {
+    initializeAccessibility() {
         // Add skip link focus handler
         const skipLink = document.querySelector('.skip-link');
         if (skipLink) {
@@ -1184,102 +1184,33 @@ class FuelMasterApp {
 
     // === MODAL AND GALLERY ===
     openModal(index) {
-        if (index < 0 || index >= this.galleryImages.length) return;
-        
-        this.currentImageIndex = index;
-        const img = this.galleryImages[index];
-        
-        this.elements.modalImg.src = img.src;
-        this.elements.modalImg.alt = img.alt;
-        this.elements.modalCaption.textContent = img.alt;
-        
-        this.elements.modal.style.display = 'flex';
-        this.elements.modal.setAttribute('aria-hidden', 'false');
-        
-        // Focus management
-        const closeButton = this.elements.modal.querySelector('.close-modal');
-        if (closeButton) closeButton.focus();
-        
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-        
-        setTimeout(() => {
-            this.elements.modal.classList.add('show');
-        }, 10);
-        
-        // Track screenshot view
-        this.trackEvent('screenshot_view', { image_index: index, alt: img.alt });
+        if (this.modalManager) {
+            this.modalManager.openModal(index);
+        }
     }
 
     closeModal() {
-        this.elements.modal.classList.remove('show');
-        this.elements.modal.setAttribute('aria-hidden', 'true');
-        
-        setTimeout(() => {
-            this.elements.modal.style.display = 'none';
-            document.body.style.overflow = '';
-            
-            // Return focus to the image that opened the modal
-            if (this.galleryImages[this.currentImageIndex]) {
-                this.galleryImages[this.currentImageIndex].focus();
-            }
-        }, 300);
+        if (this.modalManager) {
+            this.modalManager.closeModal();
+        }
     }
 
     nextImage() {
-        this.currentImageIndex = (this.currentImageIndex + 1) % this.galleryImages.length;
-        this.updateModalImage();
+        if (this.modalManager) {
+            this.modalManager.nextImage();
+        }
     }
 
     prevImage() {
-        this.currentImageIndex = (this.currentImageIndex - 1 + this.galleryImages.length) % this.galleryImages.length;
-        this.updateModalImage();
-    }
-
-    updateModalImage() {
-        const img = this.galleryImages[this.currentImageIndex];
-        
-        // Add transition effect
-        this.elements.modalImg.style.opacity = '0';
-        
-        setTimeout(() => {
-            this.elements.modalImg.src = img.src;
-            this.elements.modalImg.alt = img.alt;
-            this.elements.modalCaption.textContent = img.alt;
-            this.elements.modalImg.style.opacity = '1';
-        }, 150);
+        if (this.modalManager) {
+            this.modalManager.prevImage();
+        }
     }
 
     // === KEYBOARD NAVIGATION ===
     handleKeyboardNavigation(e) {
-        // Modal navigation
-        if (this.elements.modal.classList.contains('show')) {
-            switch (e.key) {
-                case 'Escape':
-                    e.preventDefault();
-                    this.closeModal();
-                    break;
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    this.prevImage();
-                    break;
-                case 'ArrowRight':
-                    e.preventDefault();
-                    this.nextImage();
-                    break;
-                case 'Home':
-                    e.preventDefault();
-                    this.currentImageIndex = 0;
-                    this.updateModalImage();
-                    break;
-                case 'End':
-                    e.preventDefault();
-                    this.currentImageIndex = this.galleryImages.length - 1;
-                    this.updateModalImage();
-                    break;
-            }
-        }
-
+        // Modal navigation handled by ModalManager
+        
         // Global shortcuts
         if (e.ctrlKey || e.metaKey) {
             switch (e.key) {
@@ -1348,15 +1279,6 @@ class FuelMasterApp {
 
     // === RESPONSIVE HANDLING ===
     handleResize() {
-        // Close modal on resize if needed
-        if (this.elements.modal.classList.contains('show')) {
-            if (window.innerWidth < 768) {
-                this.elements.modal.style.padding = '10px';
-            } else {
-                this.elements.modal.style.padding = '20px';
-            }
-        }
-
         // Update gallery scroll
         const gallery = document.querySelector('.gallery');
         if (gallery && window.innerWidth < 768) {
@@ -1634,4 +1556,246 @@ if ('performance' in window) {
             }
         }, 1000);
     });
+}
+
+// === ДОПОЛНИТЕЛЬНЫЕ УТИЛИТЫ ===
+
+// Проверка поддержки современных браузерных функций
+function checkBrowserSupport() {
+    const features = {
+        localStorage: typeof(Storage) !== "undefined",
+        geolocation: "geolocation" in navigator,
+        serviceWorker: "serviceWorker" in navigator,
+        intersectionObserver: "IntersectionObserver" in window,
+        fetch: "fetch" in window
+    };
+    
+    console.log('Browser support:', features);
+    return features;
+}
+
+// Инициализация проверки поддержки
+document.addEventListener('DOMContentLoaded', () => {
+    checkBrowserSupport();
+});
+
+// === ПОЛИФИЛЛЫ ДЛЯ СТАРЫХ БРАУЗЕРОВ ===
+
+// AbortSignal.timeout polyfill
+if (!AbortSignal.timeout) {
+    AbortSignal.timeout = function(milliseconds) {
+        const controller = new AbortController();
+        setTimeout(() => controller.abort(), milliseconds);
+        return controller.signal;
+    };
+}
+
+// requestAnimationFrame polyfill
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function(callback) {
+        return setTimeout(callback, 16);
+    };
+}
+
+// === PWA ДОПОЛНИТЕЛЬНЫЕ ФУНКЦИИ ===
+
+// Обработка обновлений Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        // Перезагрузка страницы при обновлении SW
+        window.location.reload();
+    });
+}
+
+// Определение режима отображения PWA
+function isPWAMode() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+           window.navigator.standalone === true;
+}
+
+// Оптимизация для PWA режима
+if (isPWAMode()) {
+    document.body.classList.add('pwa-mode');
+    console.log('Running in PWA mode');
+}
+
+// === ДОПОЛНИТЕЛЬНЫЕ ОБРАБОТЧИКИ СОБЫТИЙ ===
+
+// Обработка изменения ориентации устройства
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        if (window.fuelMasterApp) {
+            window.fuelMasterApp.handleResize();
+        }
+    }, 100);
+});
+
+// Обработка возврата к активной вкладке
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && window.fuelMasterApp) {
+        // Обновляем погоду при возврате к странице
+        setTimeout(() => {
+            window.fuelMasterApp.loadWeatherData();
+        }, 1000);
+    }
+});
+
+// === БЕЗОПАСНОСТЬ И САНИТИЗАЦИЯ ===
+
+// Функция для безопасного создания HTML
+function sanitizeHTML(str) {
+    const temp = document.createElement('div');
+    temp.textContent = str;
+    return temp.innerHTML;
+}
+
+// Защита от XSS в пользовательском вводе
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// === ACCESSIBILITY IMPROVEMENTS ===
+
+// Улучшенное управление фокусом
+class FocusManager {
+    constructor() {
+        this.focusableElements = [
+            'a[href]',
+            'button:not([disabled])',
+            'input:not([disabled])',
+            'select:not([disabled])',
+            'textarea:not([disabled])',
+            '[tabindex]:not([tabindex="-1"])'
+        ].join(',');
+    }
+    
+    trapFocus(container) {
+        const focusable = container.querySelectorAll(this.focusableElements);
+        const firstFocusable = focusable[0];
+        const lastFocusable = focusable[focusable.length - 1];
+        
+        container.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        lastFocusable.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        firstFocusable.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Глобальный менеджер фокуса
+window.focusManager = new FocusManager();
+
+// === ФИНАЛЬНАЯ ИНИЦИАЛИЗАЦИЯ ===
+
+// Проверка готовности DOM и инициализация всех компонентов
+function initializeApp() {
+    console.log('Initializing FuelMaster Web App...');
+    
+    // Проверяем поддержку критических функций
+    const support = checkBrowserSupport();
+    
+    if (!support.localStorage) {
+        console.warn('localStorage not supported - some features may not work');
+    }
+    
+    if (!support.fetch) {
+        console.warn('fetch not supported - weather data may not load');
+    }
+    
+    // Инициализация приложения уже происходит в DOMContentLoaded выше
+    console.log('FuelMaster Web App ready!');
+}
+
+// Резервная инициализация на случай проблем с DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    initializeApp();
+}
+
+// === ЭКСПОРТ ДЛЯ МОДУЛЬНОСТИ (ЕСЛИ НУЖНО) ===
+
+// Глобальный объект для внешнего API
+window.FuelMaster = {
+    version: '2.0.0',
+    app: null, // будет заполнено после инициализации
+    
+    // Публичные методы
+    calculate: function(data) {
+        if (this.app) {
+            return this.app.calculateFuelConsumption(data);
+        }
+    },
+    
+    toggleTheme: function() {
+        if (this.app) {
+            this.app.toggleTheme();
+        }
+    },
+    
+    setLanguage: function(lang) {
+        if (this.app && ['ru', 'en'].includes(lang)) {
+            this.app.currentLang = lang;
+            this.app.applyTranslation();
+        }
+    }
+};
+
+// Устанавливаем ссылку на приложение после инициализации
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        if (window.fuelMasterApp) {
+            window.FuelMaster.app = window.fuelMasterApp;
+        }
+    }, 100);
+});
+
+// === DEBUG HELPERS (ТОЛЬКО ДЛЯ РАЗРАБОТКИ) ===
+
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    window.debugFuelMaster = {
+        getApp: () => window.fuelMasterApp,
+        getHistory: () => window.fuelMasterApp?.calculationHistory,
+        clearHistory: () => {
+            localStorage.removeItem('fuelmaster-history');
+            if (window.fuelMasterApp) {
+                window.fuelMasterApp.calculationHistory = [];
+            }
+        },
+        testModal: (index = 0) => {
+            if (window.fuelMasterApp) {
+                window.fuelMasterApp.openModal(index);
+            }
+        },
+        testError: (message = 'Test error') => {
+            if (window.fuelMasterApp) {
+                window.fuelMasterApp.showError(message);
+            }
+        }
+    };
+    
+    console.log('Debug helpers available as window.debugFuelMaster');
+}
+
+// === ЗАВЕРШЕНИЕ СКРИПТА ===
+console.log('FuelMaster script loaded successfully v2.0');
+
+// Экспорт основного класса для ES6 модулей (если используется)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { FuelMasterApp, ModalManager };
 }
