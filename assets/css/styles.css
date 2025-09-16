@@ -402,6 +402,27 @@ body.light .calculator-form {
     box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
 }
 
+.calculator-form input.valid {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+}
+
+body.light .calculator-form input.valid {
+    border-color: #28a745;
+}
+
+/* Анимация для плавного появления ошибок */
+.error-message {
+    transition: all 0.3s ease;
+    transform: translateY(-5px);
+    opacity: 0;
+}
+
+.error-message:not(:empty) {
+    transform: translateY(0);
+    opacity: 1;
+}
+
 body.light .calculator-form input {
     background: rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.1);
