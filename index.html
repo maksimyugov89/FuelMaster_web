@@ -358,7 +358,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/FuelMaster_web/sv.js')
+                navigator.serviceWorker.register('sv.js')
                     .then(registration => {
                         console.log('SW registered: ', registration);
                     })
@@ -485,59 +485,59 @@
         }
 
         .install-text h3 {
-        margin: 0 0 5px 0;
-        font-size: 16px;
-        font-weight: 600;
-    }
-
-    .install-text p {
-        margin: 0;
-        font-size: 14px;
-        opacity: 0.9;
-    }
-
-    .install-buttons {
-        display: flex;
-        gap: 10px;
-    }
-
-    .install-buttons .btn {
-        padding: 8px 16px;
-        font-size: 14px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .install-buttons .btn.primary {
-        background: rgba(255, 255, 255, 0.2);
-        color: white;
-    }
-
-    .install-buttons .btn.secondary {
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-    }
-
-    .install-buttons .btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    @keyframes slideUp {
-        from {
-            transform: translateX(-50%) translateY(100%);
-            opacity: 0;
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: 600;
         }
-        to {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-    }
 
-    @media (max-width: 768px) {
+        .install-text p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .install-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .install-buttons .btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .install-buttons .btn.primary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .install-buttons .btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .install-buttons .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+         }
+
+        @media (max-width: 768px) {
         .install-content {
             padding: 12px 15px;
             gap: 10px;
@@ -554,5 +554,5 @@
         }
     }
     </style>
-    </body>
-    </html>
+</body > 
+</html>
