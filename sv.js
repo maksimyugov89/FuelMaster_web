@@ -1,9 +1,17 @@
 // === FUEL MASTER SERVICE WORKER - ENHANCED ===
 
-const CACHE_NAME = 'fuelmaster-v4';
-const STATIC_CACHE = 'fuelmaster-static-v4';
-const DYNAMIC_CACHE = 'fuelmaster-dynamic-v4';
-const IMAGE_CACHE = 'fuelmaster-images-v4';
+const CACHE_NAME = 'fuelmaster-v5'; // Увеличиваем версию
+const STATIC_CACHE = 'fuelmaster-static-v5';
+const DYNAMIC_CACHE = 'fuelmaster-dynamic-v5';
+const IMAGE_CACHE = 'fuelmaster-images-v5';
+
+// Добавляем более умное кеширование
+const CACHE_DURATION = {
+    STATIC: 30 * 24 * 60 * 60 * 1000,    // 30 дней для статики
+    DYNAMIC: 24 * 60 * 60 * 1000,         // 1 день для динамического контента
+    IMAGES: 7 * 24 * 60 * 60 * 1000,      // 7 дней для изображений
+    API: 10 * 60 * 1000                   // 10 минут для API
+};
 
 // Critical resources to cache immediately
 const CRITICAL_RESOURCES = [
