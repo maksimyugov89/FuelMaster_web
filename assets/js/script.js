@@ -1430,7 +1430,15 @@ class FuelMasterApp {
             "weather-info": "{city}: {icon} {temp}°C, {wind} км/ч",
             "errorRequired": "Это поле обязательно",
             "errorInvalidNumber": "Введите корректное число",
-            "errorEndMileage": "Конечный пробег должен быть больше начального"
+            "errorEndMileage": "Конечный пробег должен быть больше начального", 
+            "trip-information": "Информация о поездке",
+            "key-features": "Основные возможности",
+            "fuel-consumption": "Расход топлива",
+            "trip-cost": "Стоимость поездки",
+            "trip-statistics": "Статистика поездки",
+            "economy-tips": "Советы по экономии",
+            "share-result": "Поделиться",
+            "new-calculation": "Новый расчет"
         },
         en: {
             themeLight: "Light",
