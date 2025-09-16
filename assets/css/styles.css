@@ -1158,6 +1158,17 @@ footer a:hover {
         max-width: 120px;
     }
     
+    .feature-card {
+        padding: 15px 12px; /* Уменьшить отступы */
+        min-height: auto; /* Убрать фиксированную высоту */
+    }
+    
+    .feature-card p {
+        font-size: 0.85em; /* Уменьшить шрифт на малых экранах */
+        max-height: 3.6em; /* Меньше строк */
+        -webkit-line-clamp: 3;
+    }
+    
     .feature-card i {
         font-size: 2.5em;
     }
