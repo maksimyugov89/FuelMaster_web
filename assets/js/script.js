@@ -1,5 +1,259 @@
 // === FUEL MASTER - ENHANCED SCRIPT V2.0 ===
 
+// === MODAL MANAGER CLASS ===
+class ModalManager {
+    constructor() {
+        this.modal = document.getElementById('modal');
+        this.modalImg = document.getElementById('modal-img');
+        this.modalCaption = document.getElementById('modal-caption');
+        this.closeBtn = this.modal?.querySelector('.close-modal');
+        this.prevBtn = this.modal?.querySelector('.carousel-btn.prev');
+        this.nextBtn = this.modal?.querySelector('.carousel-btn.next');
+        this.backdrop = this.modal?.querySelector('.modal-backdrop');
+        
+        this.currentImageIndex = 0;
+        this.galleryImages = [];
+        this.isOpen = false;
+        
+        this.initEventListeners();
+    }
+    
+    initEventListeners() {
+        if (!this.modal) return;
+        
+        // Кнопка закрытия
+        if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.closeModal();
+            });
+        }
+        
+        // Клик по backdrop
+        if (this.backdrop) {
+            this.backdrop.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.closeModal();
+            });
+        }
+        
+        // Клик вне модального контента
+        this.modal.addEventListener('click', (e) => {
+            if (e.target === this.modal) {
+                this.closeModal();
+            }
+        });
+        
+        // Предотвращаем всплытие событий от содержимого модалки
+        const modalContent = this.modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+        
+        // Кнопки навигации
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.prevImage();
+            });
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.nextImage();
+            });
+        }
+        
+        // Клавиатурные события
+        document.addEventListener('keydown', (e) => {
+            if (!this.isOpen) return;
+            
+            switch (e.key) {
+                case 'Escape':
+                    e.preventDefault();
+                    this.closeModal();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    this.prevImage();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    this.nextImage();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    this.goToImage(0);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    this.goToImage(this.galleryImages.length - 1);
+                    break;
+            }
+        });
+        
+        // Предотвращаем прокрутку страницы стрелками когда модалка открыта
+        document.addEventListener('keydown', (e) => {
+            if (this.isOpen && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    setGalleryImages(images) {
+        this.galleryImages = Array.from(images);
+        
+        // Добавляем обработчики кликов на изображения галереи
+        this.galleryImages.forEach((img, index) => {
+            // Удаляем старые обработчики если есть
+            const newImg = img.cloneNode(true);
+            img.parentNode.replaceChild(newImg, img);
+            this.galleryImages[index] = newImg;
+            
+            newImg.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.openModal(index);
+            });
+            
+            newImg.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.openModal(index);
+                }
+            });
+        });
+    }
+    
+    openModal(index) {
+        if (index < 0 || index >= this.galleryImages.length) return;
+        
+        this.currentImageIndex = index;
+        this.isOpen = true;
+        
+        // Обновляем изображение
+        this.updateModalImage();
+        
+        // Показываем/скрываем кнопки навигации
+        this.updateNavigationButtons();
+        
+        // Показываем модальное окно
+        this.modal.style.display = 'flex';
+        this.modal.setAttribute('aria-hidden', 'false');
+        
+        // Блокируем прокрутку страницы
+        document.body.style.overflow = 'hidden';
+        
+        // Добавляем класс с анимацией
+        requestAnimationFrame(() => {
+            this.modal.classList.add('show');
+        });
+        
+        // Фокус на кнопке закрытия
+        setTimeout(() => {
+            if (this.closeBtn) {
+                this.closeBtn.focus();
+            }
+        }, 100);
+        
+        // Аналитика
+        if (window.fuelMasterApp) {
+            window.fuelMasterApp.trackEvent('screenshot_view', { 
+                image_index: index, 
+                alt: this.galleryImages[index]?.alt || 'Screenshot'
+            });
+        }
+    }
+    
+    closeModal() {
+        if (!this.isOpen) return;
+        
+        this.isOpen = false;
+        this.modal.classList.remove('show');
+        this.modal.setAttribute('aria-hidden', 'true');
+        
+        // Возвращаем фокус на изображение, которое открыло модалку
+        const originalImage = this.galleryImages[this.currentImageIndex];
+        
+        setTimeout(() => {
+            this.modal.style.display = 'none';
+            document.body.style.overflow = '';
+            
+            // Возвращаем фокус
+            if (originalImage && originalImage.focus) {
+                originalImage.focus();
+            }
+        }, 300);
+    }
+    
+    nextImage() {
+        if (!this.isOpen || this.galleryImages.length <= 1) return;
+        
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.galleryImages.length;
+        this.updateModalImage();
+    }
+    
+    prevImage() {
+        if (!this.isOpen || this.galleryImages.length <= 1) return;
+        
+        this.currentImageIndex = (this.currentImageIndex - 1 + this.galleryImages.length) % this.galleryImages.length;
+        this.updateModalImage();
+    }
+    
+    goToImage(index) {
+        if (index < 0 || index >= this.galleryImages.length || !this.isOpen) return;
+        
+        this.currentImageIndex = index;
+        this.updateModalImage();
+    }
+    
+    updateModalImage() {
+        if (!this.modalImg || !this.galleryImages[this.currentImageIndex]) return;
+        
+        const img = this.galleryImages[this.currentImageIndex];
+        
+        // Плавное обновление изображения
+        this.modalImg.style.opacity = '0';
+        this.modalImg.style.transform = 'scale(0.95)';
+        
+        setTimeout(() => {
+            this.modalImg.src = img.src;
+            this.modalImg.alt = img.alt || 'Screenshot';
+            
+            if (this.modalCaption) {
+                this.modalCaption.textContent = img.alt || `Скриншот ${this.currentImageIndex + 1} из ${this.galleryImages.length}`;
+            }
+            
+            this.modalImg.style.opacity = '1';
+            this.modalImg.style.transform = 'scale(1)';
+        }, 150);
+        
+        this.updateNavigationButtons();
+    }
+    
+    updateNavigationButtons() {
+        const hasMultipleImages = this.galleryImages.length > 1;
+        
+        if (this.prevBtn) {
+            this.prevBtn.style.display = hasMultipleImages ? 'flex' : 'none';
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.style.display = hasMultipleImages ? 'flex' : 'none';
+        }
+        
+        // Обновляем атрибут модального окна
+        if (hasMultipleImages) {
+            this.modal.removeAttribute('data-single-image');
+        } else {
+            this.modal.setAttribute('data-single-image', 'true');
+        }
+    }
+}
+
+// === MAIN FUEL MASTER APP CLASS ===
 class FuelMasterApp {
     constructor() {
         this.currentLang = 'ru';
@@ -11,6 +265,7 @@ class FuelMasterApp {
         this.debounceTimeout = null;
         this.errorTimeout = null;
         this.calculationHistory = [];
+        this.modalManager = null;
         
         // Bind methods to preserve context
         this.handleCalculatorInput = this.debounce(this.handleCalculatorInput.bind(this), 300);
@@ -70,6 +325,9 @@ class FuelMasterApp {
         };
 
         this.galleryImages = Array.from(this.elements.galleryImages);
+        
+        // Инициализация модального менеджера
+        this.modalManager = new ModalManager();
     }
 
     initializeEventListeners() {
@@ -96,23 +354,10 @@ class FuelMasterApp {
             }
         });
 
-        // Gallery
-        this.galleryImages.forEach((img, index) => {
-            img.addEventListener('click', () => this.openModal(index));
-            img.addEventListener('dblclick', () => this.openModal(index));
-            img.addEventListener('keydown', this.handleImageKeydown);
-        });
-
-        // Modal
-        this.elements.modal?.addEventListener('click', (e) => {
-            if (e.target === this.elements.modal || e.target.classList.contains('close-modal')) {
-                this.closeModal();
-            }
-        });
-
-        // Carousel buttons
-        document.querySelector('.carousel-btn.prev')?.addEventListener('click', () => this.prevImage());
-        document.querySelector('.carousel-btn.next')?.addEventListener('click', () => this.nextImage());
+        // Gallery - используем модальный менеджер
+        if (this.modalManager) {
+            this.modalManager.setGalleryImages(this.galleryImages);
+        }
 
         // Keyboard navigation
         document.addEventListener('keydown', this.handleKeyboardNavigation);
@@ -135,7 +380,7 @@ class FuelMasterApp {
         });
     }
 
-    initializeAccessibility() {
+        initializeAccessibility() {
         // Add skip link focus handler
         const skipLink = document.querySelector('.skip-link');
         if (skipLink) {
