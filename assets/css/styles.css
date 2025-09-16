@@ -465,13 +465,6 @@ body.light .calculator-form input::placeholder {
     box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
 }
 
-    color: #ff6b6b;
-    font-size: 14px;
-    margin-top: 5px;
-    display: none;
-    min-height: 20px;
-}
-
 .result-text {
     padding: 15px;
     background: rgba(0, 123, 255, 0.1);
