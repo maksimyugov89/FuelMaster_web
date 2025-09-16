@@ -104,24 +104,28 @@ class ModalManager {
     }
     
     setGalleryImages(images) {
-        this.galleryImages = Array.from(images);
+        // Удаляем старые обработчики
+         this.galleryImages.forEach(img => {
+             img.removeEventListener('click', this.handleImageClick);
+             img.removeEventListener('keydown', this.handleImageKeydown);
+         });
+    
+         this.galleryImages = Array.from(images);
+    
+         // Bind методы один раз
+         this.handleImageClick = this.handleImageClick.bind(this);
+         this.handleImageKeydown = this.handleImageKeydown.bind(this);
+    
+         this.galleryImages.forEach((img, index) => {
+             img.addEventListener('click', (e) => {
+                 e.preventDefault();
+                 this.openModal(index);
+             });
         
-        // Добавляем обработчики кликов на изображения галереи
-        this.galleryImages.forEach((img, index) => {
-            // Удаляем старые обработчики если есть
-            const newImg = img.cloneNode(true);
-            img.parentNode.replaceChild(newImg, img);
-            this.galleryImages[index] = newImg;
-            
-            newImg.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.openModal(index);
-            });
-            
-            newImg.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.openModal(index);
+             img.addEventListener('keydown', (e) => {
+                 if (e.key === 'Enter' || e.key === ' ') {
+                     e.preventDefault();
+                     this.openModal(index);
                 }
             });
         });
