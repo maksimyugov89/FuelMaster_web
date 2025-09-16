@@ -280,7 +280,6 @@ class ModalManager {
         
         console.log('ModalManager destroyed successfully');
     }
-  }
 }
 
 // === MAIN FUEL MASTER APP CLASS ===
@@ -1399,7 +1398,7 @@ class FuelMasterApp {
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
-       }
+    }
 
     // Analytics tracking
     trackEvent(eventName, properties = {}) {
@@ -1545,7 +1544,6 @@ class FuelMasterApp {
         
         console.log('FuelMaster app destroyed successfully');
     }
- }
 }
 
 // === GLOBAL FUNCTIONS FOR MODAL (for backward compatibility) ===
