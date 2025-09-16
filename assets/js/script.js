@@ -839,7 +839,10 @@ class FuelMasterApp {
             "weather-error": "Не удалось загрузить погоду",
             "weather-info": "{city}: {icon} {temp}°C, {pressure} мм рт.ст.",
             "errorInvalidNumber": "Введите корректное число",
-            "errorEndMileage": "Конечный пробег должен быть больше начального"
+            "errorEndMileage": "Конечный пробег должен быть больше начального", 
+            "efficiency-rating": "Оценка экономичности: {rating}",
+            "fuel-cost-estimate": "Примерная стоимость: {cost} руб",
+            "distance-breakdown": "Расстояние: город {city} км, трасса {highway} км"
         },
         en: {
             themeLight: "Light",
@@ -880,7 +883,10 @@ class FuelMasterApp {
             "weather-error": "Failed to load weather",
             "weather-info": "{city}: {icon} {temp}°C, {pressure} mmHg",
             "errorInvalidNumber": "Enter a valid number",
-            "errorEndMileage": "End mileage must be greater than start mileage"
+            "errorEndMileage": "End mileage must be greater than start mileage", 
+            "efficiency-rating": "Efficiency rating: {rating}",
+            "fuel-cost-estimate": "Estimated cost: {cost} RUB",
+            "distance-breakdown": "Distance: city {city} km, highway {highway} km"
         }
     };
 }
