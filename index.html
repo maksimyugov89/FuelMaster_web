@@ -28,8 +28,19 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#007bff">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="FuelMaster">
+
+    <!-- Добавьте эти строки: -->
+    <link rel="apple-touch-icon" href="assets/img/icon-180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/img/icon-152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon-180.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="assets/img/icon-192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/icon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/icon-16.png">
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
     
     <title>FuelMaster - Калькулятор расхода топлива</title>
     
@@ -309,7 +320,7 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('/sv.js')
                     .then(registration => {
                         console.log('SW registered: ', registration);
                     })
