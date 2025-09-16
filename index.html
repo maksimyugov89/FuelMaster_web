@@ -302,29 +302,46 @@
     </footer>
 
     <!-- Modal -->
+    <!-- Обновленная разметка модального окна -->
     <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+        <!-- Backdrop для закрытия -->
         <div class="modal-backdrop" aria-hidden="true"></div>
+    
         <div class="modal-content" role="document">
+            <!-- Заголовок (невидимый для пользователей, но доступен для скрин-ридеров) -->
+            <h3 id="modal-title" class="sr-only">Просмотр изображения</h3>
+        
+            <!-- Кнопка закрытия - теперь с фиксированной позицией -->
             <div class="modal-header">
-                <h3 id="modal-title" class="sr-only">Просмотр изображения</h3>
-                <button class="close-modal" aria-label="Закрыть модальное окно">
+                <button class="close-modal" aria-label="Закрыть модальное окно" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+        
+            <!-- Основное содержимое -->
             <div class="modal-body">
-                <button class="carousel-btn prev" aria-label="Предыдущее изображение">
+                <!-- Кнопка "Назад" - фиксированная позиция -->
+                <button class="carousel-btn prev" aria-label="Предыдущее изображение" type="button">
                     <span aria-hidden="true">&#10094;</span>
                 </button>
-                <img id="modal-img" src="" alt="Увеличенное изображение" tabindex="0">
-                <button class="carousel-btn next" aria-label="Следующее изображение">
+            
+                <!-- Изображение -->
+                <img id="modal-img" src="" alt="Увеличенное изображение" tabindex="0" style="transition: opacity 0.3s ease, transform 0.3s ease;">
+            
+                <!-- Кнопка "Вперед" - фиксированная позиция -->
+                <button class="carousel-btn next" aria-label="Следующее изображение" type="button">
                     <span aria-hidden="true">&#10095;</span>
                 </button>
             </div>
+        
+            <!-- Подпись -->
             <div class="modal-footer">
-                <p id="modal-caption"></p>
+                <p id="modal-caption" role="status" aria-live="polite"></p>
             </div>
         </div>
     </div>
+
+
 
     <!-- Loading indicator -->
     <div id="loading" class="loading-overlay" aria-hidden="true">
