@@ -898,95 +898,131 @@ class FuelMasterApp {
 
         const lang = this.currentLang;
         const translations = this.translations[lang];
-        
+    
+        // Переводим советы по экономии
+        const translatedTips = efficiency.tips.map(tip => {
+            if (lang === 'en') {
+                const tipTranslations = {
+                    'Поддерживайте текущий стиль вождения': 'Maintain current driving style',
+                    'Регулярно проверяйте давление в шинах': 'Regularly check tire pressure',
+                    'Избегайте резких ускорений': 'Avoid sharp accelerations',
+                    'Планируйте маршруты заранее': 'Plan routes in advance',
+                    'Больше используйте трассы': 'Use highways more often',
+                    'Проверьте техническое состояние авто': 'Check vehicle technical condition',
+                    'Избегайте поездок в час пик': 'Avoid rush hour trips',
+                    'Проверьте воздушный фильтр': 'Check air filter',
+                    'Обратитесь к автомеханику': 'Visit a mechanic',
+                    'Пересмотрите стиль вождения': 'Review driving style'
+                };
+                return tipTranslations[tip] || tip;
+            }
+            return tip;
+        });
+    
+        // Переводим текст эффективности
+        let efficiencyText = efficiency.text;
+        if (lang === 'en') {
+            const efficiencyTranslations = {
+                'Отлично! Очень экономичный расход': 'Excellent! Very economical consumption',
+                'Хорошо! Экономичный расход': 'Good! Economical consumption',
+                'Средний расход топлива': 'Average fuel consumption',
+                'Повышенный расход': 'Increased consumption',
+                'Высокий расход топлива': 'High fuel consumption'
+            };
+            efficiencyText = efficiencyTranslations[efficiency.text] || efficiency.text;
+        }
+    
         // Display total distance and breakdown
         if (this.elements.results.totalMileage) {
             this.elements.results.totalMileage.innerHTML = `
                 <div class="distance-summary">
-                    <h4>📏 ${translations['distance-summary'] || 'Информация о поездке'}</h4>
-                    <div class="distance-main">${totalDistance.toFixed(1)} км</div>
+                    <h4>📏 ${translations['distance-summary'] || 'Trip Information'}</h4>
+                    <div class="distance-main">${totalDistance.toFixed(1)} ${lang === 'en' ? 'km' : 'км'}</div>
                     <div class="distance-breakdown">${mode}</div>
                 </div>
             `;
         }
-        
+    
         // Main calculation results
         if (this.elements.results.result && totalDistance > 0) {
+            const unit = lang === 'en' ? 'L/100km' : 'л/100км';
+            const currency = lang === 'en' ? 'RUB' : 'руб';
+        
             let resultHTML = `
                 <div class="result-container">
                     <!-- Main result -->
                     <div class="result-main">
                         <div class="consumption-display">
                             <span class="consumption-value">${adjustedConsumption.toFixed(2)}</span>
-                            <span class="consumption-unit">л/100км</span>
+                            <span class="consumption-unit">${unit}</span>
                         </div>
                     </div>
 
                     <!-- Efficiency rating -->
                     <div class="efficiency-section">
                         <div class="efficiency-badge ${efficiency.level}">
-                            ${efficiency.color} ${efficiency.text}
+                            ${efficiency.color} ${efficiencyText}
                         </div>
                     </div>
 
                     <!-- Trip cost -->
                     ${cost ? `
                         <div class="cost-section">
-                            <h5>💰 Стоимость поездки</h5>
+                            <h5>💰 ${translations['trip-cost'] || 'Trip Cost'}</h5>
                             <div class="cost-details">
-                                <div>Общая стоимость: <strong>${cost.totalCost} руб</strong></div>
-                                <div>На 100 км: ${cost.costPer100km} руб</div>
-                                <div>За километр: ${cost.costPerKm} руб</div>
+                                <div>${lang === 'en' ? 'Total cost' : 'Общая стоимость'}: <strong>${cost.totalCost} ${currency}</strong></div>
+                                <div>${lang === 'en' ? 'Per 100 km' : 'На 100 км'}: ${cost.costPer100km} ${currency}</div>
+                                <div>${lang === 'en' ? 'Per kilometer' : 'За километр'}: ${cost.costPerKm} ${currency}</div>
                             </div>
                         </div>
                     ` : ''}
 
                     <!-- Additional statistics -->
                     <div class="stats-section">
-                        <h5>📊 Статистика поездки</h5>
+                        <h5>📊 ${translations['trip-statistics'] || 'Trip Statistics'}</h5>
                         <div class="stats-grid">
                             <div class="stat-item">
-                                <span class="stat-label">Экономичность:</span>
-                                <span class="stat-value">${stats.fuelEfficiency} км/л</span>
+                                <span class="stat-label">${lang === 'en' ? 'Efficiency' : 'Экономичность'}:</span>
+                                <span class="stat-value">${stats.fuelEfficiency} ${lang === 'en' ? 'km/L' : 'км/л'}</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-label">CO₂ выброс:</span>
-                                <span class="stat-value">${stats.co2Emission} кг</span>
+                                <span class="stat-label">${lang === 'en' ? 'CO₂ emission' : 'CO₂ выброс'}:</span>
+                                <span class="stat-value">${stats.co2Emission} ${lang === 'en' ? 'kg' : 'кг'}</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-label">Базовый расход:</span>
-                                <span class="stat-value">${baseConsumption.toFixed(2)} л/100км</span>
+                                <span class="stat-label">${lang === 'en' ? 'Base consumption' : 'Базовый расход'}:</span>
+                                <span class="stat-value">${baseConsumption.toFixed(2)} ${unit}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Economy tips -->
                     <div class="tips-section">
-                        <h5>💡 Советы по экономии</h5>
+                        <h5>💡 ${translations['economy-tips'] || 'Economy Tips'}</h5>
                         <ul class="tips-list">
-                            ${efficiency.tips.map(tip => `<li>${tip}</li>`).join('')}
+                            ${translatedTips.map(tip => `<li>${tip}</li>`).join('')}
                         </ul>
                     </div>
 
                     <!-- Actions -->
                     <div class="result-actions">
-                        <button class="btn secondary" onclick="fuelMasterApp.shareResult()" aria-label="Поделиться результатом">
-                            <i class="fas fa-share" aria-hidden="true"></i> Поделиться
+                        <button class="btn secondary" onclick="fuelMasterApp.shareResult()" aria-label="${translations['share-result'] || 'Share result'}">
+                        <i class="fas fa-share" aria-hidden="true"></i> ${translations['share-result'] || 'Share'}
                         </button>
-                        <button class="btn secondary" onclick="fuelMasterApp.clearCalculator()" aria-label="Очистить форму">
-                            <i class="fas fa-refresh" aria-hidden="true"></i> Новый расчет
+                        <button class="btn secondary" onclick="fuelMasterApp.clearCalculator()" aria-label="${translations['new-calculation'] || 'New calculation'}">
+                            <i class="fas fa-refresh" aria-hidden="true"></i> ${translations['new-calculation'] || 'New Calculation'}
                         </button>
                     </div>
                 </div>
             `;
-            
+        
             this.elements.results.result.innerHTML = resultHTML;
-            
+        
             // Result appearance animation
             this.elements.results.result.classList.remove('fade-in');
             setTimeout(() => {
                 this.elements.results.result.classList.add('fade-in');
-                
+            
                 // Smooth scroll to results
                 this.elements.results.result.scrollIntoView({
                     behavior: 'smooth',
@@ -1514,7 +1550,38 @@ class FuelMasterApp {
             "weather-info": "{city}: {icon} {temp}°C, {wind} km/h",
             "errorRequired": "This field is required",
             "errorInvalidNumber": "Enter a valid number",
-            "errorEndMileage": "End mileage must be greater than start mileage"
+            "errorEndMileage": "End mileage must be greater than start mileage", 
+            // ДОБАВИТЬ ЭТИ ПЕРЕВОДЫ:
+            "trip-cost": "Trip Cost",
+            "trip-statistics": "Trip Statistics", 
+            "economy-tips": "Economy Tips",
+            "share-result": "Share",
+            "new-calculation": "New Calculation",
+        
+            // Для результатов калькулятора:
+            "general-cost": "Total cost",
+            "cost-per-100km": "Per 100 km",
+            "cost-per-km": "Per kilometer",
+            "fuel-efficiency": "Efficiency",
+            "co2-emission": "CO₂ emission",
+            "base-consumption": "Base consumption",
+            "efficiency-excellent": "Excellent! Very economical consumption",
+            "efficiency-good": "Good! Economical consumption", 
+            "efficiency-average": "Average fuel consumption",
+            "efficiency-high": "Increased consumption",
+            "efficiency-very-high": "High fuel consumption",
+        
+            // Советы по экономии:
+            "tip-maintain-style": "Maintain current driving style",
+            "tip-check-pressure": "Regularly check tire pressure", 
+            "tip-avoid-acceleration": "Avoid sharp accelerations",
+            "tip-plan-routes": "Plan routes in advance",
+            "tip-use-highways": "Use highways more often",
+            "tip-check-technical": "Check vehicle technical condition",
+            "tip-avoid-rush": "Avoid rush hour trips",
+            "tip-check-filter": "Check air filter",
+            "tip-visit-mechanic": "Visit a mechanic",
+            "tip-review-style": "Review driving style"
         }
     };
 
